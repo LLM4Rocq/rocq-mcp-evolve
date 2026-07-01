@@ -285,3 +285,26 @@ def load_minif2f(split):
             f.write(f"{stamp} pid={os.getpid()} unlocked miniF2F test split\n")
         return _load_minif2f_dir(os.path.join(MINIF2F_ROOT, "test"))
     raise ValueError(f"unknown split: {split!r} (expected 'valid' or 'test')")
+
+
+# --------------------------------------------------------------------------
+# miniF2F difficulty buckets (docs/ASSUMPTIONS.md A9)
+# --------------------------------------------------------------------------
+
+MINIF2F_TIER_TO_BUCKET = {
+    "mathd_algebra": "easy",
+    "mathd_numbertheory": "easy",
+    "amc12": "medium",
+    "algebra": "medium",
+    "numbertheory": "medium",
+    "induction": "medium",
+    "aime": "hard",
+    "imo": "hard",
+    "imosl": "hard",
+}
+
+
+def bucket_of(manifest_rec):
+    """Difficulty bucket for any manifest record (workbook labels pass through)."""
+    d = manifest_rec.get("difficulty", "?")
+    return MINIF2F_TIER_TO_BUCKET.get(d, d)

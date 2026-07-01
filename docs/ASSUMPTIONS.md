@@ -60,6 +60,15 @@ builds; Coquelicot coverage is worth more than the newer point release. The
 experiment substrate is therefore **Rocq 9.1.1 / OCaml 5.3.0**, pinned in
 repro/opam-packages.txt.
 
+## A9 — miniF2F difficulty buckets from source tiers
+Filename-prefix tiers map to buckets: mathd_algebra + mathd_numbertheory → easy
+(course problems, 130/244 per split); amc12* + algebra + numbertheory +
+induction → medium (79); aime* + imo* + imosl → hard (35). Rationale:
+competition tier is the only difficulty signal in miniF2F and is standard
+practice; both splits contain the same families, so dev/test stay comparable.
+Recorded per-record as `source_tier`; the mapping lives in
+`datasets.MINIF2F_TIER_TO_BUCKET` and is applied at record-writing time.
+
 ## A8 — Proof-region discipline (anti-gaming)
 The agent may only append content AFTER the shipped theorem statement; the file
 prefix (imports + preamble + statement) must match the dataset file exactly

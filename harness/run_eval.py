@@ -95,11 +95,12 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
     work = adir / "work"
     work.mkdir(parents=True, exist_ok=True)
     server_log = adir / "server.jsonl"
+    bucket = datasets.bucket_of(rec)
     meta = {
         "run_id": run_id,
         "config_id": cfg["config_id"],
         "problem_id": rec["problem_id"],
-        "difficulty": rec["difficulty"],
+        "difficulty": bucket,
         "source": rec["source"],
         "rep": rep,
         "agent_id": aid,
@@ -182,7 +183,8 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
         "model": cfg["model"],
         "problem_id": rec["problem_id"],
         "source": rec["source"],
-        "difficulty": rec["difficulty"],
+        "difficulty": bucket,
+        "source_tier": rec.get("source_tier"),
         "rep": rep,
         "seed": rep,
         "solved": gate_res["solved"],
@@ -291,7 +293,7 @@ def main():
                     run_dir / "results.jsonl",
                     {
                         "ts": time.time(), "run_id": run_id, "config_id": cfg["config_id"],
-                        "problem_id": rec["problem_id"], "difficulty": rec["difficulty"],
+                        "problem_id": rec["problem_id"], "difficulty": datasets.bucket_of(rec),
                         "source": rec["source"], "rep": rep, "solved": False,
                         "reject_reason": f"harness_error:{type(e).__name__}",
                         "harness_error": repr(e),
