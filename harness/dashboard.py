@@ -31,6 +31,8 @@ VERDICTS = {
     "baseline": ("control", "the deliberately-naive control"),
     "session": ("KEPT", "pass@1 +30 % med/hard, tokens_out −80 %, prover ms −98 %"),
     "session_try": ("KEPT", "pass@1 easy +37 %, med/hard +15 %, cost flat"),
+    "session_try_compact": ("REVERTED",
+        "pass@1 −2.5 pp all buckets; tokens_in +11 % — policy re-fetches elided context"),
 }
 
 CSS = """

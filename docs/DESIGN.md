@@ -78,9 +78,14 @@ effect (266 ms → ~1 ms/interaction measured in the session smoke).
    easy +37 %, medium/hard +15 %, cost flat, turns −8…−15 %; regression:
    tokens_in +12…25 % (bigger responses), addressed by rung 4]**
 4. `+compact-state` — goal-delta rendering with token budgets + stable ids to
-   re-fetch elided detail. [PENDING-MEASUREMENT]
+   re-fetch elided detail. **[REVERTED — session_try_compact_dev60 vs
+   session_try_dev60: pass@1 −2.5 pp in every bucket; tokens_in +11 % easy &
+   medium instead of down; tool calls +4…6 %. The policy compensates for
+   elided context by re-fetching (`state`) and extra probing: information
+   completeness per turn beats context thrift at these session lengths. The
+   negative result reinforces the try lesson — maximize per-turn information.]**
 5. `+search` — token-budgeted `Search`/`About` over the loaded environment,
-   targeting the unknown_ref failure class. [PENDING-MEASUREMENT]
+   targeting the unknown_ref failure class. [MEASURING — session_try_search]
 
 Order rationale: 2 unlocks 3-5 mechanically; 3 targets the measured dominant
 cost (turns); 4 targets token growth; 5 targets the #2 error class.

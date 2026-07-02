@@ -69,6 +69,14 @@ bottleneck (turns × output tokens, not compile seconds, dominate cost; but the
 interface shape controls both). solved_tool_calls rose on easy (+22 %): calls
 became ~free, so the policy takes more, smaller steps — the right trade.
 
+### session_try_compact vs session_try — run `session_try_compact_dev60` — **REVERTED**
+
+pass@1 −.025 in every bucket (easy .625, med/hard .35); tokens_in +11 % easy &
+medium (the metric it was meant to cut); tool calls +4…6 % easy/hard; cost
++1…5 %. Mechanism: compact hypothesis-delta rendering withholds context the
+policy then re-fetches via `state` and extra probing calls. Negative ablation
+kept in the record; reference config remains session_try.
+
 ### session_try vs session — run `session_try_dev60` — **KEPT**
 
 pass@1: easy .650 (+.175, +37 %), medium .375 (+.05, +15 %), hard .375 (+.05,
