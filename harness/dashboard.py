@@ -48,6 +48,7 @@ body { margin:0; padding:24px; background:#f9f9f7; color:#0b0b0b;
   --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,0.10);
   --good:#006300; --bad:#d03b3b;
   --s-easy:#2a78d6; --s-medium:#1baf7a; --s-hard:#eda100;
+  --c-baseline:#4a3aa7; --c-winner:#eb6834;
   --track:#cde2fb; --accent:#2a78d6;
 }
 @media (prefers-color-scheme: dark) {
@@ -57,6 +58,7 @@ body { margin:0; padding:24px; background:#f9f9f7; color:#0b0b0b;
     --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.10);
     --good:#0ca30c; --bad:#e66767;
     --s-easy:#3987e5; --s-medium:#199e70; --s-hard:#c98500;
+    --c-baseline:#9085e9; --c-winner:#d95926;
     --track:#104281; --accent:#3987e5;
   }
 }
@@ -234,6 +236,100 @@ def mini_line(title_txt, stats_by_cfg, key, fmt):
     return "".join(parts)
 
 
+def load_sweeps():
+    """{config: [summary rows sorted by N]} from logs/sweep_*_summary.jsonl."""
+    out = {}
+    for p in sorted(common.LOGS.glob("sweep_*_summary.jsonl")):
+        rows = common.read_jsonl(p)
+        if rows:
+            cfg = rows[0].get("config", p.stem)
+            # keep latest record per N
+            by_n = {}
+            for r in rows:
+                by_n[r["N"]] = r
+            out[cfg] = [by_n[n] for n in sorted(by_n)]
+    return out
+
+
+SWEEP_METRICS = [
+    ("attempts / hour", "attempts_per_hour", lambda v: f"{v:.0f}"),
+    ("peak RSS (MB)", "peak_rss_mb", lambda v: f"{v:.0f}"),
+    ("mean CPU (%)", "cpu_pct_mean", lambda v: f"{v:.0f}"),
+    ("wall s / attempt", "wall_s_mean", lambda v: f"{v:.0f}"),
+]
+
+SWEEP_COLORS = {}  # config -> css var, assigned in fixed order
+
+
+def sweep_color(cfg):
+    if cfg not in SWEEP_COLORS:
+        SWEEP_COLORS[cfg] = ("var(--c-baseline)" if len(SWEEP_COLORS) == 0
+                             else "var(--c-winner)")
+    return SWEEP_COLORS[cfg]
+
+
+def sweep_mini(title_txt, sweeps, key, fmt):
+    ns = sorted({r["N"] for rows in sweeps.values() for r in rows})
+    if not ns:
+        return ""
+    width, height, left, top = 320, 150, 50, 26
+    plot_w, plot_h = width - left - 14, height - top - 30
+    vmax = max((r.get(key) or 0) for rows in sweeps.values() for r in rows) or 1
+    def sx(n):
+        return left + (ns.index(n) / max(len(ns) - 1, 1)) * plot_w
+    def sy(v):
+        return top + plot_h - (v / vmax) * plot_h
+    parts = [f'<svg viewBox="0 0 {width} {height}" width="{width}" role="img" '
+             f'aria-label="{esc(title_txt)} vs N agents">']
+    parts.append(f'<text x="{left}" y="14" class="vlab">{esc(title_txt)}</text>')
+    for gy in (0, 0.5, 1.0):
+        y = top + plot_h - gy * plot_h
+        parts.append(f'<line class="grid" x1="{left}" y1="{y:.0f}" x2="{left + plot_w}" y2="{y:.0f}"/>')
+        parts.append(f'<text class="tick" x="{left - 6}" y="{y + 4:.0f}" text-anchor="end">{fmt(gy * vmax)}</text>')
+    for n in ns:
+        parts.append(f'<text class="tick" x="{sx(n):.0f}" y="{height - 8}" text-anchor="middle">N={n}</text>')
+    for cfg, rows in sweeps.items():
+        col = sweep_color(cfg)
+        pts = [(sx(r["N"]), sy(r.get(key) or 0), r) for r in rows]
+        if len(pts) >= 2:
+            d = "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y, _ in pts)
+            parts.append(f'<path d="{d}" fill="none" stroke="{col}" stroke-width="2" '
+                         f'stroke-linejoin="round" stroke-linecap="round"/>')
+        for x, y, r in pts:
+            parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4" fill="{col}" '
+                         f'stroke="var(--surface-1)" stroke-width="2">'
+                         f'<title>{esc(cfg)} N={r["N"]}: {fmt(r.get(key) or 0)} '
+                         f'({r.get("solved")}/{r.get("attempts")} solved)</title></circle>')
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def sweep_section():
+    sweeps = load_sweeps()
+    if not sweeps:
+        return ('<div class="card"><span style="color:var(--ink-3)">No sweep data yet — '
+                'the baseline sweep (N ∈ {1,2,4,8}) is queued in the pipeline; results '
+                'land here automatically (logs/sweep_*_summary.jsonl).</span></div>')
+    legend = ('<div class="legend">'
+              + "".join(f'<span><span class="sw" style="background:{sweep_color(c)}"></span>{esc(c)}</span>'
+                        for c in sweeps)
+              + "</div>")
+    minis = "".join(sweep_mini(t, sweeps, k, f) for t, k, f in SWEEP_METRICS)
+    head = ("<tr><th>config</th><th class=num>N</th><th class=num>attempts/h</th>"
+            "<th class=num>makespan s</th><th class=num>peak RSS MB</th>"
+            "<th class=num>CPU %</th><th class=num>solved</th></tr>")
+    trs = "".join(
+        f"<tr><td>{esc(cfg)}</td><td class=num>{r['N']}</td>"
+        f"<td class=num>{r.get('attempts_per_hour','–')}</td>"
+        f"<td class=num>{r.get('makespan_s','–')}</td>"
+        f"<td class=num>{r.get('peak_rss_mb','–')}</td>"
+        f"<td class=num>{r.get('cpu_pct_mean','–')}</td>"
+        f"<td class=num>{r.get('solved')}/{r.get('attempts')}</td></tr>"
+        for cfg, rows in sweeps.items() for r in rows)
+    return (f'<div class="card">{legend}{minis}'
+            f'<details><summary>table view</summary><table>{head}{trs}</table></details></div>')
+
+
 def legend_html():
     return ('<div class="legend">'
             + "".join(f'<span><span class="sw" style="background:var(--s-{b})"></span>{b}</span>'
@@ -392,6 +488,9 @@ def build():
 <div class="card">{legend_html()}{minis}
 <details><summary>table view</summary>
 {stats_table(stats_by_cfg, ["tokens_out_mean", "cost_usd_mean", "wall_s_mean", "tool_calls_mean"])}</details></div>
+
+<h2>Scalability — fixed stratified batch vs N parallel agents</h2>
+{sweep_section()}
 
 <h2>Runs</h2>
 <div class="card"><table>

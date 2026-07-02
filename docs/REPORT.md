@@ -108,6 +108,23 @@ an easier draw than the easy stratum at large — a reminder that absolute
 per-bucket solve rates are sample-dependent even within a difficulty label;
 config-vs-config deltas on the SAME set remain the valid comparison.
 
+### Cross-dataset confirmation — run `session_try_hints_minif2f_valid`
+(miniF2F valid split, 244 problems × 2 reps, PRE-env-v2 environment)
+
+| | easy (mathd) | medium (amc/…) | hard (aime/imo) |
+|---|---|---|---|
+| pass@1 | .323 (84/260) | .133 (21/158) | .000 (0/70) |
+
+Cross-dataset honesty: miniF2F is materially harder than the workbook for this
+policy — and the **hard bucket is at the policy's ceiling (0/70)**: aime/imo
+problems are out of reach for claude-haiku-4-5 regardless of tooling (motivates
+the A10 cross-policy annex). Two structural findings feed the env-v2 change:
+**16 attempts solved in-session but were gate-rejected for `Require`** (the
+shipped miniF2F headers import only `Reals`, so agents imported Psatz to get
+their closers — an interface trap), and easy-bucket attempts fought without
+nra/lra/lia entirely. The env-v2 A/B (preloaded scope-neutral tactic modules,
+Require refused with guidance) is queued as `session_try_hints_v2_minif2f_valid`.
+
 ## 4. Profiling & hypotheses
 - H1 (prover cost dominates): PARTIALLY REFUTED on easy — prover = 6% of wall;
   model API ≈ 90%. Re-examined per bucket below.
