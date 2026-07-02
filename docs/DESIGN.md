@@ -36,19 +36,29 @@ one `check(file)` tool, full `rocq compile` per call.]
 
 (one section per kept/reverted change, with numbers — appended as measured)
 
-### Profiling signal shaping the ladder (early, easy bucket, n=14)
+### Profiling: the measured bottleneck (control run baseline_dev60, all buckets)
 
-Wall decomposition: prover 6%, model API ≈ 90%. Prover p50/call 266 ms (flat
-`Require` replay), zero timeouts on easy. Failed-check taxonomy: syntax 128,
-unknown_ref 43 — i.e. the policy burns whole turns (≈3.5 s + a full-file rewrite
-of output tokens) discovering that one token was invalid Rocq. Input tokens grow
-~330/turn (H2 confirmed in shape, small in absolute terms on easy).
+Wall decomposition (40 attempts/bucket): prover 4–6 % of wall; model API 76–90 %.
+Prover per-call p50 = 262–267 ms across buckets — the flat cost of re-executing
+`Require` + statement on every whole-file check. **Zero prover timeouts in 1 882
+medium+hard calls**: the runaway-tactic hypothesis (H1's second half) is refuted
+on this problem mix — the policy's failing tactics fail fast instead of hanging.
 
-Consequence: the metric that matters is **turns-to-solve and output tokens per
-solve**, not raw prover seconds (revisit on medium/hard where timeout-ceiling
-calls may dominate). The interface must convert each model turn into more prover
-information: batched speculative execution, sentence-level persistence so partial
-progress is never re-generated, errors that carry the failing sentence.
+Failed-check taxonomy is stable across buckets: ~62 % syntax, ~14 % unknown
+reference (hallucinated lemma names), ~10 % other. The policy pays a full model
+turn (≈4 s API + a complete file rewrite of output tokens) to learn that one
+token was wrong. Input tokens grow linearly per turn (~330/turn easy, ~550/turn
+hard); with ~24 calls per failed attempt that compounds to 147–187 k prompt
+tokens per failed attempt on medium/hard.
+
+**Formal hypothesis for changes 2–3**: solve-rate and cost are bound by (a) the
+number of model turns needed to find a working tactic sequence and (b) the
+output tokens burned re-generating the whole file each turn. An interface that
+(1) persists partial progress at sentence granularity, (2) reports the failing
+sentence structurally, and (3) evaluates k candidate tactics per turn will cut
+turns-per-solve, output-tokens-per-solve, and wall-per-solve, and should raise
+per-bucket solve rate at fixed turn budget. Prover-side latency is a secondary
+effect (266 ms → ~1 ms/interaction measured in the session smoke).
 
 ### Planned change ladder (each = one config, measured on dev60 vs predecessor)
 
