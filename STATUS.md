@@ -34,10 +34,18 @@ refused with an explanatory error; statement-invariance verified). Gated
 ROCQ_ENV_V2; the in-flight pre-v2 miniF2F run is kept clean as the "before"
 measurement and the v2 rerun is queued as its A/B.
 
-## Scoreboard additions (2026-07-02 evening)
+## Scoreboard additions (2026-07-02 evening/night)
 | config | pass@1 (e/m/h) | Δ vs predecessor | verdict |
 |---|---|---|---|
-| session_try_hints_auto | .65 / .55 / .425 | up ALL buckets; 71 % of portfolio calls close a goal | **KEPT — new winner** |
+| session_try_hints_auto | .65 / .55 / .425 | up ALL buckets; 71 % of portfolio calls close a goal | **KEPT** |
+| session_try_hints_auto_sugg | .70 / .60 / .425 | easy +8 %, med +9 %, hard flat; easy tokens −22 % | **KEPT — FINAL SOLO WINNER** |
+| env-v2 (miniF2F axis) | .57 / .30 / .06 | vs .32 / .13 / .00 pre-v2 | **KEPT** |
+
+Solo ladder complete: baseline → session → try → hints → auto_close →
+did-you-mean (+ env-v2), with compact & search as reverted ablations.
+Baseline→winner on dev60: pass@1 .45/.25/.25 → .70/.60/.425.
+Remaining: winner sweep (running) → Sonnet annex (queued) → team experiment
+(hard70, tomorrow) → freeze day 5 → held-out → report.
 
 Scalability (baseline, N∈{1,2,4,8}): endpoint-bound — N=1→2 near-linear, then
 throughput flat, wall ×3.2, CPU <8 %, solves lost to timeout-by-queueing.

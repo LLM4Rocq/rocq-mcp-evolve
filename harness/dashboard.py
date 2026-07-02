@@ -39,6 +39,8 @@ VERDICTS = {
         "medium +27 % pass@1 (3 strictly-new problems), easy/hard within variance"),
     "session_try_hints_auto": ("KEPT",
         "pass@1 up ALL buckets (easy +8 %, med +16 %, hard +13 %); portfolio closes 71 % of calls"),
+    "session_try_hints_auto_sugg": ("KEPT",
+        "easy +8 %, medium +9 %, hard flat; easy tokens_in −22 % — FINAL SOLO WINNER"),
 }
 
 CSS = """

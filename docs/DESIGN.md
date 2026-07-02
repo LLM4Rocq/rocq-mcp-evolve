@@ -107,7 +107,10 @@ effect (266 ms → ~1 ms/interaction measured in the session smoke).
    should enumerate; the model should strategize.]**
 8. `+did-you-mean` — unknown-reference errors carry up to 5 real near-miss
    lemma names (push-based premise help; the pull-based `search` tool was
-   reverted for adoption-without-rescue). [MEASURING]
+   reverted for adoption-without-rescue). **[KEPT — session_try_hints_auto_sugg
+   vs _auto: pass@1 easy +8 % (.70), medium +9 % (.60), hard flat (.425);
+   easy tokens_in −22 %, turns −11 %. Push-based premise information succeeds
+   where the pull-based tool failed: it costs no turns. FINAL SOLO WINNER.]**
 9. Environment v2 (A11) — scope-neutral tactic modules preloaded everywhere;
    `Require` refused with guidance. Motivated by the miniF2F trap (16
    in-session solves gate-rejected for Require; closers absent from shipped
