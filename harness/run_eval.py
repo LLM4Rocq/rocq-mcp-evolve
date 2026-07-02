@@ -19,6 +19,7 @@ import platform
 import signal
 import subprocess
 import sys
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -29,6 +30,43 @@ import datasets
 import gate
 
 CLAUDE_BIN = os.environ.get("CLAUDE_BIN", os.path.expanduser("~/.local/bin/claude"))
+
+
+def _descendants(pid: int) -> list[int]:
+    try:
+        out = subprocess.run(
+            ["pgrep", "-P", str(pid)], capture_output=True, text=True
+        ).stdout.split()
+    except OSError:
+        return []
+    ds = []
+    for c in out:
+        try:
+            c = int(c)
+        except ValueError:
+            continue
+        ds.append(c)
+        ds.extend(_descendants(c))
+    return ds
+
+
+def kill_attempt_tree(p: subprocess.Popen, log):
+    """SIGKILL the spawned CLI, its descendants (MCP server, prover workers),
+    and its process group. Logs every step: the 300s-timeout failure observed
+    in run baseline_dev60_r1 (attempts alive at ~580s) needs a diagnosable
+    kill path."""
+    log(f"kill_attempt_tree pid={p.pid} t={time.time():.1f}")
+    for d in _descendants(p.pid):
+        try:
+            os.kill(d, signal.SIGKILL)
+        except OSError as e:
+            log(f"  kill child {d}: {e!r}")
+    for target, fn in [("pg", lambda: os.killpg(os.getpgid(p.pid), signal.SIGKILL)),
+                       ("pid", lambda: os.kill(p.pid, signal.SIGKILL))]:
+        try:
+            fn()
+        except OSError as e:
+            log(f"  kill {target}: {e!r}")
 
 
 def build_task(rec):
@@ -139,6 +177,12 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
     ]
     t0 = time.time()
     timed_out = False
+    kill_log_path = adir / "kill.log"
+
+    def klog(msg):
+        with open(kill_log_path, "a") as kf:
+            kf.write(msg + "\n")
+
     with open(adir / "transcript.jsonl", "w") as tf, open(adir / "stderr.log", "w") as ef:
         p = subprocess.Popen(
             cmd,
@@ -148,16 +192,32 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
             cwd=adir,
             start_new_session=True,
         )
+        # absolute-deadline watchdog, independent of p.wait(timeout=...)
+        watchdog_fired = threading.Event()
+
+        def watchdog():
+            watchdog_fired.set()
+            klog(f"watchdog fired at +{time.time()-t0:.1f}s")
+            kill_attempt_tree(p, klog)
+
+        wd = threading.Timer(cfg["attempt_timeout_s"] + 10, watchdog)
+        wd.daemon = True
+        wd.start()
         try:
             p.wait(timeout=cfg["attempt_timeout_s"])
         except subprocess.TimeoutExpired:
             timed_out = True
-            try:
-                os.killpg(os.getpgid(p.pid), signal.SIGKILL)
-            except ProcessLookupError:
-                pass
+            klog(f"p.wait timeout at +{time.time()-t0:.1f}s")
+            kill_attempt_tree(p, klog)
+            p.wait()
+        finally:
+            wd.cancel()
+        if watchdog_fired.is_set():
+            timed_out = True
             p.wait()
     wall_s = time.time() - t0
+    if wall_s > cfg["attempt_timeout_s"] + 30:
+        klog(f"ANOMALY: attempt outlived timeout: wall={wall_s:.1f}s timed_out={timed_out}")
 
     events = common.read_jsonl(adir / "transcript.jsonl")
     result_event = next((e for e in reversed(events) if e.get("type") == "result"), None)

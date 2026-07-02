@@ -22,6 +22,30 @@ let read_capped path =
       if len > n then s ^ Printf.sprintf "\n[... output truncated: %d of %d bytes shown]" n len
       else s
 
+(* Kill pid, its process group, and all descendants. `rocqworker` (spawned by
+   `rocq compile`) moves itself into its own process group, so a plain group
+   kill leaks it — walk children via pgrep -P before killing the parent. *)
+let kill_tree pid =
+  let read_children p =
+    let ic = Unix.open_process_in (Printf.sprintf "pgrep -P %d 2>/dev/null" p) in
+    let rec go acc =
+      match input_line ic with
+      | l -> go ((try [ int_of_string (String.trim l) ] with _ -> []) @ acc)
+      | exception End_of_file -> acc
+    in
+    let cs = go [] in
+    ignore (Unix.close_process_in ic);
+    cs
+  in
+  let rec descendants p =
+    let cs = read_children p in
+    List.concat_map (fun c -> c :: descendants c) cs
+  in
+  let ds = descendants pid in
+  List.iter (fun p -> try Unix.kill p Sys.sigkill with _ -> ()) ds;
+  (try Unix.kill (-pid) Sys.sigkill with _ -> ());
+  (try Unix.kill pid Sys.sigkill with _ -> ())
+
 let run ?(timeout_s = 60.) ?(cwd : string option) (argv : string array) : result =
   let out_path = Filename.temp_file "rocq_proc_" ".out" in
   let out_fd = Unix.openfile out_path [ Unix.O_WRONLY; Unix.O_TRUNC ] 0o600 in
@@ -47,8 +71,7 @@ let run ?(timeout_s = 60.) ?(cwd : string option) (argv : string array) : result
     match Unix.waitpid [ Unix.WNOHANG ] pid with
     | 0, _ ->
         if Unix.gettimeofday () > deadline then begin
-          (try Unix.kill (-pid) Sys.sigkill with _ -> ());
-          (try Unix.kill pid Sys.sigkill with _ -> ());
+          kill_tree pid;
           ignore (Unix.waitpid [] pid);
           (true, -1)
         end

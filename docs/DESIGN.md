@@ -35,3 +35,38 @@ one `check(file)` tool, full `rocq compile` per call.]
 ## Interface iterations
 
 (one section per kept/reverted change, with numbers — appended as measured)
+
+### Profiling signal shaping the ladder (early, easy bucket, n=14)
+
+Wall decomposition: prover 6%, model API ≈ 90%. Prover p50/call 266 ms (flat
+`Require` replay), zero timeouts on easy. Failed-check taxonomy: syntax 128,
+unknown_ref 43 — i.e. the policy burns whole turns (≈3.5 s + a full-file rewrite
+of output tokens) discovering that one token was invalid Rocq. Input tokens grow
+~330/turn (H2 confirmed in shape, small in absolute terms on easy).
+
+Consequence: the metric that matters is **turns-to-solve and output tokens per
+solve**, not raw prover seconds (revisit on medium/hard where timeout-ceiling
+calls may dominate). The interface must convert each model turn into more prover
+information: batched speculative execution, sentence-level persistence so partial
+progress is never re-generated, errors that carry the failing sentence.
+
+### Planned change ladder (each = one config, measured on dev60 vs predecessor)
+
+1. `baseline` — control (naive whole-file check).
+2. `session` — persistent in-process interpreter on rocq-runtime:
+   sentence-level `step` (commit good prefix, report failing sentence
+   structurally), O(1) `rollback` via Vernacstate snapshots, `state` rendering
+   of open goals, per-sentence tactic timeout ≪ 60 s. Kills: whole-file
+   re-generation (output tokens), whole-file re-compilation (prover ms), full
+   context re-reads. [PENDING-MEASUREMENT]
+3. `session+try` — `try {candidates:[...]}`: k tactic candidates from ONE
+   completion, evaluated speculatively against the same snapshot in-process;
+   returns per-candidate verdict + resulting-goal digest. Converts k model
+   turns into 1. [PENDING-MEASUREMENT]
+4. `+compact-state` — goal-delta rendering with token budgets + stable ids to
+   re-fetch elided detail. [PENDING-MEASUREMENT]
+5. `+search` — token-budgeted `Search`/`About` over the loaded environment,
+   targeting the unknown_ref failure class. [PENDING-MEASUREMENT]
+
+Order rationale: 2 unlocks 3-5 mechanically; 3 targets the measured dominant
+cost (turns); 4 targets token growth; 5 targets the #2 error class.
