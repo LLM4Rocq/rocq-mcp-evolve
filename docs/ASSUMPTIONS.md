@@ -60,6 +60,15 @@ builds; Coquelicot coverage is worth more than the newer point release. The
 experiment substrate is therefore **Rocq 9.1.1 / OCaml 5.3.0**, pinned in
 repro/opam-packages.txt.
 
+## A10 — Cross-policy robustness annex (user-requested, 2026-07-02)
+The ladder is selected under the fixed policy (A2, claude-haiku-4-5) per the
+brief. As a robustness annex — not a selection criterion — baseline and the
+final winner are additionally measured once with a stronger policy
+(`claude-sonnet-5`, 2 reps, dev60) to report whether the interface deltas
+transfer across policy strength. Hypothesis: structural wins (session/try)
+transfer; the hints delta shrinks (it targets Haiku-specific Lean-isms).
+Runs tagged `*_sonnet`; never used for keep/revert decisions or the freeze.
+
 ## A9 — miniF2F difficulty buckets from source tiers
 Filename-prefix tiers map to buckets: mathd_algebra + mathd_numbertheory → easy
 (course problems, 130/244 per split); amc12* + algebra + numbertheory +
