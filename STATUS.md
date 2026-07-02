@@ -1,78 +1,72 @@
 # STATUS — AI-native Rocq tooling experiment
 
-_Last updated: 2026-07-01 23:15 (run start)_
+_Last updated: 2026-07-02 08:55_
 
 ## TL;DR
-Run just started. Environment scouted, repo scaffolded, plan and budgets fixed.
-Building the naive baseline (full `rocq compile` per tool call) next.
+Infrastructure done and battle-tested; naive control (baseline) re-running clean
+on dev60 (~2.5 h, finishes late morning). The first real interface — a
+persistent in-process prover session on rocq-runtime — is built, smoke-tested,
+and dramatically faster per interaction (0.4–2 ms/step vs 266 ms/full-recompile
+call). Its A/B against baseline on dev60 launches the moment the control
+finishes. No blockers.
 
 ## Environment (recorded)
-- Hardware: Apple M3 Max, 14 cores, 96 GB RAM, macOS 14.3
-- Dedicated opam switch: `/Users/gbaudart/Project/llm4rocq/rocq-tools` (local switch)
-- OCaml 5.3.0 · Rocq 9.2.0 (rocq-runtime/rocq-core 9.2.0, rocq-stdlib 9.1.0) · dune 3.23.1
-- Extra deps installed for this experiment: `yojson 3.0.0`; `coq-coquelicot` +
-  `coq-mathcomp-ssreflect` install in progress (needed by ~10% of dataset files)
-- Agent policy: `claude` CLI 2.1.198, headless (`claude -p --output-format json`),
-  MCP tools only, model pinned (exact model recorded in configs once first run executes)
+- Apple M3 Max, 14 cores, 96 GB RAM, macOS 14.3 · dedicated local opam switch
+- OCaml 5.3.0 · **Rocq 9.1.1** (downgraded from 9.2.0 by the Coquelicot install —
+  accepted, pinned; see A7) · Coquelicot 3.4.4 · mathcomp 2.5.0 · yojson 3.0.0
+- Policy (fixed across all configs): claude CLI 2.1.198 headless,
+  `claude-haiku-4-5`, MCP tools only, ≤30 turns, ≤300 s/attempt
+- Repro: `repro/setup.sh` (fresh switch → pinned install → build → self-test)
 
-## Datasets
-- Dev/tuning: `../rocq-workbook/rocq_workbook_10k.jsonl` (10k problems, has
-  `difficulty` ∈ {easy, medium, hard} and `rocq_library` labels; 8,936 stdlib-only)
-- Dev also: `../miniF2F-rocq/valid` (244 .v files)
-- HELD-OUT: `../miniF2F-rocq/test` (244 .v) — **locked**; a mechanical guard will
-  refuse harness access until a `final_unlock` flag is set; unlock will be logged.
+## Where things stand
+- [x] MCP server framework (OCaml, JSON-RPC stdio) + JSONL instrumentation
+- [x] Naive baseline config (control): one `check` tool = full `rocq compile`
+- [x] Harness: runner (wall-clock watchdog), layered anti-gaming gate,
+  per-bucket report, monitor, profiler; manifests dev60/dev150/minif2f_valid;
+  held-out test mechanically locked
+- [x] **Session server** (`src/session_server`): prover embedded in-process on
+  the public rocq-runtime API. Sentence-level `step` (good prefix commits,
+  failing sentence reported structurally with goals after last success), O(1)
+  `rollback` (Vernacstate snapshots), `state`, per-sentence timeouts, queries
+  (Search/Check) execute without polluting the proof. Measured: init 215 ms
+  once; 0.4–2 ms per step; ~310 MB RSS per session.
+- [x] **try tool** (`session_try` config): up to 8 candidate scripts evaluated
+  speculatively from the same snapshot in one call; first success auto-commits;
+  per-candidate verdicts + remaining-goal digests.
+- [ ] RUNNING: `baseline_dev60` control (2 reps × 60, parallel=4, caffeinated)
+- [ ] NEXT: session and session_try A/Bs on dev60; then compact-state and
+  search ladder rungs; scalability sweep; freeze; held-out.
 
-## Budgets (HARD limits, fixed 2026-07-01)
-- Wall-clock: run ends 2026-07-06 EOD; final day reserved for frozen-config
-  held-out eval + report.
-- Per proof attempt: ≤ 16 policy turns, ≤ 300 s wall-clock (fixed across configs).
-- Iteration eval set: "dev60" = 60 stratified workbook problems (20 easy / 20
-  medium / 20 hard, stdlib-only), fixed seed; kept changes re-validated on a
-  larger stratified set + miniF2F valid subset.
-- ≥ 2 repetitions per config for mean/variance on kept changes.
+## Profiling so far (easy bucket, first control attempt — full numbers when run completes)
+- Prover time = 6% of wall; model API ≈ 90%. **Turns and output tokens are the
+  bottleneck, not compile seconds** (H1 partially refuted — timeouts did not
+  bite on easy; recheck on medium/hard).
+- Failed-check taxonomy: syntax 128 / unknown_ref 43 / other 59 → the policy
+  burns whole turns learning one token was invalid Rocq. Sentence-level
+  feedback + batched try target exactly this.
+- Input tokens grow ~330/turn (quadratic-ish context growth confirmed, small in
+  absolute terms on easy).
 
-## Done
-- [x] Environment scouted; branch `agent-tooling`; scaffold committed
-- [x] OCaml MCP server framework (JSON-RPC stdio + JSONL instrumentation) + naive
-  baseline server (`check` = full `rocq compile` per call) — smoke-tested
-- [x] claude CLI headless contract probed empirically (flags, token accounting,
-  silent-permission-denial gotcha → harness asserts `permission_denials == []`;
-  custom `--system-prompt` cuts ~70k cached tokens/turn ≈ 10× cost)
-- [x] Dataset manifests: dev60 / dev150 (disjoint, stratified stdlib-only, seed
-  42), smoke5, minif2f_valid; mechanical held-out guard on miniF2F test
-  (FINAL_UNLOCK file + ROCQ_FINAL_EVAL=1, unlock logged) — verified locked
-- [x] Correctness gate (layered anti-gaming): locked prefix, forbidden-token scan
-  on comment-stripped agent region, fresh recompile, Print Assumptions audit.
-  Unit-tested incl. tamper cases
-- [x] Eval harness + report + monitor; smoke run: 4/5 easy solved, $0.018/attempt
+## Incidents (all diagnosed, fixed, logged)
+1. **rocqworker leak**: `rocq compile`'s worker re-groups itself → escaped
+   group-kill on timeout, pinned a core for 19 min. Fix: descendant-tree kill.
+2. **"Timeout that never fired" = laptop sleep**: monotonic clocks pause during
+   macOS sleep; wall clock doesn't. Attempts looked 580 s long; the harness was
+   fine. Fix: wall-clock watchdog + `machine_slept` flag per record; evals run
+   under `caffeinate`. First two control starts discarded (~$2.4 total);
+   third start is the clean one.
+3. Coquelicot not in default opam repo → added rocq/coq released repos
+   (switch-scoped); solver downgraded Rocq 9.2→9.1.1 (accepted, pinned).
 
-## In progress
-- [ ] **baseline_dev60_r1**: naive baseline on dev60 × 2 reps (120 attempts,
-  parallel=4) — running in background
-- [ ] rocq-runtime 9.1 OCaml API mapping (for the in-process session server)
-
-## Pre-registered bottleneck hypotheses (to test in profiling step)
-- H1: prover time = flat re-`Require` overhead per call + runaway tactics hitting
-  the 60 s compile timeout (smoke: call p95 = 60.6 s = timeout ceiling)
-- H2: token cost = agent re-sends the full file every call; input tokens grow
-  ~quadratically over a session
-- H3: failures = blind flailing; agent can't see intermediate goal state after a
-  partial failure, so it rewrites whole proofs
-
-## Metrics vs baseline
-Baseline being measured now (see logs/runs/baseline_dev60_r1; monitor:
-`python3 harness/monitor.py baseline_dev60_r1 --once`).
-Smoke (5 easy, 1 rep): 4/5 solved, mean $0.018, mean 7 tool calls, prover 38 s
-of 74 s wall (dominated by one timeout-looping attempt).
+## Budget tracking
+- Spend so far: ≈ $4.5 (probes, smokes, discarded control starts, control run).
+- Wall-clock: on day 2 of 5. Comfortably on plan.
 
 ## Decisions / assumptions since last check-in
-See `docs/ASSUMPTIONS.md` A1–A8. Notable: **Rocq downgraded 9.2.0 → 9.1.1** by
-the Coquelicot install (compat shims cap at 9.1.1) — accepted, recorded, pinned;
-policy budget clarified to ≤30 CLI turns (≈14 tool round-trips) per attempt.
-
-## Failures / recoveries
-- coq-coquelicot/mathcomp not in default opam repo → added rocq-released +
-  coq-released repos (switch-scoped); solver then downgraded Rocq (see above).
+A7 updated (Rocq 9.1.1), A8 (proof-region discipline), A9 (miniF2F tier→bucket
+mapping). Query sentences excluded from committed proofs (session semantics).
+Efficiency metrics measured at parallel=4 for every config (fixed); scalability
+axis varies N separately.
 
 ## Needs your input
 _(empty — nothing blocking)_
