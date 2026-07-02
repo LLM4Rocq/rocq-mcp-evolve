@@ -25,8 +25,14 @@ def main():
         run_dir = common.LOGS / "runs" / sys.argv[1]
     res = run_dir / "results.jsonl"
     rows = common.read_jsonl(res)
-    keep = [r for r in rows if not r.get("machine_slept")]
-    drop = [r for r in rows if r.get("machine_slept")]
+
+    def contaminated(r):
+        return bool(r.get("machine_slept")) or str(r.get("reject_reason", "")).startswith(
+            "harness_error"
+        )
+
+    keep = [r for r in rows if not contaminated(r)]
+    drop = [r for r in rows if contaminated(r)]
     if not drop:
         print("no contaminated records")
         return

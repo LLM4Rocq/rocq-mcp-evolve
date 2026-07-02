@@ -42,7 +42,9 @@ def read_jsonl(path: Path) -> list[dict]:
     if not Path(path).exists():
         return []
     out = []
-    for line in Path(path).read_text().splitlines():
+    # errors="replace": OCaml servers may emit truncated UTF-8 sequences in
+    # logged agent text; never let one bad byte lose a whole attempt record
+    for line in Path(path).read_text(errors="replace").splitlines():
         line = line.strip()
         if line:
             try:

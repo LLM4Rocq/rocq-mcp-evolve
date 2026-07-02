@@ -47,8 +47,27 @@ Gate rejections: no_candidate 74, prefix_modified 6, admit/Admitted 2 — the
 anti-gaming gate rejected 8 would-be "solves" that in-session compile accepted.
 (16 sleep-contaminated attempts quarantined and redone; see incident log.)
 
-### session vs baseline
-PENDING.
+### session vs baseline — run `session_dev60` — **KEPT**
+
+pass@1: easy .475 (+.025), medium .325 (+.075, +30 %), hard .325 (+.075, +30 %);
+pass@2: .55/.40/.45 vs .50/.30/.35. Rep-rate std halved (.035 vs .071).
+
+| Δ vs baseline | easy | medium | hard |
+|---|---|---|---|
+| tokens_out_mean | −76 % | −79 % | −83 % |
+| tokens_in_mean | −23 % | −30 % | −37 % |
+| cost_usd_mean | −36 % | −45 % | −60 % |
+| wall_s_mean | −42 % | −62 % | −70 % |
+| prover_s_mean | −98 % | −98 % | −99 % |
+| call_ms_p50 | 239→0.7 ms | 263→0.9 ms | 268→1.3 ms |
+| solved: wall / out-tokens / $ | −37 % / −69 % / −17 % | −47 % / −72 % / −21 % | −82 % / −91 % / −74 % |
+
+Interpretation: eliminating whole-file re-generation (output tokens −80 %) and
+whole-file re-compilation (prover ms −98 %) converts directly into cheaper,
+faster attempts AND more solves per turn budget — confirming the profiled
+bottleneck (turns × output tokens, not compile seconds, dominate cost; but the
+interface shape controls both). solved_tool_calls rose on easy (+22 %): calls
+became ~free, so the policy takes more, smaller steps — the right trade.
 
 ### session_try vs session
 PENDING.

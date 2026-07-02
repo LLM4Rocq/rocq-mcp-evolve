@@ -74,7 +74,17 @@ let get_session () =
       session := Some s;
       s
 
-let truncate n s = if String.length s <= n then s else String.sub s 0 n ^ "…"
+(* UTF-8-safe truncation: never split a multi-byte codepoint (agents send
+   text like ⟨?_⟩; a raw String.sub produced invalid bytes in logs). *)
+let truncate n s =
+  if String.length s <= n then s
+  else begin
+    let i = ref n in
+    while !i > 0 && Char.code s.[!i] land 0xC0 = 0x80 do
+      decr i
+    done;
+    String.sub s 0 !i ^ "…"
+  end
 
 let render_compact =
   lazy (match Sys.getenv_opt "ROCQ_RENDER" with Some "compact" -> true | _ -> false)

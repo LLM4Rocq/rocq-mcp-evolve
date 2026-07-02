@@ -68,7 +68,9 @@ effect (266 ms → ~1 ms/interaction measured in the session smoke).
    structurally), O(1) `rollback` via Vernacstate snapshots, `state` rendering
    of open goals, per-sentence tactic timeout ≪ 60 s. Kills: whole-file
    re-generation (output tokens), whole-file re-compilation (prover ms), full
-   context re-reads. [PENDING-MEASUREMENT]
+   context re-reads. **[KEPT — session_dev60 vs baseline_dev60: pass@1 +30 %
+   on medium & hard, tokens_out −76…−83 %, cost −36…−60 %, wall −42…−70 %,
+   call p50 266 ms → ~1 ms; every bucket, every metric]**
 3. `session+try` — `try {candidates:[...]}`: k tactic candidates from ONE
    completion, evaluated speculatively against the same snapshot in-process;
    returns per-candidate verdict + resulting-goal digest. Converts k model
