@@ -192,29 +192,41 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
             cwd=adir,
             start_new_session=True,
         )
-        # absolute-deadline watchdog, independent of p.wait(timeout=...)
+        # WALL-CLOCK deadline watchdog. p.wait(timeout)/threading.Timer use the
+        # monotonic clock, which does not advance while macOS sleeps — an
+        # attempt spanning a laptop sleep would blow way past its budget
+        # (observed: 580 s walls in the discarded first control run). Poll
+        # wall-clock time instead; the sleep gap then counts against the
+        # attempt and it is killed on wake.
         watchdog_fired = threading.Event()
+        slept = threading.Event()
+        stop_wd = threading.Event()
+        deadline_wall = t0 + cfg["attempt_timeout_s"]
+        m0 = time.monotonic()
 
         def watchdog():
-            watchdog_fired.set()
-            klog(f"watchdog fired at +{time.time()-t0:.1f}s")
-            kill_attempt_tree(p, klog)
+            while not stop_wd.wait(2.0):
+                drift = (time.time() - t0) - (time.monotonic() - m0)
+                if drift > 5.0 and not slept.is_set():
+                    slept.set()
+                    klog(f"machine slept during attempt: wall-mono drift {drift:.0f}s")
+                if time.time() > deadline_wall:
+                    watchdog_fired.set()
+                    klog(f"wall-clock watchdog fired at +{time.time()-t0:.1f}s")
+                    kill_attempt_tree(p, klog)
+                    return
 
-        wd = threading.Timer(cfg["attempt_timeout_s"] + 10, watchdog)
-        wd.daemon = True
+        wd = threading.Thread(target=watchdog, daemon=True)
         wd.start()
         try:
-            p.wait(timeout=cfg["attempt_timeout_s"])
+            p.wait(timeout=cfg["attempt_timeout_s"] + 15)
         except subprocess.TimeoutExpired:
-            timed_out = True
             klog(f"p.wait timeout at +{time.time()-t0:.1f}s")
             kill_attempt_tree(p, klog)
             p.wait()
         finally:
-            wd.cancel()
-        if watchdog_fired.is_set():
-            timed_out = True
-            p.wait()
+            stop_wd.set()
+        timed_out = timed_out or watchdog_fired.is_set() or (time.time() > deadline_wall)
     wall_s = time.time() - t0
     if wall_s > cfg["attempt_timeout_s"] + 30:
         klog(f"ANOMALY: attempt outlived timeout: wall={wall_s:.1f}s timed_out={timed_out}")
@@ -252,6 +264,7 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
         "gate": {k: v for k, v in gate_res.items() if k != "detail"},
         "wall_s": round(wall_s, 2),
         "attempt_timed_out": timed_out,
+        "machine_slept": slept.is_set(),
         "num_turns": (result_event or {}).get("num_turns"),
         "stop_reason": (result_event or {}).get("stop_reason"),
         "duration_ms": (result_event or {}).get("duration_ms"),
