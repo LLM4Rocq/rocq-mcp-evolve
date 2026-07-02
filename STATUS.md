@@ -1,14 +1,21 @@
 # STATUS — AI-native Rocq tooling experiment
 
-_Last updated: 2026-07-02 08:55_
+_Last updated: 2026-07-02 11:15_
 
 ## TL;DR
-Infrastructure done and battle-tested; naive control (baseline) re-running clean
-on dev60 (~2.5 h, finishes late morning). The first real interface — a
-persistent in-process prover session on rocq-runtime — is built, smoke-tested,
-and dramatically faster per interaction (0.4–2 ms/step vs 266 ms/full-recompile
-call). Its A/B against baseline on dev60 launches the moment the control
-finishes. No blockers.
+**First kept change is a rout.** The persistent in-process session interface
+beats the naive control on every metric in every difficulty bucket:
+pass@1 +30 % on medium & hard (.25→.325), output tokens −76…−83 %, cost
+−36…−60 %, wall −42…−70 %, per-interaction prover latency 266 ms → ~1 ms.
+Full A/B in docs/REPORT.md; decision + numbers in DESIGN.md. `session_try`
+(batched speculative tactics) is measuring now (~1.5 h left). No blockers.
+
+## Ladder scoreboard (dev60, 2 reps, per-bucket pass@1 easy/med/hard)
+| config | pass@1 | Δ vs predecessor | verdict |
+|---|---|---|---|
+| baseline | .45 / .25 / .25 | — | control |
+| session | .475 / .325 / .325 | +30 % med & hard, −80 % out-tokens | **KEPT** |
+| session_try | running | — | — |
 
 ## Environment (recorded)
 - Apple M3 Max, 14 cores, 96 GB RAM, macOS 14.3 · dedicated local opam switch
@@ -51,16 +58,22 @@ finishes. No blockers.
 1. **rocqworker leak**: `rocq compile`'s worker re-groups itself → escaped
    group-kill on timeout, pinned a core for 19 min. Fix: descendant-tree kill.
 2. **"Timeout that never fired" = laptop sleep**: monotonic clocks pause during
-   macOS sleep; wall clock doesn't. Attempts looked 580 s long; the harness was
-   fine. Fix: wall-clock watchdog + `machine_slept` flag per record; evals run
-   under `caffeinate`. First two control starts discarded (~$2.4 total);
-   third start is the clean one.
-3. Coquelicot not in default opam repo → added rocq/coq released repos
-   (switch-scoped); solver downgraded Rocq 9.2→9.1.1 (accepted, pinned).
+   macOS sleep; wall clock doesn't. Fix: wall-clock watchdog + `machine_slept`
+   flag; evals run under `caffeinate`.
+3. Coquelicot not in default opam repo → repos added switch-scoped; solver
+   downgraded Rocq 9.2→9.1.1 (accepted, pinned).
+4. **Lid-close sleep beat caffeinate mid-control**: 16 easy-rep1 attempts
+   killed on wake; detected by the sleep flag, quarantined
+   (results.quarantine.jsonl), redone via resumable repair (harness/repair_run.py).
+5. **UTF-8 truncation bug**: OCaml `truncate` split codepoints in logged agent
+   text (Lean-isms like `⟨?_⟩`) → a few session_try attempts crashed record
+   parsing. Fixed both sides (codepoint-safe truncate, byte-tolerant reader);
+   affected slots will be repaired after the run.
 
 ## Budget tracking
-- Spend so far: ≈ $4.5 (probes, smokes, discarded control starts, control run).
-- Wall-clock: on day 2 of 5. Comfortably on plan.
+- Spend so far: ≈ $21 (control $11.7 incl. repair, session $6.8, smokes/probes
+  ~$1.5, session_try in flight). Well within reason for the value.
+- Wall-clock: mid day 2 of 5, ahead of plan (first kept change already locked).
 
 ## Decisions / assumptions since last check-in
 A7 updated (Rocq 9.1.1), A8 (proof-region discipline), A9 (miniF2F tier→bucket
