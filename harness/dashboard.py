@@ -25,6 +25,14 @@ from report import bucket_stats
 BUCKETS = ["easy", "medium", "hard"]
 LADDER_SUFFIX = "_dev60"
 
+# keep/revert decisions, updated as each A/B lands (source of truth:
+# docs/DESIGN.md "Interface iterations" + STATUS.md scoreboard)
+VERDICTS = {
+    "baseline": ("control", "the deliberately-naive control"),
+    "session": ("KEPT", "pass@1 +30 % med/hard, tokens_out −80 %, prover ms −98 %"),
+    "session_try": ("KEPT", "pass@1 easy +37 %, med/hard +15 %, cost flat"),
+}
+
 CSS = """
 :root { color-scheme: light dark; }
 body { margin:0; padding:24px; background:#f9f9f7; color:#0b0b0b;
@@ -70,6 +78,12 @@ details { margin-top:8px; } summary { cursor:pointer; color:var(--ink-3); font-s
 .meter > div { background:var(--accent); border-radius:5px; height:10px; }
 .status-running { color:var(--good); font-weight:600; }
 .status-done { color:var(--ink-3); }
+.verdict-kept { color:var(--good); font-weight:600; }
+.verdict-reverted { color:var(--bad); font-weight:600; }
+.verdict-other { color:var(--ink-3); font-weight:600; }
+.tools code { background:transparent; border:1px solid var(--grid); border-radius:4px;
+  padding:0 5px; margin-right:4px; font-size:11.5px; white-space:nowrap; }
+td.desc { color:var(--ink-2); max-width:420px; }
 svg text { fill:var(--ink-2); font:11px system-ui,-apple-system,"Segoe UI",sans-serif; }
 svg .tick { fill:var(--ink-3); font-variant-numeric:tabular-nums; }
 svg .vlab { fill:var(--ink-1); font-weight:600; }
@@ -272,6 +286,31 @@ def build():
                  f'<div class="val">${total_cost:,.2f}</div>'
                  f'<div class="delta">{total_attempts:,} attempts</div></div>')
 
+    # ladder narrative: tools + change description per step, from run_meta
+    ladder_desc_rows = []
+    for step, (rid, meta, rows) in enumerate(ladder):
+        cfg_meta = meta.get("config", {})
+        cfg = rows[0].get("config_id", rid)
+        tools = [t.replace("mcp__rocq__", "") for t in cfg_meta.get("allowed_tools", [])]
+        desc = cfg_meta.get("description", "")
+        total = (meta.get("n_problems") or 0) * (meta.get("reps") or 1)
+        if cfg in VERDICTS:
+            v, why = VERDICTS[cfg]
+            cls = ("verdict-kept" if v == "KEPT"
+                   else "verdict-reverted" if v == "REVERTED" else "verdict-other")
+            verdict = f'<span class="{cls}">{esc(v)}</span><br><span style="color:var(--ink-3)">{esc(why)}</span>'
+        elif total and len(rows) < total:
+            verdict = '<span class="status-running">measuring…</span>'
+        else:
+            verdict = '<span class="verdict-other">awaiting A/B</span>'
+        ladder_desc_rows.append(
+            f"<tr><td class=num>{step}</td><td><b>{esc(cfg)}</b></td>"
+            f'<td class="tools">{"".join(f"<code>{esc(t)}</code>" for t in tools)}</td>'
+            f'<td class="desc">{esc(desc)}</td><td>{verdict}</td></tr>')
+    ladder_desc = ("<table><tr><th>step</th><th>config</th><th>agent-facing tools</th>"
+                   "<th>what changed</th><th>verdict</th></tr>"
+                   + "".join(ladder_desc_rows) + "</table>")
+
     # runs table
     now = time.time()
     run_rows = []
@@ -334,6 +373,9 @@ def build():
 <code>python3 harness/dashboard.py --watch</code> · details: STATUS.md, docs/REPORT.md</div>
 
 <div class="tiles">{''.join(tiles)}</div>
+
+<h2>Ladder steps — what each config changes</h2>
+<div class="card">{ladder_desc}</div>
 
 <h2>Ladder — pass@1 by difficulty bucket (dev60, 2 reps)</h2>
 <div class="card">{legend_html()}{ladder_chart(stats_by_cfg)}
