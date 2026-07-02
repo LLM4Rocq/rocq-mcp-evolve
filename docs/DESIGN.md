@@ -94,9 +94,24 @@ effect (266 ms → ~1 ms/interaction measured in the session smoke).
    turns spent probing tactics, which is what actually solves goals here.]**
 6. `+hints` — structured error suggestions: map the top Lean-ism/syntax error
    patterns (the measured #1 failure class, ~60 % of failed checks) to concrete
-   Rocq rewrites in the error payload (e.g. `have x : T := by tac` →
-   `assert (x : T). { tac. }`; `⟨a, b⟩` → `exists a; split`; `norm_num` →
-   `lra`/`lia`/`nia`). [MEASURING]
+   Rocq rewrites in the error payload. **[KEPT — session_try_hints_dev60:
+   medium pass@1 +27 % (.375→.475), 3 strictly-new problems, 0 lost; easy/hard
+   within rep variance; cost flat.]**
+7. `+auto_close` — server-side finishing portfolio (10 standard closers, one
+   call, first success commits). Motivation: 97 % of the winner's failures die
+   at max-turns; closers were enumerated manually at 1 turn each.
+   **[KEPT — session_try_hints_auto_dev60: pass@1 up in every bucket (easy
+   +8 %, medium +16 %, hard +13 %); hard +2 strictly-new, 0 lost; cost flat;
+   71 % of auto_close calls closed a goal, top winner `auto with real arith.`
+   (46/64) — a tactic the policy never tried unprompted. The interface
+   should enumerate; the model should strategize.]**
+8. `+did-you-mean` — unknown-reference errors carry up to 5 real near-miss
+   lemma names (push-based premise help; the pull-based `search` tool was
+   reverted for adoption-without-rescue). [MEASURING]
+9. Environment v2 (A11) — scope-neutral tactic modules preloaded everywhere;
+   `Require` refused with guidance. Motivated by the miniF2F trap (16
+   in-session solves gate-rejected for Require; closers absent from shipped
+   imports). [MEASURING on minif2f_valid vs pre-v2 run]
 
 Order rationale: 2 unlocks 3-5 mechanically; 3 targets the measured dominant
 cost (turns); 4 targets token growth; 5 targets the #2 error class.

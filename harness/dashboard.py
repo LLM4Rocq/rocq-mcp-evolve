@@ -37,6 +37,8 @@ VERDICTS = {
         "pass@1 noise-level (−/−/+); high adoption, zero rescue effect"),
     "session_try_hints": ("KEPT",
         "medium +27 % pass@1 (3 strictly-new problems), easy/hard within variance"),
+    "session_try_hints_auto": ("KEPT",
+        "pass@1 up ALL buckets (easy +8 %, med +16 %, hard +13 %); portfolio closes 71 % of calls"),
 }
 
 CSS = """
