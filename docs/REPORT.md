@@ -133,9 +133,29 @@ Require refused with guidance) is queued as `session_try_hints_v2_minif2f_valid`
   baseline → feedback shape, not compile speed, is the binding constraint.
 _(full tables from profile.py per run)_
 
-## 5. Scalability (fixed batch, N ∈ {1,2,4,8,...})
-PENDING — harness/sweep.py; makespan, attempts/hour, peak RSS, CPU%, per-call
-latency degradation, per-bucket success at each N.
+## 5. Scalability (fixed 24-problem stratified batch, N ∈ {1,2,4,8})
+
+### baseline config (`sweep_baseline_summary.jsonl`)
+
+| N | attempts/h | wall s/attempt | peak RSS | machine CPU | solved |
+|---|---|---|---|---|---|
+| 1 | 25.1 | 143 | 0.7 GB | 2.4 % | 4/24 |
+| 2 | 48.3 | 147 | 1.3 GB | 4.9 % | 3/24 |
+| 4 | 45.1 | 319 | 2.0 GB | 7.9 % | 3/24 |
+| 8 | 56.3 | 463 | 3.1 GB | 7.8 % | 2/24 |
+
+**Finding: the scaling ceiling is the policy endpoint, not the prover
+substrate.** N=1→2 is near-linear (×1.9 throughput, latency flat). Beyond N=2,
+throughput saturates (48→45→56/h) while per-attempt wall time explodes
+(147→319→463 s ≈ ×3.2) — yet machine CPU never exceeds 8 % and RSS grows a
+benign ~0.4 GB/agent (dominated by the CLI processes, not prover state). The
+extra concurrency is absorbed as API-side queueing/rate-limiting. Worse, it
+*costs solves*: attempts pushed past the fixed 300 s budget by queueing die at
+the watchdog (solved 4→2/24 from N=1→8). On this endpoint the efficient
+operating point is N≈2-4; past it, adding agents actively harms success at
+fixed budgets. Local-substrate scalability (hundreds of ~310 MB sessions fit
+in RAM; per-step cost ~1 ms) is not the binding constraint at any tested N.
+(Winner-config sweep queued for comparison.)
 
 ## 6. Ablations
 _(one row per kept/reverted change, with the deciding numbers)_
