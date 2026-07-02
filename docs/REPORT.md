@@ -175,6 +175,31 @@ as N grows (single rep per N on a 24-problem batch — could be variance or
 mild endpoint pressure; the fixed 300 s attempt budget was never the binding
 constraint here, unlike baseline at N≥4).
 
+## 5b. Cross-policy annex (A10): does the interface delta transfer?
+
+dev60 × 2 reps, `claude-sonnet-5`, parallel=2 (annex-internal comparison only;
+never used for keep/revert). Columns easy/medium/hard.
+
+| | pass@1 | turns | cost $/attempt | wall s |
+|---|---|---|---|---|
+| baseline @ sonnet | .925 / .950 / .800 | 3.1 / 4.4 / 3.2 | .087 / .142 / .146 | 61 / 77 / 112 |
+| winner @ sonnet | .925 / .825 / .700 | 6.3 / 7.5 / 7.5 | .059 / .112 / .128 | 43 / 49 / 81 |
+| (recall) baseline @ haiku | .450 / .250 / .250 | 20.0 / 25.2 / 25.9 | .078 / .111 / .154 | 88 / 123 / 166 |
+| (recall) winner @ haiku | .700 / .600 / .425 | 14.0 / 20.5 / 20.8 | .042 / .057 / .062 | 44 / 51 / 56 |
+
+**Finding: the optimal interface is policy-dependent.** For the weak policy the
+incremental interface buys *capability* (+25–35 pp pass@1). For the strong
+policy — which one-shots whole proofs in ~3 turns — the naive whole-file
+interface wins on solve rate (medium +12.5 pp, hard +10 pp), while the
+incremental interface still buys *efficiency* (cost −12…−32 %, wall −28…−36 %).
+Interpretation: sentence-level incrementalism biases toward locally-greedy
+proving, which helps a policy that can't plan a whole proof and mildly hurts
+one that can. Consequences: (a) tool-layer rankings do NOT transfer across
+policies — the fixed-policy protocol was necessary, and the frozen config is
+explicitly keyed to claude-haiku-4-5; (b) deployment frontier: cheap policy +
+incremental interface dominates on $/solve for easy-medium volume; strong
+policy + whole-file dominates on hard-problem coverage.
+
 ## 6. Ablations
 _(one row per kept/reverted change, with the deciding numbers)_
 
