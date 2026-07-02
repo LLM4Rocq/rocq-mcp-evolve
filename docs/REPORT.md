@@ -26,8 +26,26 @@ Every number here is reproducible from raw logs:
 ## 3. Efficiency results (dev60, 2 reps, per bucket)
 _(tables inserted from report.py output as runs complete)_
 
-### baseline (control)
-PENDING — run in progress.
+### baseline (control) — run `baseline_dev60` (dev60 × 2 reps, parallel=4)
+
+| metric | easy | medium | hard |
+|---|---|---|---|
+| pass@1 | 0.450 | 0.250 | 0.250 |
+| pass@2 | 0.500 | 0.300 | 0.350 |
+| rep_rate_std | 0.071 | 0.071 | 0.071 |
+| turns_mean | 20.0 | 25.2 | 25.9 |
+| tool_calls_mean | 18.9 | 23.6 | 23.4 |
+| tokens_in_mean | 94 947 | 146 737 | 187 004 |
+| tokens_out_mean | 7 350 | 11 973 | 16 721 |
+| cost_usd_mean | 0.078 | 0.111 | 0.154 |
+| wall_s_mean | 87.9 | 122.8 | 166.3 |
+| prover_s_mean | 12.0 | 6.0 | 6.2 |
+| call_ms_p50 / p95 | 239 / 313 | 263 / 292 | 268 / 315 |
+| solved: wall_s / calls / out-tokens / $ | 30.0 / 6.2 / 2 946 / .029 | 32.5 / 7.2 / 2 876 / .031 | 82.5 / 11.6 / 9 141 / .080 |
+
+Gate rejections: no_candidate 74, prefix_modified 6, admit/Admitted 2 — the
+anti-gaming gate rejected 8 would-be "solves" that in-session compile accepted.
+(16 sleep-contaminated attempts quarantined and redone; see incident log.)
 
 ### session vs baseline
 PENDING.
