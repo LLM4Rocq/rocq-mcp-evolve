@@ -85,7 +85,18 @@ effect (266 ms → ~1 ms/interaction measured in the session smoke).
    completeness per turn beats context thrift at these session lengths. The
    negative result reinforces the try lesson — maximize per-turn information.]**
 5. `+search` — token-budgeted `Search`/`About` over the loaded environment,
-   targeting the unknown_ref failure class. [MEASURING — session_try_search]
+   targeting the unknown_ref failure class. **[REVERTED —
+   session_try_search_dev60 vs session_try_dev60: pass@1 easy −.05,
+   medium −.025, hard +.025 (noise-level, wrong direction 2/3); cost −5…6 %.
+   Adoption was high (324 calls, 66/120 attempts) but did not convert:
+   attempts that used search solved 15 % vs 81 % without (selection — stuck
+   agents reach for it — but no rescue effect). Turns spent searching displace
+   turns spent probing tactics, which is what actually solves goals here.]**
+6. `+hints` — structured error suggestions: map the top Lean-ism/syntax error
+   patterns (the measured #1 failure class, ~60 % of failed checks) to concrete
+   Rocq rewrites in the error payload (e.g. `have x : T := by tac` →
+   `assert (x : T). { tac. }`; `⟨a, b⟩` → `exists a; split`; `norm_num` →
+   `lra`/`lia`/`nia`). [MEASURING]
 
 Order rationale: 2 unlocks 3-5 mechanically; 3 targets the measured dominant
 cost (turns); 4 targets token growth; 5 targets the #2 error class.

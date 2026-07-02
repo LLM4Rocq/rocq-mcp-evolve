@@ -140,6 +140,88 @@ let fmt_msgs msgs =
   | [] -> ""
   | ms -> String.concat "\n" ms ^ "\n"
 
+(* ---- error hints (config-gated, ROCQ_HINTS=1) -------------------------
+   Deterministic Lean-ism -> Rocq rewrites for the measured top failure
+   classes (docs/DESIGN.md rung 6): ~60% of failed checks are syntax errors,
+   overwhelmingly Lean syntax; plus Lean tactic names as unknown refs. *)
+
+let hints_on =
+  lazy (match Sys.getenv_opt "ROCQ_HINTS" with Some "1" -> true | _ -> false)
+
+let lean_tactic_map =
+  [ ("norm_num", "try `lra`, `field_simp. lra.`, or `nra`");
+    ("omega", "use `lia`");
+    ("linarith", "use `lra`");
+    ("nlinarith", "use `nra` or `psatz R 2`");
+    ("nlra", "use `nra`");
+    ("ring_nf", "use `ring_simplify`");
+    ("simp", "use `simpl`, `cbn`, or a targeted `rewrite`");
+    ("rfl", "use `reflexivity`");
+    ("positivity", "use `nra`, or `apply Rmult_le_pos` style lemmas");
+    ("decide", "use `lia`, `reflexivity`, or `vm_compute`");
+    ("use", "Rocq: `exists <witness>.`");
+    ("obtain", "Rocq: `destruct H as [a b].`");
+    ("rcases", "Rocq: `destruct ... as [...]`");
+    ("rintro", "Rocq: `intros` with destructuring patterns `intros [a b]`");
+    ("rw", "Rocq: `rewrite h.` / `rewrite <- h.` / `rewrite h in H.` (no brackets)");
+    ("sorry", "FORBIDDEN — incomplete proofs are rejected; find a real proof");
+    ("exact?", "use `Search (<pattern>).` as a step to find lemma names");
+    ("apply?", "use `Search (<pattern>).` as a step to find lemma names");
+  ]
+
+let tool_names = [ "rollback"; "state"; "try"; "search"; "step" ]
+
+let first_word s =
+  let s = String.trim s in
+  let n = String.length s in
+  let i = ref 0 in
+  while !i < n && (match s.[!i] with 'a'..'z' | 'A'..'Z' | '0'..'9' | '_' | '?' -> true | _ -> false) do incr i done;
+  String.sub s 0 !i
+
+let hint_for ~sentence ~msg =
+  if not (Lazy.force hints_on) then None
+  else
+    let w = first_word sentence in
+    let contains sub s =
+      let n = String.length sub and m = String.length s in
+      let rec go i = i + n <= m && (String.sub s i n = sub || go (i + 1)) in
+      go 0
+    in
+    if List.mem w tool_names && not (String.equal w "step") then
+      Some (Printf.sprintf
+              "`%s` is a TOOL, not a proof sentence — call the %s tool instead." w w)
+    else
+      match List.assoc_opt w lean_tactic_map with
+      | Some h when contains "was not found" msg || contains "Syntax" msg ->
+          Some (Printf.sprintf "`%s` is Lean, not Rocq — %s." w h)
+      | _ ->
+          if contains "[ltac_use_default] expected" msg then
+            Some
+              "this is usually Lean syntax. Rocq: `tac1; tac2` (not `<;>`), \
+               `rewrite h` (not `rw [h]`), `assert (h : T). { proof. }` (not \
+               `have h : T := by ...`), `simpl in H` (not `simp at h`), \
+               `destruct x as [a b]` (not `obtain ⟨a, b⟩`)."
+          else if contains "Lexer: Undefined token" msg then
+            Some
+              "unsupported unicode — use ASCII Rocq: `exists x. split.` (not \
+               `⟨x, _⟩`), `<=` `>=` `<>` (not `≤ ≥ ≠`), `forall`/`exists` \
+               (not `∀ ∃`), `->` (not `→`)."
+          else if contains "No product even after head-reduction" msg then
+            Some "`intro` needs a `forall`/`->` goal — check the goal shape first."
+          else if contains "not a valid ring equation" msg then
+            Some "`ring` needs a pure ring equality — with division/order try \
+                  `field`, `lra`, or `nra`."
+          else None
+
+let with_hint ~sentence ~msg body =
+  match hint_for ~sentence ~msg with
+  | Some h -> body ^ "\nhint: " ^ h
+  | None -> body
+
+type try_outcome =
+  | Full of D.exec_step list * bool (* steps, proof complete *)
+  | Partial of int * string (* sentences ok, error text *)
+
 let step_tool : M.tool =
   {
     name = "step";
@@ -205,11 +287,12 @@ let step_tool : M.tool =
                       Printf.sprintf "%sok: %d sentence(s) committed.\n%s"
                         (fmt_msgs all_msgs) n_ok (goals_block ~prev:st now)
                 | D.Error_at { text; msg; loc = _; msgs } ->
-                    Printf.sprintf
-                      "%s%d sentence(s) committed, then ERROR at `%s`:\n%s\n\n\
-                       state unchanged since last success:\n%s"
-                      (fmt_msgs (all_msgs @ msgs))
-                      n_ok (String.trim text) msg (goals_block ~prev:st now)
+                    with_hint ~sentence:text ~msg
+                      (Printf.sprintf
+                         "%s%d sentence(s) committed, then ERROR at `%s`:\n%s\n\n\
+                          state unchanged since last success:\n%s"
+                         (fmt_msgs (all_msgs @ msgs))
+                         n_ok (String.trim text) msg (goals_block ~prev:st now))
                 | D.Timeout_at { text; timeout_s } ->
                     Printf.sprintf
                       "%s%d sentence(s) committed, then TIMEOUT (>%gs) at `%s` \
@@ -217,9 +300,10 @@ let step_tool : M.tool =
                       (fmt_msgs all_msgs) n_ok timeout_s (String.trim text)
                       (goals_block ~prev:st now)
                 | D.Parse_error { msg; _ } ->
-                    Printf.sprintf
-                      "%s%d sentence(s) committed, then SYNTAX ERROR:\n%s"
-                      (fmt_msgs all_msgs) n_ok msg
+                    with_hint ~sentence:text ~msg
+                      (Printf.sprintf
+                         "%s%d sentence(s) committed, then SYNTAX ERROR:\n%s"
+                         (fmt_msgs all_msgs) n_ok msg)
               in
               let stop_kind =
                 match stop with
@@ -274,10 +358,6 @@ let rollback_tool : M.tool =
   }
 
 let try_timeout = lazy (getenv_f "ROCQ_TRY_TIMEOUT" 5.)
-
-type try_outcome =
-  | Full of D.exec_step list * bool (* steps, proof complete *)
-  | Partial of int * string (* sentences ok, error text *)
 
 let try_tool : M.tool =
   {
@@ -382,6 +462,7 @@ let try_tool : M.tool =
                        end
                    | _ -> ())
                  outcomes);
+            let seen_hints = Hashtbl.create 4 in
             let lines =
               List.mapi
                 (fun i (cand, o) ->
@@ -398,7 +479,15 @@ let try_tool : M.tool =
                       tag ^ status
                       ^ (if !committed_idx = i then "  << COMMITTED" else "  (not committed)")
                   | Partial (k, err) ->
-                      tag ^ (if k > 0 then Printf.sprintf "(%d sentence(s) would pass) " k else "") ^ err)
+                      let base =
+                        tag ^ (if k > 0 then Printf.sprintf "(%d sentence(s) would pass) " k else "") ^ err
+                      in
+                      (* one hint per distinct cause per response *)
+                      (match hint_for ~sentence:cand ~msg:err with
+                      | Some h when not (Hashtbl.mem seen_hints h) ->
+                          Hashtbl.add seen_hints h ();
+                          base ^ "\n    hint: " ^ h
+                      | _ -> base))
                 outcomes
             in
             let tail =
