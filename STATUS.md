@@ -34,6 +34,18 @@ refused with an explanatory error; statement-invariance verified). Gated
 ROCQ_ENV_V2; the in-flight pre-v2 miniF2F run is kept clean as the "before"
 measurement and the v2 rerun is queued as its A/B.
 
+## Scoreboard additions (2026-07-02 evening)
+| config | pass@1 (e/m/h) | Δ vs predecessor | verdict |
+|---|---|---|---|
+| session_try_hints_auto | .65 / .55 / .425 | up ALL buckets; 71 % of portfolio calls close a goal | **KEPT — new winner** |
+
+Scalability (baseline, N∈{1,2,4,8}): endpoint-bound — N=1→2 near-linear, then
+throughput flat, wall ×3.2, CPU <8 %, solves lost to timeout-by-queueing.
+Efficient operating point N≈2-4. Full table in REPORT §5.
+
+env-v2 miniF2F A/B mid-run: medium 35 % vs 13 % pre-v2, hard 2 solves vs 0 —
+the import-preload fix is transformative on miniF2F (final numbers pending).
+
 ## Auto-chained pipeline (no idle machine time)
 1. RUNNING `session_try_hints_minif2f_valid` (488 attempts, pre-v2 baseline)
 2. → rung-7 `auto_close` A/B on dev60 (portfolio finisher; failure mining: 97 %
