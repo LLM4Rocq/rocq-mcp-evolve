@@ -69,6 +69,18 @@ transfer across policy strength. Hypothesis: structural wins (session/try)
 transfer; the hints delta shrinks (it targets Haiku-specific Lean-isms).
 Runs tagged `*_sonnet`; never used for keep/revert decisions or the freeze.
 
+## A13 — Team experiments are first-class experiment citizens (user steer)
+The multi-agent workstream follows the exact same discipline as the solo
+ladder: (a) problems come from the dev manifests (team manifest = the hard
+bucket of dev60+dev150, 70 problems, both configs run the SAME problems);
+(b) the daemon emits the standard JSONL instrumentation (ts, latency, op,
+agent id, prover ms, run/config/problem metadata); (c) team attempts produce
+standard results.jsonl records (schema-compatible + team extras: n_workers,
+phase walls, per-agent usage) so report.py/monitor.py/dashboard work
+unchanged; (d) the correctness gate applies identically to the composed
+candidate.v; (e) the solo-vs-team comparison is a config A/B at EQUAL total
+wall-clock, reported per bucket like every other ablation.
+
 ## A12 — Intra-proof parallelism directive (user steer, 2026-07-02 evening)
 The tool layer must generalize to large-scale projects: parallel agents working
 on DIFFERENT PARTS of the SAME proof (multi-agent workflows for hard problems).

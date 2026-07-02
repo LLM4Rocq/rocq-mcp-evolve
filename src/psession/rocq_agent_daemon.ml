@@ -138,6 +138,32 @@ let merge_branch t (b : branch) =
 
 (* ---------- ops ---------- *)
 
+(* ---------- instrumentation: same JSONL contract as the MCP servers ------ *)
+
+let log_oc =
+  lazy
+    (match Sys.getenv_opt "ROCQ_LOG_FILE" with
+    | None | Some "" -> None
+    | Some path -> Some (open_out_gen [ Open_append; Open_creat ] 0o644 path))
+
+let log_meta =
+  lazy
+    (match Sys.getenv_opt "ROCQ_LOG_META" with
+    | None | Some "" -> []
+    | Some s -> ( match J.from_string s with `Assoc l -> l | _ -> [] | exception _ -> []))
+
+let seq = ref 0
+
+let emit_log fields =
+  match Lazy.force log_oc with
+  | None -> ()
+  | Some oc ->
+      incr seq;
+      let record = `Assoc ((("seq", `Int !seq) :: fields) @ Lazy.force log_meta) in
+      output_string oc (J.to_string record);
+      output_char oc '\n';
+      flush oc
+
 let err msg = `Assoc [ ("ok", `Bool false); ("text", `String msg) ]
 let ok ?(extra = []) text =
   `Assoc ((("ok", `Bool true) :: ("text", `String text) :: extra))
@@ -372,7 +398,33 @@ let op_status t =
       ("committed", `Int (List.length t.committed));
       ("branches", `List branch_list) ]
 
-let handle (msg : J.t) : J.t =
+let rec handle (msg : J.t) : J.t =
+  let t0 = Unix.gettimeofday () in
+  let resp = handle_inner msg in
+  let t = init_trunk () in
+  let sop = JU.member "op" msg |> JU.to_string_option in
+  emit_log
+    [ ("ts", `Float t0); ("kind", `String "daemon_op");
+      ("op", `String (match sop with Some o -> o | None -> "?"));
+      ("agent",
+       `String
+         (match JU.member "agent" msg |> JU.to_string_option with
+         | Some a -> a
+         | None -> "anon"));
+      ("dur_ms", `Float ((Unix.gettimeofday () -. t0) *. 1000.));
+      ("args", msg);
+      ("ok", (match resp with `Assoc kv -> List.assoc "ok" kv | _ -> `Bool false));
+      ("result",
+       `String
+         (match resp with
+         | `Assoc kv -> (
+             match List.assoc_opt "text" kv with Some (`String s) -> s | _ -> J.to_string resp)
+         | _ -> ""));
+      ("open_goals", `Int (D.n_goals (trunk_state t)));
+      ("complete", `Bool t.complete) ];
+  resp
+
+and handle_inner (msg : J.t) : J.t =
   let t = init_trunk () in
   let s k = JU.member k msg |> JU.to_string_option in
   let agent = match s "agent" with Some a -> a | None -> "anon" in
