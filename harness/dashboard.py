@@ -33,6 +33,10 @@ VERDICTS = {
     "session_try": ("KEPT", "pass@1 easy +37 %, med/hard +15 %, cost flat"),
     "session_try_compact": ("REVERTED",
         "pass@1 −2.5 pp all buckets; tokens_in +11 % — policy re-fetches elided context"),
+    "session_try_search": ("REVERTED",
+        "pass@1 noise-level (−/−/+); high adoption, zero rescue effect"),
+    "session_try_hints": ("KEPT",
+        "medium +27 % pass@1 (3 strictly-new problems), easy/hard within variance"),
 }
 
 CSS = """
