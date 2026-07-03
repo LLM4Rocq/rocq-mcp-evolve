@@ -260,8 +260,15 @@ let finish_branch_if_closed t agent (b : branch) =
 
 let op_step t agent text =
   if t.complete then ok "proof already complete — reply DONE"
-  else if Str.string_match (Str.regexp ".*\\bRequire\\b") text 0 then
-    err "Require is not allowed; Lia/Lra/Psatz are already loaded."
+  else if
+    Str.string_match
+      (Str.regexp ".*\\b\\(Require\\|Abort\\|Admitted\\|admit\\|Axiom\\)\\b")
+      text 0
+  then
+    err
+      "That command is not allowed (Require/Abort/Admitted/admit/Axiom are \
+       all rejected by the external checker; Lia/Lra/Psatz are already \
+       loaded). Work within the proof."
   else
     match agent_state t agent with
     | `Trunk ->
