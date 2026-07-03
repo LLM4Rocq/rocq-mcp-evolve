@@ -141,3 +141,13 @@ wall budgets, same correctness gate on a submitted candidate (a minimal
 `submit` sidecar tool writes the artifact; the gate re-verifies from scratch,
 so submission is not trusted). Never run on the test split. Reported as a
 dev-set comparison.
+
+## A17 — Rung 9 from residual-failure mining (2026-07-03 evening)
+User challenge ("no additional tools would make a difference?") answered by
+mining the winner's 130 hard-bucket failures: 123 had already exhausted the
+auto_close portfolio; residual goals are 41 % nonlinear inequalities; agents'
+last-ditch pattern is assert(154)+nra(94) — hunting the auxiliary square/
+product fact that lets nra close. Rung 9 = server-side HINT-TERM SYNTHESIS
+(auto_close2): harvest R-variables, mechanically assert pow2_ge_0/product
+facts, run nra/psatz on the enriched context; bounded trials, zero model
+turns. Dev-evidence only (test spent); measured on dev60 + hard bucket.
