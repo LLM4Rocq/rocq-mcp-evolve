@@ -200,6 +200,32 @@ explicitly keyed to claude-haiku-4-5; (b) deployment frontier: cheap policy +
 incremental interface dominates on $/solve for easy-medium volume; strong
 policy + whole-file dominates on hard-problem coverage.
 
+## 5c. Intra-proof parallelism (A12): solo vs team at equal wall-clock
+
+hard70 (all 70 hard dev problems) × 2 reps, 300 s total budget per attempt,
+same policy. Team = coordinator → ≤3 parallel workers → finisher on a shared
+live proof (branch-per-subgoal, merge-by-replay, composed candidate gated).
+
+| | pass@1 | pass@2 | cost/attempt | mechanism |
+|---|---|---|---|---|
+| solo (winner cfg) | .400 | 28/70 | $0.064 | one continuous session |
+| team k=3 | .321 | 24/70 (⊂ solo's) | $0.098 | 3-phase relay |
+
+**Negative result, kept in the record.** Two causes, cleanly separated by the
+logs: (1) *these problems lack parallel structure* — 114/140 coordinator
+phases ended with a single open goal, so most "teams" degenerated to a
+1-worker relay paying 3× context-priming overhead under a fragmented budget
+(90/150/60 s vs solo's continuous 300 s); (2) *zero complementarity* — the
+team solved no problem solo couldn't. The machinery itself performed
+(workers closed 11/12 subgoals they were handed; merges never failed; the
+composed candidates pass the gate), so the infrastructure is validated while
+the strategy is rejected for this problem class: decomposition pays only
+where proofs have genuine independent-subgoal structure (e.g. conjunctive
+specs, case splits — rare in competition one-liners). The shared-proof
+daemon remains a deliverable: it is the substrate that makes such workflows
+measurable at all, and the winner's near-linear N=8 sweep shows where the
+parallel win actually lives on this dataset — across problems, not within.
+
 ## 6. Ablations
 _(one row per kept/reverted change, with the deciding numbers)_
 

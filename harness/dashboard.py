@@ -41,6 +41,8 @@ VERDICTS = {
         "pass@1 up ALL buckets (easy +8 %, med +16 %, hard +13 %); portfolio closes 71 % of calls"),
     "session_try_hints_auto_sugg": ("KEPT",
         "easy +8 %, medium +9 %, hard flat; easy tokens_in −22 % — FINAL SOLO WINNER"),
+    "team_k3": ("REVERTED",
+        "hard70: .32 vs solo .40 at equal wall; 114/140 problems don't decompose — relay overhead, zero complementarity"),
 }
 
 CSS = """
