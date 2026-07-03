@@ -339,6 +339,44 @@ context-on-demand by default; full-context as a fallback mode. (Absolute
 short-bucket rates likely benefit from policy memorization of stdlib — noted
 per A20; the config A/B is unaffected.)
 
+### A24: the policy-neutral `universal` configuration — **RECOMMENDED CONFIG**
+
+One server (style-agnostic surface: whole-proof `check` with repair-from-
+failure + incremental step/try/auto_close+synthesis + hints/did-you-mean +
+env-v2), one NEUTRAL prompt (both workflows offered, no give-up), rung-10
+atlas fixes included. Measured at both policies (1 rep, dev60):
+
+| policy | universal | that policy's previous best | naive |
+|---|---|---|---|
+| claude-haiku-4-5 | .650/.600/.500 | .650/.575/.475 (winner_auto2) | .438/.250/.300 |
+| claude-sonnet-5 | **.950/1.000/.800** | 1.00/.85/.85 (sonnet_native_auto2) | .925/.950/.800 |
+
+**universal equals or beats the naive interface in EVERY bucket at BOTH
+policies** — at Sonnet it is the first session-substrate config to do so
+(medium 1.00 vs .95; wall −40 %), and at Haiku it is the best measured
+config overall. The medium gap that motivated "policy-dependent interfaces"
+(§5b) was, per the failure atlas, largely the missing Qed handshake — with
+rung 10 fixed, ONE policy-neutral configuration dominates. By the
+pre-registered A24 worst-case criterion, `universal` is the recommended
+configuration. (1-rep caveat on both cells; the frozen/held-out protocol
+config remains the A15-selected one, unchanged.)
+
+### Decomposable-team completion (merge-fixed daemon, 27 problems × 2 reps)
+
+solo (winner_auto2): .667/.750/.591 (e/m/h) · team k=3: .333/.250/.182 —
+teams lose ~2× even where 2-way parallel structure EXISTS and merges are
+correct. Combined with §5c: the 3-agent relay pattern is decisively rejected
+at this scale; the shared-proof daemon stands as validated infrastructure
+awaiting problems with deeper structure (and stronger coordinators).
+
+### ssreflect regime probe (mathcomp checkout, lean-context, 1 rep)
+
+short .500 (10/20) · medium .071 (1/14) · long 0/1 — out-of-dialect proving
+degrades gracefully on short lemmas (portfolio closers still fire) and
+collapses where ssreflect idioms dominate; hint tables are stdlib-shaped
+(honest limit; the per-project knowledge-distillation path in DESIGN §evolution
+is the remedy).
+
 ## 6. Ablation summary (every measured change, in order)
 
 | # | change | deciding numbers (per bucket where relevant) | verdict |

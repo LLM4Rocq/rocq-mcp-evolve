@@ -60,6 +60,10 @@ VERDICTS = {
         "SOTA @ haiku: .45/.225/.225 = baseline-level despite heavy interactive-tool use — turn-compression is the differentiator (REPORT)"),
     "sonnet_native_auto2": ("annex",
         "synthesis @ sonnet (1 rep): 1.00/.85/.85 — hard BEATS naive (.85 vs .80); synthesis transfers across policies"),
+    "universal": ("KEPT",
+        "A24 RECOMMENDED: equals/beats naive in every bucket at BOTH policies (haiku .65/.60/.50; sonnet .95/1.0/.80)"),
+    "universal_sonnet": ("annex",
+        "universal @ sonnet-5: .95/1.00/.80 — first substrate config to dominate naive everywhere; medium gap was the Qed handshake"),
     "team_k3": ("REVERTED",
         "hard70: .32 vs solo .40 at equal wall; 114/140 problems don't decompose — relay overhead, zero complementarity"),
 }
