@@ -141,20 +141,47 @@ LADDER_ORDER = [
     "session_try_search", "session_try_hints", "session_try_hints_auto",
     "session_try_hints_auto_sugg", "unified",
 ]
+SONNET_ORDER = ["baseline_sonnet", "session_try_hints_auto_sonnet", "unified_sonnet"]
 
 
-def ladder_runs(runs):
-    """Ladder = dev60 evals, one per config, in EXPERIMENTAL order (resumed
-    runs refresh their started-timestamp, so time order lies about the ladder)."""
+def ladder_runs(runs, family="haiku"):
+    """dev60 evals of one policy family, one per config, in EXPERIMENTAL order
+    (resumed runs refresh their started-timestamp, so time order lies)."""
+    order = SONNET_ORDER if family == "sonnet" else LADDER_ORDER
     seen = {}
     for rid, meta, rows in runs:
-        if rid.endswith(LADDER_SUFFIX) and rows and "_sonnet" not in rid:
+        is_sonnet = "_sonnet" in rid
+        if rid.endswith(LADDER_SUFFIX) and rows and is_sonnet == (family == "sonnet"):
             seen[rid] = (rid, meta, rows)
     def key(item):
         cfg = item[2][0].get("config_id", item[0]) if item[2] else item[0]
-        return (LADDER_ORDER.index(cfg) if cfg in LADDER_ORDER else 99,
-                item[1].get("started", ""))
+        return (order.index(cfg) if cfg in order else 99, item[1].get("started", ""))
     return sorted(seen.values(), key=key)
+
+
+def per_solve_stats(stats_by_cfg):
+    """mean-per-attempt / pass@1 = expected spend per solved proof."""
+    out = {}
+    for cfg, st in stats_by_cfg.items():
+        d = {}
+        for b, x in st.items():
+            p1 = x.get("pass@1") or 0
+            if p1 > 0:
+                ti = (x.get("tokens_in_mean") or 0) + (x.get("tokens_out_mean") or 0)
+                d[b] = {"tokens_per_solve": ti / p1,
+                        "cost_per_solve": (x.get("cost_usd_mean") or 0) / p1,
+                        "wall_per_solve": (x.get("wall_s_mean") or 0) / p1}
+            else:
+                d[b] = {}
+        out[cfg] = d
+    return out
+
+
+PER_SOLVE_MINIS = [
+    ("total tokens / solve", "tokens_per_solve", lambda v: f"{v/1000:.0f}k"),
+    ("cost $ / solve", "cost_per_solve", lambda v: f"{v:.2f}"),
+    ("wall s / solve", "wall_per_solve", lambda v: f"{v:.0f}"),
+]
 
 
 def esc(s):
@@ -450,7 +477,7 @@ def build():
                 return f"{p:.2f} / ${c/p:.3f}" if c and p else "–"
             annex_rows.append(f"<tr><td>{esc(rows[0].get('config_id', rid))}</td>"
                               f"<td>{cps('easy')}</td><td>{cps('medium')}</td><td>{cps('hard')}</td></tr>")
-    annex_html = ""
+    annex_html = ""  # superseded by sonnet_section
     if annex_rows:
         annex_html = ("<h2>Cross-policy annex (claude-sonnet-5) — pass@1 / cost per SOLVE</h2>"
                       '<div class="card"><table><tr><th>config</th><th>easy</th><th>medium</th>'
@@ -504,29 +531,24 @@ def build():
         + "</td></tr>"
         for cfg, d in rej.items())
 
-    # per-SOLVE economics: mean-per-attempt / pass@1 = expected spend per
-    # solved proof, failed attempts included (undefined where pass@1 = 0)
-    stats_per_solve = {}
-    for cfg, st in stats_by_cfg.items():
-        d = {}
-        for b, x in st.items():
-            p1 = x.get("pass@1") or 0
-            if p1 > 0:
-                ti = (x.get("tokens_in_mean") or 0) + (x.get("tokens_out_mean") or 0)
-                d[b] = {
-                    "tokens_per_solve": ti / p1,
-                    "cost_per_solve": (x.get("cost_usd_mean") or 0) / p1,
-                    "wall_per_solve": (x.get("wall_s_mean") or 0) / p1,
-                }
-            else:
-                d[b] = {}
-        stats_per_solve[cfg] = d
-    minis = "".join(
-        mini_line(t, stats_per_solve, k, f) for t, k, f in [
-            ("total tokens / solve", "tokens_per_solve", lambda v: f"{v/1000:.0f}k"),
-            ("cost $ / solve", "cost_per_solve", lambda v: f"{v:.2f}"),
-            ("wall s / solve", "wall_per_solve", lambda v: f"{v:.0f}"),
-        ])
+    minis = "".join(mini_line(t, per_solve_stats(stats_by_cfg), k, f)
+                    for t, k, f in PER_SOLVE_MINIS)
+
+    # sonnet family: same forms, separate population
+    sonnet_stats = {}
+    for rid, meta, rows in ladder_runs(runs, family="sonnet"):
+        sonnet_stats[rows[0].get("config_id", rid)] = bucket_stats(rows)
+    sonnet_section = ""
+    if sonnet_stats:
+        sminis = "".join(mini_line(t, per_solve_stats(sonnet_stats), k, f)
+                         for t, k, f in PER_SOLVE_MINIS)
+        sonnet_section = (
+            "<h2>Cross-policy annex — claude-sonnet-5 (A10/A15; separate population, "
+            "never compared to the haiku bars)</h2>"
+            f'<div class="card">{legend_html()}{ladder_chart(sonnet_stats)}{sminis}'
+            "<details><summary>table view</summary>"
+            f'{stats_table(sonnet_stats, ["pass@1", "solved", "attempts", "cost_usd_mean", "wall_s_mean"])}'
+            "</details></div>")
 
     updated = time.strftime("%Y-%m-%d %H:%M:%S")
     return f"""<!doctype html>
@@ -549,12 +571,12 @@ def build():
 <details><summary>table view</summary>
 {stats_table(stats_by_cfg, ["pass@1", "solved", "attempts"])}</details></div>
 
-<h2>Efficiency per SOLVED proof across ladder steps (metric ÷ pass@1; failed attempts included; x = ladder step)</h2>
+<h2>Efficiency per SOLVED proof — claude-haiku-4-5 (metric ÷ pass@1; failed attempts included; x = ladder step)</h2>
 <div class="card">{legend_html()}{minis}
 <details><summary>table view</summary>
 {stats_table(stats_by_cfg, ["tokens_out_mean", "cost_usd_mean", "wall_s_mean", "tool_calls_mean"])}</details></div>
 
-{annex_html}
+{sonnet_section}
 
 <h2>Scalability — fixed stratified batch vs N parallel agents</h2>
 {sweep_section()}
