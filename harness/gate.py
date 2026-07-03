@@ -114,11 +114,11 @@ ENV_INJECT = [
 ]
 
 
-def _run_rocq(vfile: Path, timeout_s: float) -> tuple[int, str, float]:
+def _run_rocq(vfile: Path, timeout_s: float, extra_args=()) -> tuple[int, str, float]:
     t0 = time.monotonic()
     try:
         p = subprocess.run(
-            ["rocq", "compile", *ENV_INJECT, vfile.name],
+            ["rocq", "compile", *ENV_INJECT, *extra_args, vfile.name],
             cwd=vfile.parent,
             env=prover_env(),
             capture_output=True,
@@ -149,7 +149,8 @@ def parse_assumptions(output: str):
     return axioms, unsafe
 
 
-def check(candidate: str, prefix: str, theorem_name: str, timeout_s: float = 120.0) -> dict:
+def check(candidate: str, prefix: str, theorem_name: str, timeout_s: float = 120.0,
+          extra_args=()) -> dict:
     res = {
         "solved": False,
         "reason": None,
@@ -169,7 +170,7 @@ def check(candidate: str, prefix: str, theorem_name: str, timeout_s: float = 120
     with tempfile.TemporaryDirectory(prefix="rocq_gate_") as td:
         vfile = Path(td) / "proof.v"
         vfile.write_text(candidate if candidate.endswith("\n") else candidate + "\n")
-        code, out, dur = _run_rocq(vfile, timeout_s)
+        code, out, dur = _run_rocq(vfile, timeout_s, extra_args)
         res["recompile_s"] = round(dur, 3)
         if code != 0:
             res["reason"] = "recompile_failed"
@@ -180,7 +181,7 @@ def check(candidate: str, prefix: str, theorem_name: str, timeout_s: float = 120
         pa.write_text(
             vfile.read_text() + f"\nPrint Assumptions {theorem_name}.\n"
         )
-        code2, out2, _ = _run_rocq(pa, timeout_s)
+        code2, out2, _ = _run_rocq(pa, timeout_s, extra_args)
         if code2 != 0:
             res["reason"] = "assumption_audit_failed"
             res["detail"] = out2[-2000:]

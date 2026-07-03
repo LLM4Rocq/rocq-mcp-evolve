@@ -43,10 +43,21 @@ let init () =
           extra_options = "";
         }
     in
+    (* real-project support (A23): load-path and other init args arrive
+       newline-separated in $ROCQ_INIT_ARGS (e.g. "-Q\n/path\nLogical"),
+       exactly as rocq's own CLI would take them *)
+    let extra_args =
+      match Sys.getenv_opt "ROCQ_INIT_ARGS" with
+      | Some s when String.trim s <> "" ->
+          String.split_on_char '\n' s
+          |> List.map String.trim
+          |> List.filter (fun x -> x <> "")
+      | _ -> []
+    in
     let opts, () =
       Coqinit.parse_arguments
         ~parse_extra:(fun _opts extra -> ((), extra))
-        ~initial_args:Coqargs.default []
+        ~initial_args:Coqargs.default extra_args
     in
     Coqinit.init_runtime ~usage opts;
     Coqinit.init_document opts;

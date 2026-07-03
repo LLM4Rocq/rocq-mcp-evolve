@@ -53,13 +53,21 @@ let check_tool : M.tool =
             let oc = open_out path in
             output_string oc content;
             close_out oc;
-            let argv =
-              if Sys.getenv_opt "ROCQ_ENV_V2" = Some "1" then
-                [| "rocq"; "compile"; "-ri"; "Stdlib.micromega.Lia";
-                   "-ri"; "Stdlib.micromega.Lra"; "-ri"; "Stdlib.micromega.Psatz";
-                   "proof.v" |]
-              else [| "rocq"; "compile"; "proof.v" |]
+            let extra =
+              match Sys.getenv_opt "ROCQ_COMPILE_ARGS" with
+              | Some s when String.trim s <> "" ->
+                  String.split_on_char '\n' s
+                  |> List.map String.trim
+                  |> List.filter (fun x -> x <> "")
+              | _ -> []
             in
+            let base =
+              if Sys.getenv_opt "ROCQ_ENV_V2" = Some "1" then
+                [ "rocq"; "compile"; "-ri"; "Stdlib.micromega.Lia";
+                  "-ri"; "Stdlib.micromega.Lra"; "-ri"; "Stdlib.micromega.Psatz" ]
+              else [ "rocq"; "compile" ]
+            in
+            let argv = Array.of_list (base @ extra @ [ "proof.v" ]) in
             let r =
               Proc.run ~timeout_s:(Lazy.force compile_timeout) ~cwd:dir argv
             in

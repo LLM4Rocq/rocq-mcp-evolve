@@ -155,6 +155,10 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
         "ROCQ_LOG_META": json.dumps(meta),
         "ROCQ_TASK_FILE": str(adir / "task_prefix.v"),
     }
+    rocq_args = rec.get("rocq_args") or []
+    if rocq_args:
+        server_env["ROCQ_INIT_ARGS"] = "\n".join(rocq_args)
+        server_env["ROCQ_COMPILE_ARGS"] = "\n".join(rocq_args)
     server_env.update(cfg["server"].get("env", {}))
     server_cmd = cfg["server"]["command"].replace("{repo}", str(common.REPO))
     mcp_cfg = {
@@ -257,7 +261,8 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
 
     candidate_path = work / "candidate.v"
     if candidate_path.exists():
-        gate_res = gate.check(candidate_path.read_text(), prefix, thm)
+        gate_res = gate.check(candidate_path.read_text(), prefix, thm,
+                              extra_args=tuple(rocq_args))
     else:
         gate_res = {"solved": False, "reason": "no_candidate", "axioms": None,
                     "recompile_s": None, "detail": None}

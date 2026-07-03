@@ -69,3 +69,21 @@ anti-gaming checker (locked statement prefix, forbidden tokens, fresh-dir
 recompile, `Print Assumptions` audit); all interactions logged as JSONL;
 every number in the report reproducible by one command from raw logs; freeze,
 then a single logged evaluation on the held-out split.
+
+## Using the tools on your own project (dune or _CoqProject)
+
+```sh
+# 1. discover load-path args (build first for dune projects)
+python3 harness/project_args.py /path/to/project --build
+
+# 2. run the session server against a file in your project
+ROCQ_INIT_ARGS="$(python3 harness/project_args.py /path/to/project)" \
+ROCQ_TASK_FILE=/path/to/task_prefix.v ROCQ_ENV_V2=1 \
+  _build/default/src/session_server/rocq_agent_session.exe
+```
+
+Manifest records may carry `"rocq_args": ["-Q", "<dir>", "<Logical>", ...]`;
+the harness plumbs them into the session (`ROCQ_INIT_ARGS`), the naive
+baseline (`ROCQ_COMPILE_ARGS`), and the correctness gate automatically.
+Known real-world failure mode (surfaced cleanly): stale `.vo` built by a
+different Rocq version — rebuild the project under the experiment switch.
