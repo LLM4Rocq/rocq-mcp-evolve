@@ -45,6 +45,10 @@ VERDICTS = {
         "A10 cross-policy control @ sonnet-5: .925/.95/.80 — near ceiling through the NAIVE interface (3 turns/proof)"),
     "session_try_hints_auto_sonnet": ("annex",
         "A10 winner interface @ sonnet-5: solve −10…−12 pp med/hard BUT cost −12…−32 %, wall −28…−36 % — optimal interface is policy-dependent (REPORT §5b)"),
+    "unified": ("REVERTED",
+        "A15 draft-first @ haiku: .40/.18/.22 vs winner .70/.525/.425 — interaction style must match policy capability; frozen config stands (pre-registered rule)"),
+    "unified_sonnet": ("annex",
+        "A15 draft-first @ sonnet-5: measuring — completes the policy x interaction-style matrix"),
     "team_k3": ("REVERTED",
         "hard70: .32 vs solo .40 at equal wall; 114/140 problems don't decompose — relay overhead, zero complementarity"),
 }
