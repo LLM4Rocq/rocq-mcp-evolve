@@ -257,6 +257,63 @@ type try_outcome =
   | Full of D.exec_step list * bool (* steps, proof complete *)
   | Partial of int * string (* sentences ok, error text *)
 
+(* ---- rung 9 (A17): hint-term synthesis inside auto_close --------------
+   Residual hard failures hunt the auxiliary fact that lets nra close
+   (assert x154 + nra x94 in last-ditch calls). Mechanically: harvest the
+   R-typed variables of the first goal from its hypothesis strings, generate
+   square-nonnegativity facts for variables, pairwise differences and sums,
+   assert them, and re-run the arithmetic closers on the enriched context.
+   Gated by ROCQ_AUTO2=1. *)
+
+let auto2_on =
+  lazy (match Sys.getenv_opt "ROCQ_AUTO2" with Some "1" -> true | _ -> false)
+
+let r_vars_of_state st =
+  match D.first_goal_view st with
+  | None -> []
+  | Some (hyps, _, _) ->
+      List.filter_map
+        (fun h ->
+          (* "x : R" or "x, y : R" *)
+          match String.index_opt h ':' with
+          | Some i when String.trim (String.sub h (i + 1) (String.length h - i - 1)) = "R" ->
+              Some
+                (String.split_on_char ',' (String.sub h 0 i)
+                |> List.map String.trim
+                |> List.filter (fun v -> v <> ""))
+          | _ -> None)
+        hyps
+      |> List.concat
+      |> fun l -> List.filteri (fun i _ -> i < 4) l (* bound the blow-up *)
+
+let synth_candidates vars =
+  let sq t = Printf.sprintf "assert (0 <= (%s)^2) by (apply pow2_ge_0)." t in
+  let singles = List.map (fun v -> sq v) vars in
+  let rec pairs = function
+    | [] -> []
+    | x :: rest ->
+        List.concat_map
+          (fun y -> [ sq (x ^ " - " ^ y); sq (x ^ " + " ^ y) ])
+          rest
+        @ pairs rest
+  in
+  let asserts = singles @ pairs vars in
+  if asserts = [] then []
+  else
+    (* strongest first: all facts at once, then each pair-fact alone *)
+    (String.concat " " asserts :: List.map (fun a -> a) (pairs vars))
+    |> List.filteri (fun i _ -> i < 8)
+
+let auto2_scripts st =
+  if not (Lazy.force auto2_on) then []
+  else
+    let vars = r_vars_of_state st in
+    List.concat_map
+      (fun prefix ->
+        [ prefix ^ " nra."; prefix ^ " psatz R 3." ])
+      (synth_candidates vars)
+    |> List.filteri (fun i _ -> i < 12)
+
 (* ---- rung 8: did-you-mean suggestions on unknown references ----------- *)
 
 let suggest_on =
@@ -740,18 +797,24 @@ let auto_close_tool : M.tool =
           let t0 = Unix.gettimeofday () in
           let tried = ref [] in
           let winner = ref None in
+          let cands = portfolio @ auto2_scripts st in
           List.iter
             (fun cand ->
               if !winner = None then begin
+                (* synthesized hint scripts get a longer budget: nra over an
+                   enriched context is slower than a bare closer *)
+                let tmo =
+                  if String.length cand > 40 then 5.0
+                  else Lazy.force auto_timeout
+                in
                 let steps, stop =
-                  D.exec_text ~timeout_s:(Lazy.force auto_timeout)
-                    ~qed_timeout_s:(Lazy.force auto_timeout) st cand
+                  D.exec_text ~timeout_s:tmo ~qed_timeout_s:tmo st cand
                 in
                 match stop with
                 | D.Done when steps <> [] -> winner := Some (cand, steps)
                 | _ -> tried := cand :: !tried
               end)
-            portfolio;
+            cands;
           let prover_ms = (Unix.gettimeofday () -. t0) *. 1000. in
           let body =
             match !winner with
