@@ -225,3 +225,15 @@ uses existing data. (2) Engineering shifts to Fable-powered infra: dune +
 _CoqProject load-path support end-to-end (session init via ROCQ_INIT_ARGS,
 gate extra args, manifest plumbing, project-args helper), validated on a real
 dune project with a micro-eval.
+
+## A24 — Policy-neutral MCP requirement (user steer, Jul 3 ~22:20)
+The deliverable must NOT be Haiku-specialized. Finding to date: all
+server-side capabilities are policy-neutral; the Haiku flavor lived in
+prompts (style forcing, give-up) and in the Haiku-only selection criterion.
+Response: (1) style-agnostic surface — whole-proof `check` added INSIDE the
+session server (one-shot submission with repair-from-failure semantics), so
+both interaction styles are first-class in ONE server; (2) neutral prompt
+(both workflows presented, no give-up); (3) recommended-config criterion =
+best worst-case across measured policies (extends A15's pre-registration).
+Validation: `universal` (haiku) + `universal_sonnet`, 1 rep each, queued
+after the trimmed queue.

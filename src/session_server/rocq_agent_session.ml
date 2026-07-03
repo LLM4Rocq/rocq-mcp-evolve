@@ -887,6 +887,93 @@ let auto_close_tool : M.tool =
                 ("complete", `Bool s.complete) ]);
   }
 
+
+(* ---- style-agnostic whole-proof check (A24) ---------------------------
+   One-shot policies prefer submitting a complete proof; incremental
+   policies prefer stepping. This tool serves the former INSIDE the session:
+   the script runs from the base state (fresh attempt semantics); success
+   completes the proof; failure leaves the session at the last good sentence
+   of THIS attempt so the repair tools apply. Policy-neutral by design. *)
+
+let check_tool : M.tool =
+  {
+    name = "check";
+    description =
+      "Check a COMPLETE proof attempt in one call: pass the entire proof \
+       script (from `Proof.` through `Qed.`; do NOT repeat the file/statement \
+       — the session already contains them). On success the proof is done. \
+       On failure, everything up to the first bad sentence stays committed \
+       and you see the error plus the live goal there, so you can repair \
+       with step/try/auto_close or resubmit a fixed script after rollback.";
+    input_schema =
+      `Assoc
+        [ ("type", `String "object");
+          ("properties",
+           `Assoc
+             [ ("script",
+                `Assoc
+                  [ ("type", `String "string");
+                    ("description", `String "Complete proof script (Proof. ... Qed.)") ]) ]);
+          ("required", `List [ `String "script" ]) ];
+    handler =
+      (fun args ->
+        let s = get_session () in
+        if s.complete then
+          M.text_result "The proof is already COMPLETE. Reply DONE."
+        else
+          match JU.member "script" args with
+          | `String text when reject_require text ->
+              M.text_result ~is_error:true require_reject_msg
+          | `String text ->
+              (* fresh-attempt semantics: discard prior partial work *)
+              s.committed <- [];
+              let st = s.base in
+              let t0 = Unix.gettimeofday () in
+              let steps, stop =
+                D.exec_text ~timeout_s:(Lazy.force step_timeout)
+                  ~qed_timeout_s:(Lazy.force qed_timeout) st text
+              in
+              let prover_ms = (Unix.gettimeofday () -. t0) *. 1000. in
+              List.iter
+                (fun (x : D.exec_step) ->
+                  if not x.D.is_query then
+                    s.committed <- (x.D.text, x.D.post) :: s.committed)
+                steps;
+              let now = cur_state s in
+              let n_ok = List.length steps in
+              let body =
+                match stop with
+                | D.Done when (not (D.proof_open now)) && n_ok > 0 ->
+                    s.complete <- true;
+                    write_candidate s;
+                    "PROOF COMPLETE — the file is saved. Reply DONE."
+                | D.Done ->
+                    Printf.sprintf
+                      "script accepted but the proof is not closed (%d \
+                       sentence(s) committed).\n%s" n_ok (goals_block now)
+                | D.Error_at { text = etext; msg; _ } ->
+                    with_suggestions now
+                      (with_hint ~sentence:etext ~msg
+                         (Printf.sprintf
+                            "%d sentence(s) committed, then ERROR at `%s`:\n%s\n\nyou are now AT that point in the proof — repair from here (step/try/auto_close) or rollback and resubmit:\n%s"
+                            n_ok (String.trim etext) msg (goals_block now)))
+                | D.Timeout_at { text = etext; timeout_s } ->
+                    Printf.sprintf
+                      "%d sentence(s) committed, then TIMEOUT (>%gs) at `%s`.\n%s"
+                      n_ok timeout_s (String.trim etext) (goals_block now)
+                | D.Parse_error { msg; _ } ->
+                    with_hint ~sentence:text ~msg
+                      (Printf.sprintf "%d sentence(s) committed, then SYNTAX ERROR:\n%s"
+                         n_ok msg)
+              in
+              M.text_result body
+                ~log:
+                  [ ("prover_ms", `Float prover_ms);
+                    ("sentences_ok", `Int n_ok);
+                    ("complete", `Bool s.complete) ]
+          | _ -> M.text_result ~is_error:true "missing required argument: script");
+  }
+
 let state_tool : M.tool =
   {
     name = "state";
@@ -917,6 +1004,7 @@ let () =
     | _ -> [ "step"; "rollback"; "state" ]
   in
   let all =
-    [ step_tool; rollback_tool; state_tool; try_tool; search_tool; auto_close_tool ]
+    [ step_tool; rollback_tool; state_tool; try_tool; search_tool;
+      auto_close_tool; check_tool ]
   in
   M.run (List.filter (fun (t : M.tool) -> List.mem t.name enabled) all)
