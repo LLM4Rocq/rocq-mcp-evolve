@@ -151,3 +151,12 @@ product fact that lets nra close. Rung 9 = server-side HINT-TERM SYNTHESIS
 (auto_close2): harvest R-variables, mechanically assert pow2_ge_0/product
 facts, run nra/psatz on the enriched context; bounded trials, zero model
 turns. Dev-evidence only (test spent); measured on dev60 + hard bucket.
+
+## A18 — Budget extension (user, 2026-07-03 ~17:15)
+Hard stop moved from 2026-07-06 EOD to 2026-07-07 EOD. Revised calendar:
+Jul 3 eve–Jul 5: continued iteration (rung 9 hint-synthesis; rocq-mcp SOTA
+comparison; sonnet-native follow-ups if won; team re-test on a mechanically
+detected DECOMPOSABLE-problem manifest — addressing the honest gap in the
+team negative result; pass@k scaling on hard at N=8). Jul 6: consolidation +
+full report. Jul 7: buffer + clean end. Held-out protocol unchanged (already
+executed; one shot, spent on the frozen config).
