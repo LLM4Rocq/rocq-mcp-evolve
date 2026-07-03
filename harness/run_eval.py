@@ -162,6 +162,14 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
             }
         }
     }
+    # additional MCP servers (e.g. the submit sidecar for external-tool
+    # configs, A16); {repo} and the standard ROCQ_* env are provided
+    for name, srv in cfg.get("extra_servers", {}).items():
+        mcp_cfg["mcpServers"][name] = {
+            "command": srv["command"].replace("{repo}", str(common.REPO)),
+            "args": srv.get("args", []),
+            "env": {**server_env, **srv.get("env", {})},
+        }
     (adir / "mcp.json").write_text(json.dumps(mcp_cfg, indent=1))
     task_prompt = cfg["task_prompt_template"].format(prefix=prefix)
     (adir / "task_prefix.v").write_text(prefix)

@@ -129,3 +129,15 @@ vs all four existing controls (haiku/sonnet × naive/winner). Test split is
 already spent on the frozen config per the brief's freeze-then-test sequence;
 unified evidence is dev-only and framed as the recommended config going
 forward.
+
+## A16 — SOTA comparison against rocq-mcp (user-requested, 2026-07-03 ~16:45)
+First contact with github.com/LLM4Rocq/rocq-mcp (local checkout inspected)
+happened ONLY NOW, after the ladder closed, the config froze, and the held-out
+run completed — the commit history (through the freeze at configs/FROZEN.md)
+proves design independence per the brief's "do not copy existing Rocq/Lean MCP
+servers". Comparison protocol: rocq-mcp runs as an external config through the
+SAME harness — same policy (claude-haiku-4-5), same dev manifests, same turn/
+wall budgets, same correctness gate on a submitted candidate (a minimal
+`submit` sidecar tool writes the artifact; the gate re-verifies from scratch,
+so submission is not trusted). Never run on the test split. Reported as a
+dev-set comparison.
