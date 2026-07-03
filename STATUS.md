@@ -1,5 +1,11 @@
 # STATUS — AI-native Rocq tooling experiment
 
+## ★ HELD-OUT RESULT (2026-07-03, single logged run of the frozen config)
+miniF2F **test**: pass@1 **.519 / .127 / .043** (easy/medium/hard), pass@2
+.569/.165/.057; efficiency within ~15 % of dev. Easy & hard transfer from dev;
+medium drops (.30→.13, real split-level gap — honest analysis in REPORT §7).
+Unlock logged 13:57:42; 488/488 attempts clean; zero test influence on design.
+
 _Last updated: 2026-07-02 11:15_
 
 ## TL;DR

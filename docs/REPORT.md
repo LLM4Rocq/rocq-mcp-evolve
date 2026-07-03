@@ -283,8 +283,40 @@ existing turns (try, hints, auto_close, did-you-mean, preloading) won;
 everything that asked the policy to spend turns or lose context to get
 information (search tool, compact rendering, team relay) lost.
 
-## 7. Held-out (miniF2F test, single run of frozen winner)
-LOCKED until freeze. Unlock event will be logged in logs/unlock.log.
+## 7. Held-out result (miniF2F test — single run of the frozen config)
+
+Unlock: 2026-07-03 13:57:42 (logs/unlock.log; first and only read of test
+data). Run `FINAL_minif2f_test`: 244 problems × 2 reps, frozen config
+(`configs/frozen.json`), policy claude-haiku-4-5, protocol per FROZEN.md.
+488/488 attempts clean (no sleep contamination, no harness errors).
+
+| | easy (mathd, 130) | medium (amc/…, 79) | hard (aime/imo, 35) |
+|---|---|---|---|
+| **pass@1** | **.519** | **.127** | **.043** |
+| **pass@2** | **.569** | **.165** | **.057** |
+| rep_rate_std | .005 | .018 | .020 |
+| cost $/attempt · $/solve | .052 · .100 | .072 · .567 | .093 · 2.17 |
+| wall s/attempt (solved) | 52.8 (18.2) | 97.2 (43.9) | 74.0 (31.7) |
+| tokens out/attempt | 2 353 | 3 440 | 4 734 |
+
+Generalization vs the dev miniF2F-valid reference (.57/.30/.06 with env-v2):
+- **easy transfers** (.52 vs .57) and **hard is consistent** (.04 vs .06 —
+  the policy's ceiling, as diagnosed on dev);
+- **medium drops** (.13 vs .30). Within-split variance is tiny (std .018), so
+  this is a real split-level difference, not noise. Two candidate causes,
+  both stated honestly: (a) the test split's medium tier is genuinely harder
+  in its Rocq form than valid's, and/or (b) indirect adaptation — several
+  kept changes (hints, env-v2) were motivated by valid-split failure modes,
+  so dev estimates for that bucket carry selection optimism. No test problem
+  influenced any decision (mechanical guard; single run; no reruns).
+- Efficiency transfers cleanly: cost, wall, tokens, and ms-scale prover calls
+  on test are within ~15 % of dev values — the interface's efficiency claims
+  are policy- and split-robust even where absolute solve rates are not.
+
+Baseline comparison on the held-out split is deliberately absent: the brief
+allots test to the frozen config only. The baseline-vs-winner delta is
+established on dev (4 reps, §3) and cross-checked on dev-disjoint sets
+(§dev150, §minif2f_valid).
 
 ## 8. Threats to validity
 - Policy nondeterminism (no seed control in CLI) → ≥2 reps, variance reported.
