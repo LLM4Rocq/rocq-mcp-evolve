@@ -44,8 +44,22 @@ measurement and the v2 rerun is queued as its A/B.
 Solo ladder complete: baseline → session → try → hints → auto_close →
 did-you-mean (+ env-v2), with compact & search as reverted ablations.
 Baseline→winner on dev60: pass@1 .45/.25/.25 → .70/.60/.425.
-Remaining: winner sweep (running) → Sonnet annex (queued) → team experiment
-(hard70, tomorrow) → freeze day 5 → held-out → report.
+
+## Night 2→3 results
+- **Winner sweep**: near-linear to N=8 (80 % efficiency, wall flat) vs baseline
+  saturation at N=2 — interface efficiency compounds under parallelism (19×
+  solved-proofs/hour at N=8). REPORT §5.
+- **Sonnet annex (A10)**: the optimal interface is POLICY-DEPENDENT. Sonnet
+  one-shots via the naive interface (+10-12 pp solve rate vs winner interface)
+  while the winner interface cuts its cost 12-32 % and wall 28-36 %. Haiku:
+  winner interface = +25-35 pp capability. REPORT §5b.
+- **Team stack built & smoke-verified** (A12/A13): shared-proof daemon (JSONL-
+  instrumented) + MCP shim + 3-phase orchestrator (coordinator → parallel
+  workers → finisher) under one equal-wall budget; composed candidates pass
+  the standard gate. RUNNING overnight: solo_hard70 → team_k3_hard70 (same 70
+  hard problems, 2 reps, 300 s budget each condition).
+Remaining: solo-vs-team A/B analysis → day-4 plots + report drafting →
+freeze day 5 → single held-out run → final deliverables.
 
 Scalability (baseline, N∈{1,2,4,8}): endpoint-bound — N=1→2 near-linear, then
 throughput flat, wall ×3.2, CPU <8 %, solves lost to timeout-by-queueing.
