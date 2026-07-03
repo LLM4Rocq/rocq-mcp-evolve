@@ -24,7 +24,13 @@ Every number here is reproducible from raw logs:
 | (+search) | + budgeted `search` tool over the loaded libraries |
 
 ## 3. Efficiency results (dev60, 2 reps, per bucket)
-_(tables inserted from report.py output as runs complete)_
+
+![ladder pass@1](figures/ladder_pass1.svg)
+![tokens](figures/efficiency_tokens_out.svg) ![cost](figures/efficiency_cost.svg) ![wall](figures/efficiency_wall.svg)
+
+Scalability figures: ![throughput](figures/sweep_throughput.svg)
+![wall vs N](figures/sweep_wall.svg) ![rss](figures/sweep_rss.svg)
+(regenerate: `python3 harness/plots.py`; live view: `logs/dashboard.html`)
 
 ### baseline (control) — run `baseline_dev60` (dev60 × 2 reps, parallel=4)
 
