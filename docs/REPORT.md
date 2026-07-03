@@ -232,8 +232,26 @@ daemon remains a deliverable: it is the substrate that makes such workflows
 measurable at all, and the winner's near-linear N=8 sweep shows where the
 parallel win actually lives on this dataset — across problems, not within.
 
-## 6. Ablations
-_(one row per kept/reverted change, with the deciding numbers)_
+## 6. Ablation summary (every measured change, in order)
+
+| # | change | deciding numbers (per bucket where relevant) | verdict |
+|---|---|---|---|
+| 0 | baseline (naive whole-file check) | pass@1 .45/.25/.25 | control |
+| 1 | session (persistent in-process, sentence steps, rollback) | +30 % med/hard pass@1; tokens_out −76…−83 %; prover call 266 ms → ~1 ms | KEPT |
+| 2 | + try (k candidates / call, first success commits) | easy +37 %, med/hard +15 %; cost flat; tokens_in +12…25 % | KEPT |
+| 3 | + compact rendering (hyp deltas) | pass@1 −2.5 pp ALL buckets; tokens_in +11 % (policy re-fetches context) | REVERTED |
+| 4 | + search tool (pull-based) | pass@1 noise (−/−/+); 324 calls, 15 % solve when used vs 81 % without (no rescue) | REVERTED |
+| 5 | + hints (Lean-ism → Rocq rewrites in errors) | medium +27 % (3 strictly-new, 0 lost); others flat | KEPT |
+| 6 | + auto_close (server-side finisher portfolio) | pass@1 +8/+16/+13 % (all buckets); 71 % of calls close a goal | KEPT |
+| 7 | + did-you-mean (near-miss names in errors, push-based) | easy +8 %, medium +9 %, hard flat; easy tokens_in −22 % | KEPT |
+| 8 | environment v2 (preload Lia/Lra/Psatz, refuse Require) | miniF2F: easy .32→.57, med .13→.30, hard .00→.06; Require traps 16→0 | KEPT |
+| 9 | team k=3 (coordinator/workers/finisher, shared proof) | hard70 equal-wall: .32 vs solo .40; zero team-only solves; 114/140 don't decompose | REVERTED |
+
+Design lesson across all ten: **maximize prover-grounded information per model
+turn, at zero marginal turn cost**. Everything that pushed information into
+existing turns (try, hints, auto_close, did-you-mean, preloading) won;
+everything that asked the policy to spend turns or lose context to get
+information (search tool, compact rendering, team relay) lost.
 
 ## 7. Held-out (miniF2F test, single run of frozen winner)
 LOCKED until freeze. Unlock event will be logged in logs/unlock.log.
