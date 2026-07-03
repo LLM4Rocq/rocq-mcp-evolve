@@ -136,7 +136,7 @@ def ladder_runs(runs):
     """Ladder = completed-or-running dev60 evals, one per config, in time order."""
     seen = {}
     for rid, meta, rows in runs:
-        if rid.endswith(LADDER_SUFFIX) and rows:
+        if rid.endswith(LADDER_SUFFIX) and rows and "_sonnet" not in rid:
             seen[rid] = (rid, meta, rows)
     return list(seen.values())
 
@@ -423,6 +423,28 @@ def build():
                    "<th>what changed</th><th>verdict</th></tr>"
                    + "".join(ladder_desc_rows) + "</table>")
 
+    # cross-policy annex (A10): separate population — never on the ladder axis
+    annex_rows = []
+    for rid, meta, rows in runs:
+        if "_sonnet" in rid and rows:
+            st = bucket_stats(rows)
+            def cps(b):
+                x = st.get(b) or {}
+                c, p = x.get("cost_usd_mean"), x.get("pass@1")
+                return f"{p:.2f} / ${c/p:.3f}" if c and p else "–"
+            annex_rows.append(f"<tr><td>{esc(rows[0].get('config_id', rid))}</td>"
+                              f"<td>{cps('easy')}</td><td>{cps('medium')}</td><td>{cps('hard')}</td></tr>")
+    annex_html = ""
+    if annex_rows:
+        annex_html = ("<h2>Cross-policy annex (claude-sonnet-5) — pass@1 / cost per SOLVE</h2>"
+                      '<div class="card"><table><tr><th>config</th><th>easy</th><th>medium</th>'
+                      "<th>hard</th></tr>" + "".join(annex_rows) +
+                      '</table><details><summary>why separate</summary>'
+                      '<span style="color:var(--ink-3)">Different policy = different population; '
+                      'bars would measure model strength, not interface quality. Haiku-winner is '
+                      'cheaper per solve in every bucket; Sonnet buys coverage (REPORT §5b).</span>'
+                      "</details></div>")
+
     # runs table
     now = time.time()
     run_rows = []
@@ -489,7 +511,7 @@ def build():
 <h2>Ladder steps — what each config changes</h2>
 <div class="card">{ladder_desc}</div>
 
-<h2>Ladder — pass@1 by difficulty bucket (dev60, 2 reps)</h2>
+<h2>Ladder — pass@1 by difficulty bucket (dev60, FIXED policy claude-haiku-4-5)</h2>
 <div class="card">{legend_html()}{ladder_chart(stats_by_cfg)}
 <details><summary>table view</summary>
 {stats_table(stats_by_cfg, ["pass@1", "solved", "attempts"])}</details></div>
@@ -498,6 +520,8 @@ def build():
 <div class="card">{legend_html()}{minis}
 <details><summary>table view</summary>
 {stats_table(stats_by_cfg, ["tokens_out_mean", "cost_usd_mean", "wall_s_mean", "tool_calls_mean"])}</details></div>
+
+{annex_html}
 
 <h2>Scalability — fixed stratified batch vs N parallel agents</h2>
 {sweep_section()}
