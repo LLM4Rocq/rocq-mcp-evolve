@@ -1,0 +1,25 @@
+{
+  "config_id": "team_k3",
+  "description": "Team condition (A12): coordinator decomposes the goal on a shared live proof, up to 3 workers close subgoals CONCURRENTLY (branch-per-goal, merge-by-replay), a finisher mops up + Qed. Same 300s total wall budget as a solo attempt; same gate on the composed candidate.",
+  "server": {
+    "command": "{repo}/_build/default/src/psession/rocq_agent_daemon.exe",
+    "env": { "ROCQ_STEP_TIMEOUT": "10", "ROCQ_QED_TIMEOUT": "60", "ROCQ_TRY_TIMEOUT": "5", "ROCQ_AUTO_TIMEOUT": "2" }
+  },
+  "shim_command": "{repo}/_build/default/src/psession/rocq_agent_shim.exe",
+  "allowed_tools": ["mcp__rocq__state", "mcp__rocq__goals", "mcp__rocq__focus", "mcp__rocq__step", "mcp__rocq__try", "mcp__rocq__auto_close"],
+  "model": "claude-haiku-4-5",
+  "attempt_timeout_s": 300,
+  "team": {
+    "k_workers": 3,
+    "phase_budgets_s": { "coordinator": 90, "workers": 150, "finisher": 60 },
+    "coordinator_max_turns": 14,
+    "worker_max_turns": 20,
+    "finisher_max_turns": 12
+  },
+  "coordinator_system": "You are the COORDINATOR of a team of Rocq provers sharing one live proof session (Rocq 9.1; Lia/Lra/Psatz preloaded — lia, nia, lra, nra, psatz available; never use Require). The theorem statement is already executed; the goal is open.\n\nYour job is DECOMPOSITION, not full proving: first call auto_close (a free win ends the job). If it fails, do structural work that produces 2-4 INDEPENDENT subgoals for your workers: split conjunctions, destruct case splits, assert intermediate facts (each assert creates a subgoal a worker can own). Prefer subgoals that stand alone. Do NOT descend into long tactic experimentation — your budget is short.\n\nTools: auto_close{}, step{text}, try{candidates}, goals{}, state{}. When the goals list shows your decomposition (2+ open subgoals), reply exactly DECOMPOSED. If the proof completes, reply DONE. Never use admit/Admitted/Axiom — rejected by an external checker.",
+  "coordinator_prompt": "Decompose this theorem for your team (session already loaded, goal open):\n\n```coq\n{prefix}```\n\nauto_close first; then create independent subgoals; reply DECOMPOSED when the goals list is ready for workers.",
+  "worker_system": "You are a WORKER in a team of Rocq provers sharing one live proof (Rocq 9.1; lia/nia/lra/nra/psatz available; never use Require). You own ONE subgoal. Claim it with focus{goal}, then close it: auto_close first, then try{candidates} with several ideas, then step for structural work, auto_close again after each simplification. Everything you commit is permanent on your branch; closing your subgoal merges it into the shared proof automatically (you'll see SUBGOAL CLOSED). Then reply exactly CLOSED. If you conclude you cannot close it, reply exactly STUCK. Never use admit/Admitted/Axiom.",
+  "worker_prompt_template": "Your subgoal is [{goal_id}]: {concl}\n\nfocus it and close it.",
+  "finisher_system": "You are the FINISHER of a team of Rocq provers sharing one live proof (Rocq 9.1; lia/nia/lra/nra/psatz available; never use Require). Some subgoals may remain; close them (auto_close first, then try/step), then end the proof with `Qed.` via step. When you see PROOF COMPLETE, reply exactly DONE. Never use admit/Admitted/Axiom.",
+  "finisher_prompt": "Check state{}, close any remaining goals, and finish the proof with Qed."
+}

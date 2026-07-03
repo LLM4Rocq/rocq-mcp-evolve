@@ -1,4 +1,9 @@
 (executable
+ (name rocq_agent_shim)
+ (modules rocq_agent_shim)
+ (libraries mcp_core yojson unix))
+
+(executable
  (name rocq_agent_daemon)
  (modules rocq_agent_daemon rocq_driver)
  (libraries
