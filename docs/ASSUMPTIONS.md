@@ -117,3 +117,15 @@ compared pair must share N. (2) The held-out run is pulled forward: freeze
 committed (FROZEN.md); unlock+final chained behind the 4-rep variance top-up
 the same day. The one-shot discipline is sequence-based (frozen before
 unlock), not calendar-based. Final runs at parallel=4 per the frozen protocol.
+
+## A15 — Policy-robustness objective (user steer, 2026-07-03)
+The tool layer must serve multiple policies including the strongest, not be a
+Haiku-specialized artifact. Design response: the Sonnet regression traces to
+the prompted interaction STYLE, not the tools — `step` already accepts whole
+proof scripts with commit-good-prefix semantics (strictly more informative
+than a whole-file check at identical turn cost). New `unified` config =
+frozen toolset + draft-first/repair-from-failure prompting; measured on dev60
+vs all four existing controls (haiku/sonnet × naive/winner). Test split is
+already spent on the frozen config per the brief's freeze-then-test sequence;
+unified evidence is dev-only and framed as the recommended config going
+forward.
