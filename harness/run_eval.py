@@ -71,6 +71,10 @@ def kill_attempt_tree(p: subprocess.Popen, log):
 
 def build_task(rec):
     """(file prefix the agent must extend, theorem name)."""
+    if rec["source"] == "stdlib_project":
+        # in-project benchmark (A20): prefix = the real file above the lemma
+        content = Path(rec["path"]).read_text(errors="replace")
+        return content[: rec["prefix_chars"]] + "\n", rec["theorem_name"]
     if rec["source"] == "workbook":
         prefix = datasets.workbook_problem_to_vfile(
             {
@@ -171,7 +175,8 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
             "env": {**server_env, **srv.get("env", {})},
         }
     (adir / "mcp.json").write_text(json.dumps(mcp_cfg, indent=1))
-    task_prompt = cfg["task_prompt_template"].format(prefix=prefix)
+    task_prompt = cfg["task_prompt_template"].format(
+        prefix=prefix, statement=rec.get("statement", ""))
     (adir / "task_prefix.v").write_text(prefix)
     cmd = [
         CLAUDE_BIN,
