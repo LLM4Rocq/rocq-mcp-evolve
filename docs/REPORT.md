@@ -268,6 +268,39 @@ the pre-registered rule; for strong policies the recommended configuration is
 the same substrate with draft-first prompting when cost matters, or the naive
 interface when only coverage matters.
 
+### SOTA comparison (A16/A19) — run `rocq_mcp_dev60`
+
+rocq-mcp v0.3.1 (coq-lsp/pet-backed, 11 tools) under the identical protocol:
+pass@1 **.450 / .225 / .225** (easy/medium/hard) at $.072/attempt — i.e. **at
+naive-baseline level** (.438/.250/.300), 20-26 pp below our winner. This is
+BELOW our pre-registered prediction (A19 said "strictly between baseline and
+session_try"); the honest miss makes the mechanism more interesting:
+- **Not a non-adoption story**: 89/120 attempts used its interactive sessions
+  (rocq_check ×800, rocq_step_multi ×186) — the warm-session core was used
+  and still didn't convert to solves.
+- **Where the losses concentrate**: only 66/120 attempts ever submitted (the
+  final-artifact step is agent-driven, vs our automatic candidate contract);
+  23 submissions failed fresh recompile (submit-without-verify); 6 modified
+  the statement (caught by the gate); rocq_query ×295 shows the same
+  adoption-without-rescue signature as our reverted search tool (A19
+  prediction 2 confirmed).
+- Reading: an interactive substrate alone is not sufficient — the measured
+  value concentrates in TURN-COMPRESSION on top of it (auto-commit try,
+  machine-enumerated portfolio, zero-cost error enrichment), which rocq-mcp
+  lacks. Convergent-evolution note: its session/state-id/multi-tactic core
+  independently replicates our kept rungs 1-2.
+(Caveat: per-call `tool_calls` in our records under-counts for this config —
+only the sidecar logs; usage above is from transcripts.)
+
+### Rung 9a (A22 bugfix) — run `winner_autofix_dev60`
+
+pass@1 .650/.450/.450 (e/m/h) vs the buggy-binary winner .700/.525/.425
+(4-rep): deltas −.05/−.075/+.025 — within ~1-1.5 rep-σ, no significant
+change. The false-winner lie was evidently mitigated by the truthful goal
+render that followed it. The fix is kept on correctness grounds (a tool must
+not misreport), with metrics unchanged; the retracted "71 % close-rate"
+mechanism stat stands corrected (A22).
+
 ## 6. Ablation summary (every measured change, in order)
 
 | # | change | deciding numbers (per bucket where relevant) | verdict |

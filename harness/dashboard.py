@@ -51,9 +51,11 @@ VERDICTS = {
         "A15 draft-first @ sonnet-5: .92/.85/.75 — closes ~half the incremental gap, still below naive; matrix diagonal confirmed"),
     "sonnet_native": ("annex",
         "persistence prompting @ sonnet: easy .95 BEATS naive at 2x lower cost; med/hard gap to naive persists"),
-    "winner_autofix": ("annex", "rung 9a: false-winner bugfix (A22) — measuring"),
+    "winner_autofix": ("annex",
+        "rung 9a bugfix: metrics unchanged within noise; kept on correctness grounds"),
     "winner_auto2": ("annex", "rung 9b: hint-term synthesis — measuring"),
-    "rocq_mcp": ("annex", "A16 SOTA comparison (pre-registered predictions in A19) — measuring"),
+    "rocq_mcp": ("annex",
+        "SOTA @ haiku: .45/.225/.225 = baseline-level despite heavy interactive-tool use — turn-compression is the differentiator (REPORT)"),
     "team_k3": ("REVERTED",
         "hard70: .32 vs solo .40 at equal wall; 114/140 problems don't decompose — relay overhead, zero complementarity"),
 }
