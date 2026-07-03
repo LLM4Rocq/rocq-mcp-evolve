@@ -176,3 +176,18 @@ Convergences noted for the report: interactive state-id sessions, multi-
 tactic testing, goals-at-error — independent replication of 3 of our kept
 design pressures. Their workspace/multi-file tools target a regime our
 experiment does not measure (honest scope limit).
+
+## A20 — In-project proving benchmark (user steer, 2026-07-03 ~17:45)
+Goal extended: tools must be realistically usable in bigger projects. New
+benchmark axis: lemmas extracted from MID-FILE positions of the local Rocq
+stdlib checkout (a real ~700-file project, builds on this exact switch),
+proofs stripped, task = prove in true file context (immutable prefix = all
+of the file above the lemma; the target's own installed module is never
+Required, so no self-application leakage). Difficulty = ground-truth proof
+sentence-count buckets. Interface A/B this benchmark isolates: full-prefix-
+in-prompt vs STATEMENT-ONLY prompting with server-side context (the session
+already executes the prefix; the agent pulls context on demand) — the
+context-economy question that dominates big-project use. Memorization risk
+(policy trained on stdlib) affects absolute rates only, not the config A/B
+(shared policy); noted in threats-to-validity. Multi-file editing = future
+work.
