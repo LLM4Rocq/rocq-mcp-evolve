@@ -136,13 +136,25 @@ def load_runs():
     return out
 
 
+LADDER_ORDER = [
+    "baseline", "session", "session_try", "session_try_compact",
+    "session_try_search", "session_try_hints", "session_try_hints_auto",
+    "session_try_hints_auto_sugg", "unified",
+]
+
+
 def ladder_runs(runs):
-    """Ladder = completed-or-running dev60 evals, one per config, in time order."""
+    """Ladder = dev60 evals, one per config, in EXPERIMENTAL order (resumed
+    runs refresh their started-timestamp, so time order lies about the ladder)."""
     seen = {}
     for rid, meta, rows in runs:
         if rid.endswith(LADDER_SUFFIX) and rows and "_sonnet" not in rid:
             seen[rid] = (rid, meta, rows)
-    return list(seen.values())
+    def key(item):
+        cfg = item[2][0].get("config_id", item[0]) if item[2] else item[0]
+        return (LADDER_ORDER.index(cfg) if cfg in LADDER_ORDER else 99,
+                item[1].get("started", ""))
+    return sorted(seen.values(), key=key)
 
 
 def esc(s):
