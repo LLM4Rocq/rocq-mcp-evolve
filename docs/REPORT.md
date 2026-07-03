@@ -301,6 +301,32 @@ render that followed it. The fix is kept on correctness grounds (a tool must
 not misreport), with metrics unchanged; the retracted "71 % close-rate"
 mechanism stat stands corrected (A22).
 
+### Rung 9b (hint-term synthesis) — run `winner_auto2_dev60` — **KEPT, new best**
+
+vs 9a (fixed binary): medium **+.125 (+28 %, .45→.575)**, hard +.025, easy
+flat; cost ~flat. Mechanism verified: synthesized hint scripts (mechanical
+`0 ≤ (t)²` facts from goal variables and power subterms) are 7 of 25 REAL
+portfolio closes. Best measured dev60 config: **.650/.575/.475** (e/m/h) —
+the machine now finds the auxiliary facts agents were hunting by hand.
+
+### In-project context economy (A20) — runs `winner_ctx_{full,lean}_inproject60`
+
+60 mid-file stdlib-project lemmas (median 374-line prefixes), buckets by
+ground-truth proof length (short/medium/long):
+
+| | short | medium | long |
+|---|---|---|---|
+| ctx_full pass@1 · tokens_in · $ | .950 · 133 k · .066 | .725 · 245 k · .088 | .225 · 402 k · .115 |
+| ctx_lean pass@1 · tokens_in · $ | .950 · 48 k · .035 | .600 · 152 k · .061 | .275 · 214 k · .076 |
+
+Statement-only prompting (context lives in the session, pulled on demand)
+holds short solve exactly at **2.8× fewer input tokens**, WINS long (+.05),
+and cedes medium (−.125) where seeing earlier lemmas inline evidently helps.
+Cost-per-solve favors lean in every bucket. Recommendation for big projects:
+context-on-demand by default; full-context as a fallback mode. (Absolute
+short-bucket rates likely benefit from policy memorization of stdlib — noted
+per A20; the config A/B is unaffected.)
+
 ## 6. Ablation summary (every measured change, in order)
 
 | # | change | deciding numbers (per bucket where relevant) | verdict |
