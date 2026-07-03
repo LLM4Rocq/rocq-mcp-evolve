@@ -71,8 +71,8 @@ def kill_attempt_tree(p: subprocess.Popen, log):
 
 def build_task(rec):
     """(file prefix the agent must extend, theorem name)."""
-    if rec["source"] == "stdlib_project":
-        # in-project benchmark (A20): prefix = the real file above the lemma
+    if rec["source"].endswith("_project"):
+        # in-project benchmarks (A20/A21): prefix = the real file above the lemma
         content = Path(rec["path"]).read_text(errors="replace")
         return content[: rec["prefix_chars"]] + "\n", rec["theorem_name"]
     if rec["source"] == "workbook":

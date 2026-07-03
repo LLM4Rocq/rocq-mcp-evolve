@@ -191,3 +191,16 @@ context-economy question that dominates big-project use. Memorization risk
 (policy trained on stdlib) affects absolute rates only, not the config A/B
 (shared policy); noted in threats-to-validity. Multi-file editing = future
 work.
+
+## A21 — Involved-project extension (user steer, 2026-07-03 ~18:00)
+In-project benchmark extended beyond stdlib: (i) mathcomp60 — mid-file lemmas
+from the local math-comp checkout (boot/order; ssreflect proof language, a
+qualitatively different regime for both policy habits and our stdlib-centric
+hint tables; Requires resolve against installed rocq-mathcomp 2.5.0, drift
+filtered by compile-verification); (ii) mathcomp algebra/field + mathcomp-
+analysis installing in background (solver dry-run verified: Rocq untouched)
+to unlock analysis-based tasks; (iii) load-path plumbing (-Q/-R via env into
+session init + gate) planned as the dune-project infrastructure deliverable,
+demonstrated on one dune-built project if time permits. Honest expectation:
+absolute solve rates on ssreflect will be low for this policy; the interface
+A/Bs (ctx_full vs ctx_lean; vs naive baseline) remain valid comparisons.

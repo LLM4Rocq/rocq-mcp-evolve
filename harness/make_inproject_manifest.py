@@ -23,8 +23,15 @@ sys.path.insert(0, str(Path(__file__).parent))
 import common
 from gate import ENV_INJECT
 
-CHECKOUT = Path("/Users/gbaudart/Project/llm4rocq/rocq-stdlib/theories")
-DIRS = ["Reals", "Arith", "ZArith", "NArith", "Lists"]
+# (root, subdirs, source tag, output manifest)
+PROJECTS = {
+    "stdlib": (Path("/Users/gbaudart/Project/llm4rocq/rocq-stdlib/theories"),
+               ["Reals", "Arith", "ZArith", "NArith", "Lists"],
+               "stdlib_project", "inproject60.jsonl"),
+    "mathcomp": (Path("/Users/gbaudart/Project/llm4rocq/math-comp"),
+                 ["boot", "order"],
+                 "mathcomp_project", "mathcomp60.jsonl"),
+}
 PER_BUCKET = 20
 MIN_PREFIX_LINES = 80  # mid-file: real context above the target
 
@@ -38,7 +45,7 @@ def sentences(text):
     return len(re.findall(r"\.(?=\s|$)", text))
 
 
-def extract_tasks(vfile: Path):
+def extract_tasks(vfile: Path, source_tag="stdlib_project"):
     src = vfile.read_text(errors="replace")
     out = []
     for m in STMT_RE.finditer(src):
@@ -65,7 +72,7 @@ def extract_tasks(vfile: Path):
         stmt_text = src[m.start(): stmt_end.end()]
         out.append({
             "problem_id": f"{vfile.stem}__{name}",
-            "source": "stdlib_project",
+            "source": source_tag,
             "difficulty": bucket,
             "theorem_name": name,
             "path": str(vfile),
@@ -91,10 +98,13 @@ def verify(task) -> bool:
 
 
 def main():
+    import sys as _sys
+    proj = _sys.argv[1] if len(_sys.argv) > 1 else "stdlib"
+    checkout, dirs, tag, outname = PROJECTS[proj]
     pool = []
-    for d in DIRS:
-        for vf in sorted((CHECKOUT / d).rglob("*.v")):
-            pool.extend(extract_tasks(vf))
+    for d in dirs:
+        for vf in sorted((checkout / d).rglob("*.v")):
+            pool.extend(extract_tasks(vf, tag))
     rng = random.Random(42)
     by_bucket = {}
     for t in sorted(pool, key=lambda t: t["problem_id"]):
@@ -112,7 +122,7 @@ def main():
             # else silently skip: checkout/installed drift or context deps
         print(f"{b}: kept {len(kept)} (scanned {cands.index(t)+1 if cands else 0})")
         chosen.extend(kept)
-    out = common.MANIFESTS / "inproject60.jsonl"
+    out = common.MANIFESTS / outname
     out.write_text("".join(json.dumps(t) + "\n" for t in chosen))
     print(f"wrote {len(chosen)} tasks to {out}")
     lens = [t["prefix_lines"] for t in chosen]
