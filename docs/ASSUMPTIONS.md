@@ -109,3 +109,11 @@ statement can silently change what the statement means (e.g. `Open Scope`
 re-parsing `+`), which is unauditable at scale. Helper facts remain expressible
 via `assert`/`have` inside the proof. Uniform across all configs, so it cannot
 bias comparisons.
+
+## A14 — Pipeline acceleration (user steer, 2026-07-03)
+(1) parallel=8 adopted as the standard for winner-family dev runs, justified by
+the measured sweep (wall +7 %, CPU 24 % at N=8; near-linear throughput); any
+compared pair must share N. (2) The held-out run is pulled forward: freeze
+committed (FROZEN.md); unlock+final chained behind the 4-rep variance top-up
+the same day. The one-shot discipline is sequence-based (frozen before
+unlock), not calendar-based. Final runs at parallel=4 per the frozen protocol.
