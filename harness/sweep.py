@@ -111,6 +111,13 @@ def main():
         sampler.stop()
         sampler.join(timeout=10)
         rows = common.read_jsonl(run_dir / "results.jsonl")
+        resumed = 0
+        meta_p = run_dir / "run_meta.json"
+        if meta_p.exists():
+            try:
+                resumed = json.loads(meta_p.read_text()).get("resumed_skipping", 0)
+            except json.JSONDecodeError:
+                pass
         cpu_mean = (
             sum(s["pcpu"] for s in sampler.samples) / max(len(sampler.samples), 1)
         )
@@ -120,7 +127,9 @@ def main():
             "attempts": len(rows),
             "solved": sum(1 for r in rows if r.get("solved")),
             "makespan_s": round(makespan, 1),
-            "attempts_per_hour": round(3600 * len(rows) / makespan, 1),
+            "attempts_per_hour": (round(3600 * len(rows) / makespan, 1)
+                                  if not resumed else None),
+            "resumed_attempts_skipped": resumed,
             "peak_rss_mb": round(sampler.peak_rss / 1024, 1),
             "cpu_pct_mean": round(cpu_mean, 1),
             "wall_s_mean": round(
