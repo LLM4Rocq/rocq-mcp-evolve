@@ -1,4 +1,4 @@
-# Results report — AI-native Rocq tooling (DRAFT, filled as runs complete)
+# Results report — AI-native Rocq tooling
 
 Every number here is reproducible from raw logs:
 `python3 harness/report.py <run_id> [--compare baseline_dev60]` and
@@ -14,14 +14,10 @@ Every number here is reproducible from raw logs:
 - Correctness gate: locked prefix, forbidden-token region scan, fresh-dir
   recompile, Print Assumptions audit. Applied identically to every config.
 
-## 2. Configs (the ladder)
-| config | change vs predecessor |
-|---|---|
-| baseline | control: one `check` tool = full `rocq compile` of the whole file per call |
-| session | persistent in-process prover; sentence `step` with commit-good-prefix, structured errors, O(1) rollback, goal rendering, per-sentence timeouts |
-| session_try | + `try`: k candidate scripts speculatively evaluated in one call, first success auto-commits |
-| (+compact) | + hypothesis-delta goal rendering, token-budgeted |
-| (+search) | + budgeted `search` tool over the loaded libraries |
+## 2. Configs
+The full ladder (10 measured changes + annex configs) is enumerated with
+verdicts in §6; per-decision rationale in docs/DESIGN.md; the recommended
+policy-neutral configuration (`universal`, A24) in §5b-ext.
 
 ## 3. Efficiency results (dev60, 2 reps, per bucket)
 
@@ -139,12 +135,17 @@ their closers — an interface trap), and easy-bucket attempts fought without
 nra/lra/lia entirely. The env-v2 A/B (preloaded scope-neutral tactic modules,
 Require refused with guidance) is queued as `session_try_hints_v2_minif2f_valid`.
 
-## 4. Profiling & hypotheses
-- H1 (prover cost dominates): PARTIALLY REFUTED on easy — prover = 6% of wall;
-  model API ≈ 90%. Re-examined per bucket below.
-- H2 (context growth): input tokens grow ~330/turn (baseline, easy).
-- H3 (blind flailing): failed checks are 58% syntax / 19% unknown-refs on easy
-  baseline → feedback shape, not compile speed, is the binding constraint.
+## 4. Profiling & hypotheses — final verdicts
+- H1 (prover cost dominates): REFUTED — prover = 4-6 % of wall in every
+  bucket; zero tactic timeouts in 1 882 medium/hard control calls. The model
+  API is 76-90 % of wall; turns × output tokens is the binding cost.
+- H2 (context growth): CONFIRMED in shape (~330-550 tokens/turn growth),
+  addressed structurally (session eliminates re-sends; ctx_lean mode bounds
+  prompts at O(statement) for big files, §5d).
+- H3 (blind flailing): CONFIRMED and sharpened by the failure atlas — the
+  dominant sink is the Lean dialect tax (10-20 of ~30 calls/attempt), then
+  finalization/handshake friction, then false-vs-hard indistinguishability.
+  Every kept change attacks one of these; the reverted ones did not.
 _(full tables from profile.py per run)_
 
 ## 5. Scalability (fixed 24-problem stratified batch, N ∈ {1,2,4,8})
