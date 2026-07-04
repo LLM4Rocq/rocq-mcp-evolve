@@ -150,45 +150,48 @@ _(full tables from profile.py per run)_
 
 ## 5. Scalability (fixed 24-problem stratified batch, N ∈ {1,2,4,8})
 
-### baseline config (`sweep_baseline_summary.jsonl`)
+**Measurement corrections, disclosed in full.** The originally-published
+baseline sweep was invalid twice over: its N=4/8 rows were contaminated by a
+laptop sleep (8 and 16 of 24 attempts killed by the wall-clock watchdog on
+wake — the reported "wall ×3.2, solves lost to queueing" was largely the
+sleeping machine), and a first repair attempt introduced a resumed-run
+throughput artifact (attempts/hour computed over all rows against a
+redo-only makespan; sweep.py now reports None for resumed runs). The table
+below is a fully fresh single-window measurement (night of Jul 3→4); the
+winner sweep (Jul 3 evening) was clean throughout. Cross-config levels carry
+a time-of-day caveat (different windows); within-config shapes do not.
 
-| N | attempts/h | wall s/attempt | peak RSS | machine CPU | solved |
+### baseline (clean, single window)
+
+| N | attempts/h | wall s/attempt | solved | peak RSS* | CPU |
 |---|---|---|---|---|---|
-| 1 | 25.1 | 143 | 0.7 GB | 2.4 % | 4/24 |
-| 2 | 48.3 | 147 | 1.3 GB | 4.9 % | 3/24 |
-| 4 | 45.1 | 319 | 2.0 GB | 7.9 % | 3/24 |
-| 8 | 56.3 | 463 | 3.1 GB | 7.8 % | 2/24 |
+| 1 | 28.1 | 128 | 3/24 | 1.1 GB | 4.6 % |
+| 2 | 50.5 | 140 | 4/24 | 1.5 GB | 4.4 % |
+| 4 | 91.5 | 135 | 3/24 | 4.9 GB | 13.3 % |
+| 8 | 161.3 | 133 | 4/24 | 4.0 GB | 12.3 % |
 
-**Finding: the scaling ceiling is the policy endpoint, not the prover
-substrate.** N=1→2 is near-linear (×1.9 throughput, latency flat). Beyond N=2,
-throughput saturates (48→45→56/h) while per-attempt wall time explodes
-(147→319→463 s ≈ ×3.2) — yet machine CPU never exceeds 8 % and RSS grows a
-benign ~0.4 GB/agent (dominated by the CLI processes, not prover state). The
-extra concurrency is absorbed as API-side queueing/rate-limiting. Worse, it
-*costs solves*: attempts pushed past the fixed 300 s budget by queueing die at
-the watchdog (solved 4→2/24 from N=1→8). On this endpoint the efficient
-operating point is N≈2-4; past it, adding agents actively harms success at
-fixed budgets. Local-substrate scalability (hundreds of ~310 MB sessions fit
-in RAM; per-step cost ~1 ms) is not the binding constraint at any tested N.
-### winner config (`sweep_session_try_hints_auto_summary.jsonl`)
+### winner config (clean, Jul 3 evening window)
 
-| N | attempts/h | wall s/attempt | peak RSS | machine CPU | solved |
+| N | attempts/h | wall s/attempt | solved | peak RSS* | CPU |
 |---|---|---|---|---|---|
-| 1 | 74.7 | 48 | 1.0 GB | 5.3 % | 11/24 |
-| 2 | 142.6 | 50 | 1.7 GB | 8.4 % | 10/24 |
-| 4 | 272.3 | 50 | 3.3 GB | 16.8 % | 9/24 |
-| 8 | 478.3 | 51 | 6.4 GB | 23.8 % | 8/24 |
+| 1 | 74.7 | 48 | 11/24 | 1.0 GB | 5.3 % |
+| 2 | 142.6 | 50 | 10/24 | 1.7 GB | 8.4 % |
+| 4 | 272.3 | 50 | 9/24 | 3.3 GB | 16.8 % |
+| 8 | 478.3 | 51 | 8/24 | 6.4 GB | 23.8 % |
 
-**Finding: interface efficiency compounds under parallelism.** The winner
-scales near-linearly to N=8 (80 % parallel efficiency; wall flat +7 %) where
-the baseline saturated at N=2 with wall ×3.2. Same machine, same endpoint —
-the difference is API traffic per attempt: the winner's short turns and −80 %
-output tokens leave headroom the baseline burns on whole-file rewrites. At
-N=8 the winner delivers 8.5× the baseline's attempt throughput and ~19× its
-solved-proofs/hour (57 vs 4.7). Caveat noted honestly: solves drift 11→8/24
-as N grows (single rep per N on a 24-problem batch — could be variance or
-mild endpoint pressure; the fixed 300 s attempt budget was never the binding
-constraint here, unlike baseline at N≥4).
+*peak RSS is an upper bound (machine-wide process-name sampling; §7b).
+
+**Corrected findings.** (1) Both configs scale healthily with flat
+per-attempt walls: parallel efficiency at N=8 is 80 % (winner) vs 72 %
+(baseline) — a modest shape advantage, NOT the saturation contrast
+originally claimed. (2) The winner's real parallel story is its **level**:
+~2.7× faster attempts at every N compound to ~3× attempt-throughput and
+≈6× solved-proof throughput at N=8 (winner ≈159 solves/h vs baseline
+≈27/h on this batch), at CPU ≤24 % of a 14-core laptop — the local
+substrate (ms-scale prover calls, ~0.3-0.8 GB/agent) is never the
+constraint at any tested N. (3) The earlier "19× solved throughput" figure
+was computed against the contaminated baseline and is retracted in favor of
+the ≈6× clean-data figure.
 
 ## 5b. Cross-policy annex (A10): does the interface delta transfer?
 
