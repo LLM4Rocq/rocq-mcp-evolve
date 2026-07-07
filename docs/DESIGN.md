@@ -144,3 +144,15 @@ process (COW memory) or (b) served to a second policy agent. Three layers:
 
 Order rationale: 2 unlocks 3-5 mechanically; 3 targets the measured dominant
 cost (turns); 4 targets token growth; 5 targets the #2 error class.
+
+## Evolution: per-project knowledge (A26 measurement)
+
+The distillation path was tested once: an evidence-mined ssreflect hint table
+(Search-idiom guidance, tactic rewrites, name-fragment advice; gated
+ROCQ_HINTS_SSR) produced NO measurable lift on mathcomp35 (short .55 vs .50,
+n=20 noise; medium unchanged). Error-reactive corrections do not transfer
+dialect competence. The surviving hypothesis, consistent with the A20 context
+ablation (idioms live in adjacent proof BODIES): in-context proof exemplars —
+retrieve the k nearest proofs in the target project and inject them as
+context, rather than correcting errors after the fact. Unmeasured; first
+candidate for future work.

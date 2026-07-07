@@ -23,7 +23,7 @@ pass@1, easy / medium / hard. Weak policy = `claude-haiku-4-5`, strong =
 | interface | policy | easy / medium / hard | note |
 |---|---|---|---|
 | naive whole-file `check` (control) | haiku | .44 / .25 / .30 | |
-| **`universal`** (recommended) | haiku | **.675 / .575 / .35** | ≥ naive every bucket; hard σ=.21 (2 reps) |
+| **`universal`** (recommended) | haiku | **.662 / .575 / .40** | 4 reps; ≥ naive every bucket; hard trails the haiku-tuned config by .075 |
 | naive whole-file `check` | sonnet | .925 / .95 / .80 | |
 | **`universal`** | sonnet | **.95 / 1.00 / .85** | beats naive in **every** bucket, −40 % wall |
 | `frozen` config — **held-out** miniF2F test | haiku | **.519 / .127 / .043** | single logged run; pass@2 .569/.165/.057 |
@@ -39,7 +39,8 @@ session + O(1) snapshot rollback vs full recompile).
 > preloading) won; everything that spent a turn or lost context to get it
 > (a pull search tool, compact rendering, a 3-agent relay) lost.
 
-Honesty notes: haiku universal is 2 reps (hard σ=.21 — its one soft cell);
+Honesty notes: haiku universal hard is .400±.14 at 4 reps, .075 below the
+haiku-specialized config (its one non-leading cell);
 sonnet medium `1.00` is 2/2 reps; the held-out row is a single frozen-config run
 (no test problem influenced any decision); strong-policy annexes are 1–2 reps.
 
