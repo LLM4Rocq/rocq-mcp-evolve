@@ -564,6 +564,22 @@ defects (full verdicts in the workflow journal; the material ones):
   2-way-split problems; deeper decomposition structures were not available
   in these datasets.
 
+### Is the resulting tool Haiku-specialized? (final audit)
+Structurally no: every server-side capability triggers on goals, errors, or
+protocol state — never on policy identity — and both interaction styles are
+first-class (A24). Empirically no, for the two policies measured: `universal`
+is best-or-tied everywhere at both, and the one component derived from
+Haiku's failure corpus that could transfer (hint synthesis) was shown to lift
+Sonnet past naive on hard. Three residual risks, named: (1) the EXCLUDED
+tools (search, compact rendering) were reverted on Haiku evidence only and
+never re-tested at the strong policy — conservative, not policy-proven;
+(2) the hint table's contents are Lean-training-corpus-shaped — general to
+the current LLM population (Sonnet emits the same dialect, per the atlas)
+but inert for a hypothetically different error dialect; the mechanism
+supports swapping tables; (3) the neutrality claim extends exactly to the
+two Anthropic policies measured, no further. A third-provider probe is the
+natural falsification test and remains future work.
+
 ## 9. Conclusions
 
 1. **The interface is a multiplier, not a magician.** The same weak policy
