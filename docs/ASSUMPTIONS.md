@@ -249,3 +249,13 @@ removed from portfolio and hint texts, replaced with working closers;
 though the lemma exists as `0 <= _`). All deterministic, zero-turn. The A24
 universal pair (re)runs on this fixed binary; earlier configs' measured
 numbers stand as recorded (their binaries documented per run_meta git_rev).
+
+
+## A26 — ssreflect knowledge-distillation probe (Jul 7)
+Evidence-mined from the mathcomp probe corpus (Search-idiom failures x66
+dominate; stdlib-tactic habits; name guessing): gated ssreflect hint table
+(ROCQ_HINTS_SSR=1) — Search/Check syntax failures get mathcomp naming +
+boolean-reflection guidance; stdlib tactics get ssreflect equivalents;
+mathcomp-fragment unknown refs get name-fragment search advice — plus
+`by []`/`done` portfolio entries. Tests the per-project distillation
+mechanism (DESIGN evolution path) with one measured rerun of mathcomp35.

@@ -282,10 +282,59 @@ let hint_for ~sentence ~msg =
                   `field`, `lra`, or `nra`."
           else None
 
+let contains_sub sub s =
+  let n = String.length sub and m = String.length s in
+  let rec go i = i + n <= m && (String.sub s i n = sub || go (i + 1)) in
+  n = 0 || go 0
+
+(* ssreflect/mathcomp regime table (A26 distillation probe): evidence-mined
+   from winner_ctx_lean_mathcomp — Search idiom failures x66 dominate, then
+   stdlib-tactic habits and name guessing. Gated by ROCQ_HINTS_SSR=1. *)
+let ssr_on =
+  lazy (match Sys.getenv_opt "ROCQ_HINTS_SSR" with Some "1" -> true | _ -> false)
+
+let ssr_tactic_map =
+  [ ("destruct", "ssreflect style: `case: x => [a b].` or `case: x.`");
+    ("intros", "ssreflect style: `move=> x y H.`");
+    ("unfold", "ssreflect style: `rewrite /definition.`");
+    ("simpl", "ssreflect style: `rewrite /=.` or `//=`");
+    ("split", "ssreflect: for boolean conjunction use `apply/andP; split.`");
+    ("inversion", "ssreflect style: `case: H.` often suffices");
+  ]
+
+let ssr_search_hint =
+  "mathcomp Search tips: nat comparisons are BOOLEAN (`leq`, `ltn`) in %N \
+   scope — try `Search leq.`, `Search (_ <= _)%N.`, or name fragments like \
+   `Search \"addn\".` / `Search \"leq\" \"sub\".` (mathcomp names: addn, subn, \
+   muln, leq, ltn, eqn + suffixes like C/A/K/r)."
+
+let ssr_hint ~sentence ~msg =
+  if not (Lazy.force ssr_on) then None
+  else
+    let w = first_word sentence in
+    match List.assoc_opt w ssr_tactic_map with
+    | Some h -> Some h
+    | None ->
+        if (w = "Search" || w = "Check") && contains_sub "Syntax" msg then
+          Some ssr_search_hint
+        else if contains_sub "was not found" msg
+                && (contains_sub "leq" sentence || contains_sub "ltn" sentence
+                    || contains_sub "addn" sentence || contains_sub "subn" sentence)
+        then
+          Some
+            ("that mathcomp name doesn't exist — find the real one with a \
+              name-fragment search, e.g. `Search \""
+            ^ String.lowercase_ascii (String.sub w 0 (min 4 (String.length w)))
+            ^ "\".`")
+        else None
+
 let with_hint ~sentence ~msg body =
   match hint_for ~sentence ~msg with
   | Some h -> body ^ "\nhint: " ^ h
-  | None -> body
+  | None -> (
+      match ssr_hint ~sentence ~msg with
+      | Some h -> body ^ "\nhint: " ^ h
+      | None -> body)
 
 type try_outcome =
   | Full of D.exec_step list * bool (* steps, proof complete *)
@@ -846,9 +895,14 @@ let search_tool : M.tool =
 (* Atlas fix 2: psatz removed (requires the external csdp binary, absent on
    this machine — it ALWAYS failed); field_simp removed (Lean-ism, does not
    exist in Rocq). Replaced with working closers. *)
-let portfolio =
+let portfolio_base =
   [ "lra."; "lia."; "nra."; "nia."; "field."; "intros. nra.";
     "ring."; "ring_simplify. lra."; "ring_simplify. nra."; "auto with real arith." ]
+
+let portfolio =
+  if Sys.getenv_opt "ROCQ_HINTS_SSR" = Some "1" then
+    "by []." :: "done." :: "by lia." :: portfolio_base
+  else portfolio_base
 
 let auto_timeout = lazy (getenv_f "ROCQ_AUTO_TIMEOUT" 2.)
 
