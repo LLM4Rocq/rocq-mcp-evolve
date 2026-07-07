@@ -57,8 +57,9 @@ LADDER_INFO = {c: (lab, chg, v, why) for c, lab, chg, v, why in LADDER}
 
 CSS = """
 :root { color-scheme: light dark; }
-body { margin:0; padding:24px; background:#f9f9f7; color:#0b0b0b;
-  font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif; }
+body { margin:0 auto; padding:24px; max-width:940px; background:#f9f9f7;
+  color:#0b0b0b; font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif; }
+svg { max-width:100%; height:auto; }
 .viz-root {
   --surface-1:#fcfcfb; --ink-1:#0b0b0b; --ink-2:#52514e; --ink-3:#898781;
   --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,0.10);
@@ -104,6 +105,8 @@ details { margin-top:8px; } summary { cursor:pointer; color:var(--ink-3); font-s
 .b-rec { color:var(--surface-1); background:var(--good); }
 .b-other { color:var(--ink-3); border:1px solid var(--ink-3); }
 td.why { color:var(--ink-2); }
+.tools code { background:transparent; border:1px solid var(--grid); border-radius:4px;
+  padding:0 5px; margin:0 4px 2px 0; font-size:11px; white-space:nowrap; display:inline-block; }
 svg text { fill:var(--ink-2); font:11px system-ui,-apple-system,"Segoe UI",sans-serif; }
 svg .tick { fill:var(--ink-3); font-variant-numeric:tabular-nums; }
 svg .vlab { fill:var(--ink-1); font-weight:600; }
@@ -165,13 +168,13 @@ def ladder_slope(stats_by_cfg):
     cfgs = [c for c in LADDER_ORDER if c in stats_by_cfg]
     if len(cfgs) < 2:
         return ""
-    width, height, left, top = 760, 240, 40, 16
+    width, height, left, top = 880, 240, 40, 16
     plot_w, plot_h = width - left - 20, height - top - 52
     def sx(i):
         return left + i / (len(cfgs) - 1) * plot_w
     def sy(v):
         return top + plot_h - v * plot_h
-    parts = [f'<svg viewBox="0 0 {width} {height}" width="100%" role="img" '
+    parts = [f'<svg viewBox="0 0 {width} {height}" width="{width}" role="img" '
              f'aria-label="pass@1 per bucket across the ladder">']
     for gy in (0, 0.25, 0.5, 0.75, 1.0):
         y = sy(gy)
@@ -270,13 +273,13 @@ def metric_slope(stats_by_cfg, key, title_txt, fmt, per_solve=True, width=370):
 
 def a24_chart(groups):
     """groups: [(group label, [(series label, color, {bucket: v}), ...])]"""
-    width, left = 760, 10
+    width, left = 700, 10
     bar_h, gap = 16, 3
     series_n = max(len(s) for _, s in groups)
     block_h = len(BUCKETS) * (series_n * (bar_h + gap) + 10) + 26
     height = sum(block_h for _ in groups) + 10
     plot_x, plot_w = 170, width - 170 - 60
-    parts = [f'<svg viewBox="0 0 {width} {height}" width="100%" role="img" '
+    parts = [f'<svg viewBox="0 0 {width} {height}" width="{width}" role="img" '
              f'aria-label="naive vs universal, per policy and bucket">']
     y = 6
     for glabel, series in groups:
@@ -391,13 +394,16 @@ def sweep_section():
 def build():
     runs = load_runs()
 
-    # ladder stats: one dev60 run per ladder config
-    stats_by_cfg = {}
+    # ladder stats + agent-facing tool surface: one dev60 run per ladder config
+    stats_by_cfg, tools_by_cfg = {}, {}
     for rid, meta, rows in runs:
         if rid.endswith(LADDER_SUFFIX) and rows:
             cfg = rows[0].get("config_id", rid)
             if cfg in LADDER_INFO:
                 stats_by_cfg[cfg] = bucket_stats(rows)
+                cfg_meta = meta.get("config", {}) or {}
+                tools_by_cfg[cfg] = [t.replace("mcp__rocq__", "")
+                                     for t in cfg_meta.get("allowed_tools", [])]
 
     total_cost = sum((r.get("total_cost_usd") or 0) for _, _, rows in runs for r in rows)
     total_attempts = sum(len(rows) for _, _, rows in runs)
@@ -436,15 +442,19 @@ def build():
             f'<div class="val">${cb:.2f} → ${cu:.2f}</div>'
             f'<div class="delta">wall {wb:.0f}s → {wu:.0f}s · naive → universal</div></div>')
 
-    # ladder table: step, change, verdict, outcome, numbers
+    # ladder table: step, change, tool surface, verdict, outcome, numbers
     lrows = []
     for cfg, lab, chg, v, why in LADDER:
         st = stats_by_cfg.get(cfg, {})
+        tools = tools_by_cfg.get(cfg, [])
+        chips = "".join(f"<code>{esc(t)}</code>" for t in tools) or "–"
         nums = "".join(f"<td class=num>{'–' if p1(st, b) is None else f'{p1(st, b):.2f}'}</td>"
                        for b in BUCKETS)
         lrows.append(f"<tr><td><b>{esc(lab)}</b></td><td class=why>{esc(chg)}</td>"
+                     f'<td class="tools">{chips}</td>'
                      f"<td>{badge(v)}</td><td class=why>{esc(why)}</td>{nums}</tr>")
-    ladder_table = ("<table><tr><th>step</th><th>what changed</th><th>verdict</th>"
+    ladder_table = ("<table><tr><th>step</th><th>what changed</th>"
+                    "<th>agent-facing tools</th><th>verdict</th>"
                     "<th>measured outcome</th>"
                     + "".join(f"<th class=num>{b}</th>" for b in BUCKETS)
                     + "</tr>" + "".join(lrows) + "</table>")
@@ -542,7 +552,7 @@ repetitions; kept only if the per-bucket numbers improved. Lines show pass@1
 per bucket; reverted steps are part of the record but not of the shipped
 tool. Hover any point for exact values.</p>
 <div class="card">{legend_html(BUCKET_LEGEND)}{ladder_slope(stats_by_cfg)}
-<details><summary>step-by-step table</summary>{ladder_table}</details></div>
+<details open><summary>step-by-step table (tools available to the agent at each step)</summary>{ladder_table}</details></div>
 
 <h2>Cost and time — expected spend per solved proof</h2>
 <p class="caption">The experiment's other two objectives. Each chart divides the
