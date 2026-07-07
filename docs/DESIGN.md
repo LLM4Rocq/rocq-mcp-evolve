@@ -126,21 +126,19 @@ Design principle: the session's immutable-state snapshots are the concurrency
 primitive. A frozen `Vernacstate.t` can be (a) copied O(1) into a forked child
 process (COW memory) or (b) served to a second policy agent. Three layers:
 
-1. `parallel_close` (rung): on a multi-goal state, fork one child per open
-   goal, run the finisher portfolio (or a deeper budget) on each subgoal
-   concurrently, collect per-goal results through pipes, commit the closures
-   into the live session. Measures: latency vs sequential auto_close on
-   k-goal states; solve delta on hard bucket. [BUILDING]
-2. Session daemon: one process owns the live proof; Unix-socket protocol; thin
-   MCP shims let k policy agents attach, `focus` distinct goal ids, commit
-   goal-scoped tactic scripts; the daemon serializes commits (goals are
-   independent by construction — sibling subgoals share no evars after
-   focusing — so merges cannot conflict). Also amortizes the 215 ms init and
-   ~310 MB RSS across agents. [PLANNED]
-3. Decomposition workflow: coordinator agent does structural work (split /
-   induction / assert skeleton), then k workers each close one subgoal in
-   parallel; equal-wall-clock comparison vs solo agent on the hard bucket.
-   [PLANNED — the headline experiment for the parallel axis]
+1. `parallel_close` (rung): fork-per-subgoal concurrent portfolio.
+   [NOT BUILT — deprioritized after measurement: per-candidate portfolio
+   trials are ~ms, so sequential auto_close was never latency-bound; the
+   binding constraints were elsewhere (turns, knowledge). Remains the
+   natural next step if heavier per-goal search (external ATPs) arrives.]
+2. Session daemon: BUILT and validated (src/psession) — branch-per-subgoal,
+   merge-by-replay with conclusion-digest renumbering (review fix), JSONL
+   instrumentation, gate-verified composed candidates; used by the team
+   experiments and covered by the test suite (suite B).
+3. Decomposition workflow: BUILT (harness/run_team.py) and measured twice —
+   hard70 (team .32 vs solo .40) and the decomposable-27 manifest (team ~half
+   of solo, merge-fixed daemon). Decisively negative at this scale; the
+   honest boundary of the parallel axis (REPORT §5c + completion section).
 
 Order rationale: 2 unlocks 3-5 mechanically; 3 targets the measured dominant
 cost (turns); 4 targets token growth; 5 targets the #2 error class.
