@@ -533,6 +533,50 @@ def build():
                    "<th>pass@1 e/m/h</th></tr>" + "".join(annex) + "</table>")
     n_annex = len(annex)
 
+    sota_h = stats_for(runs, "rocq_mcp_dev60")
+    sota_s = stats_for(runs, "rocq_mcp_sonnet_dev60")
+    sota = ""
+    if sota_h and sota_s:
+        sgroups = [
+            ("claude-haiku-4-5",
+             [("rocq-mcp (SOTA)", "var(--ink-3)", {b: p1(sota_h, b) for b in BUCKETS}),
+              ("naive", "var(--c-baseline)", {b: p1(naive_h, b) for b in BUCKETS}),
+              ("universal", "var(--c-winner)", {b: p1(uni_h, b) for b in BUCKETS})]),
+            ("claude-sonnet-5",
+             [("rocq-mcp (SOTA)", "var(--ink-3)", {b: p1(sota_s, b) for b in BUCKETS}),
+              ("naive", "var(--c-baseline)", {b: p1(naive_s, b) for b in BUCKETS}),
+              ("universal", "var(--c-winner)", {b: p1(uni_s, b) for b in BUCKETS})]),
+        ]
+        def dimrow(name, st):
+            cells = []
+            for key, fn in (("pass@1", lambda v: f"{v:.2f}"),
+                            ("$/solve", None),
+                            ("wall_s_mean", lambda v: f"{v:.0f}s")):
+                for b in BUCKETS:
+                    x = st.get(b) or {}
+                    if key == "$/solve":
+                        p = x.get("pass@1")
+                        c = x.get("cost_usd_mean")
+                        cells.append(f"${c/p:.2f}" if p and c is not None else "\u2013")
+                    else:
+                        v = x.get(key)
+                        cells.append(fn(v) if v is not None else "\u2013")
+            tds = "".join(f"<td class=num>{c}</td>" for c in cells)
+            return f"<tr><td>{esc(name)}</td>{tds}</tr>"
+        sota_tbl = ("<table><tr><th>config</th>"
+                    + "".join(f"<th class=num>{b} pass@1</th>" for b in BUCKETS)
+                    + "".join(f"<th class=num>{b} $/solve</th>" for b in BUCKETS)
+                    + "".join(f"<th class=num>{b} wall</th>" for b in BUCKETS) + "</tr>"
+                    + dimrow("rocq-mcp @ haiku", sota_h) + dimrow("naive @ haiku", naive_h)
+                    + dimrow("universal @ haiku", uni_h)
+                    + dimrow("rocq-mcp @ sonnet", sota_s) + dimrow("naive @ sonnet", naive_s)
+                    + dimrow("universal @ sonnet", uni_s) + "</table>")
+        sota = (legend_html([("rocq-mcp (SOTA)", "var(--ink-3)"),
+                             ("naive whole-file", "var(--c-baseline)"),
+                             ("universal (ours)", "var(--c-winner)")])
+                + a24_chart(sgroups)
+                + f"<details open><summary>all three dimensions</summary>{sota_tbl}</details>")
+
     updated = time.strftime("%Y-%m-%d %H:%M:%S")
     return f"""<!doctype html>
 <html><head><meta charset="utf-8">
@@ -571,6 +615,18 @@ at sonnet (first substrate config to do so) and is best-or-tied at haiku
 except hard, where the haiku-tuned variant keeps a .075 edge (within ½σ).
 pass@1, dev60.</p>
 <div class="card">{a24}</div>
+
+<h2>Comparison with SOTA (rocq-mcp) — accuracy, cost, latency</h2>
+<p class="caption">github.com/LLM4Rocq/rocq-mcp, measured under the identical
+harness, gate, problems, and policies (first contact only after our design
+freeze; REPORT §SOTA). Bars: pass@1. Table: all three dimensions — $/solve =
+expected cost per solved proof (failures included), wall = mean s/attempt.
+At both policies rocq-mcp is dominated on all three axes; at sonnet,
+universal is more accurate in every bucket at roughly half the cost per
+solve and ~40 % less wall. Caveat: some rocq-mcp attempts hit an MCP startup
+race (REPORT §8) — its numbers are a lower bound; the mechanism analysis is
+the robust claim.</p>
+<div class="card">{sota}</div>
 
 <h2>Scalability — N parallel agents on one machine</h2>
 <p class="caption">Each point is one full run of a fixed 24-problem stratified

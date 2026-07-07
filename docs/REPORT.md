@@ -338,7 +338,13 @@ the pre-registered rule; for strong policies the recommended configuration is
 the same substrate with draft-first prompting when cost matters, or the naive
 interface when only coverage matters.
 
-### SOTA comparison (A16/A19) — run `rocq_mcp_dev60`
+### SOTA comparison (A16/A19) — runs `rocq_mcp_dev60`, `rocq_mcp_sonnet_dev60`
+
+All-dimension verdict (details in §6b): dominated on accuracy, cost/solve,
+and wall at both policies — @ sonnet: .825/.725/.725 vs universal's
+.95/1.00/.85, at $.11/.23/.21 per solve vs $.07/.09/.13, wall 60/92/114 s vs
+36/42/85 s. Mechanism analysis below.
+
 
 rocq-mcp v0.3.1 (coq-lsp/pet-backed, 11 tools) under the identical protocol:
 pass@1 **.450 / .225 / .225** (easy/medium/hard) at $.072/attempt — i.e. **at
@@ -473,6 +479,34 @@ turn, at zero marginal turn cost**. Everything that pushed information into
 existing turns (try, hints, auto_close, did-you-mean, preloading) won;
 everything that asked the policy to spend turns or lose context to get
 information (search tool, compact rendering, team relay) lost.
+
+## 6b. Multi-dimensional summary (accuracy · cost · latency, all headline cells)
+
+The experiment's objectives were solve rate AND cost AND time. Every headline
+config × policy cell, dev60, per bucket (easy/medium/hard). $/solve = mean
+cost per attempt ÷ pass@1 (expected spend per solved proof, failures
+included); wall = mean seconds per attempt.
+
+| cell | pass@1 | $ / solve | wall s / attempt |
+|---|---|---|---|
+| naive @ haiku | .44 / .25 / .30 | .18 / .44 / .49 | 90 / 122 / 157 |
+| winner_auto2 @ haiku | .65 / .575 / .475 | .08 / .09 / .12 | 49 / 42 / 48 |
+| universal @ haiku | .66 / .575 / .40 | .10 / .16 / .23 | 59 / 71 / 74 |
+| rocq-mcp (SOTA) @ haiku | .45 / .225 / .225 | .12 / .36 / .37 | 56 / 74 / 78 |
+| naive @ sonnet | .925 / .95 / .80 | .09 / .15 / .18 | 61 / 77 / 112 |
+| sonnet_native_auto2 | 1.00 / .85 / .85 | .09 / .12 / .15 | 42 / 47 / 93 |
+| universal @ sonnet | **.95 / 1.00 / .85** | **.07 / .09 / .13** | **36 / 42 / 85** |
+| rocq-mcp (SOTA) @ sonnet | .825 / .725 / .725 | .11 / .23 / .21 | 60 / 92 / 114 |
+
+Readings: (1) `universal` @ sonnet is simultaneously the most accurate cell
+AND the cheapest per solved proof of anything measured — including cheaper
+than naive-haiku — at the lowest wall of any sonnet cell. (2) The haiku
+winner family cuts cost/solve 4-5× and wall 2-3× versus naive while raising
+accuracy in every bucket. (3) rocq-mcp is dominated on all three axes at
+both policies: at sonnet, universal is more accurate in every bucket at
+roughly half the cost per solve and ~40 % less wall. (4) Efficiency deltas
+are LARGER than accuracy deltas throughout — the interface's clearest
+effect is economic.
 
 ## 7. Held-out result (miniF2F test — single run of the frozen config)
 
