@@ -320,3 +320,17 @@ after: re-open 0.4 s (36x), opening a SIBLING file sharing the import block
 snapshots from identical sentence sequences off the identical start state;
 only prefix/open paths pass the cache. Cross-process warm-pool forking
 remains the documented next step (DESIGN A12).
+
+## A32 — mathcomp algebra-tactics conditional (Jul 7 night, user suggestion)
+User: "mathcomp has algebra-tactics — worth a conditional for auto solve?"
+Yes: the corpus showed the stdlib portfolio is POWERLESS on boolean-
+reflection/ssralg goals (mathcomp medium collapse; A26/A27 informed but
+could not close). Installed coq-mathcomp-zify + coq-mathcomp-algebra-tactics;
+make_session detects the mathcomp regime (prefix mentions mathcomp) and
+best-effort preloads `zify` + algebra-tactics `lra` (silent when absent;
+ROCQ_MC_TACTICS=0 opt-out; historical configs pinned =0). Portfolio gains
+by []/done/by lia/by ring/by lra/by nia in-regime. Smoke: `by lia.` closes
+`(n + m * 2 = m + n + m)%N`. A/B at haiku on mathcomp35 vs winner_ctx_lean
+(.50 short / .071 medium) running — this adds CAPABILITY, not information,
+so it is the first intervention with a mechanical reason to move the weak-
+policy mathcomp numbers.

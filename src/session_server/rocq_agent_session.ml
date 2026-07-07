@@ -57,7 +57,20 @@ let prover_base () =
       pristine := Some st0;
       st0
 
+(* A32: mathcomp regime — when the file imports mathcomp AND the
+   algebra-tactics/mczify packages are installed, preload them so the
+   portfolio's lia/ring/lra actually WORK on boolean-reflection and ssralg
+   goals (the corpus showed the stdlib portfolio is powerless there).
+   Best-effort: silently absent when packages are missing. Opt out:
+   ROCQ_MC_TACTICS=0. *)
+let mc_tactics = ref false
+
+let mentions_mathcomp text =
+  try ignore (Str.search_forward (Str.regexp_string "mathcomp") text 0); true
+  with Not_found -> false
+
 let make_session prefix =
+  mc_tactics := false;
   let st0 = prover_base () in
   let steps, stop =
     D.exec_text ~cache:D.prefix_cache ~timeout_s:300. ~qed_timeout_s:300. st0
@@ -85,6 +98,25 @@ let make_session prefix =
       | D.Done -> (
           match List.rev steps2 with s :: _ -> s.D.post | [] -> base)
       | _ -> base
+    end
+    else base
+  in
+  let base =
+    if Sys.getenv_opt "ROCQ_MC_TACTICS" <> Some "0" && mentions_mathcomp prefix
+    then begin
+      let try_load st txt =
+        match D.exec_text ~timeout_s:60. ~qed_timeout_s:60. st txt with
+        | steps, D.Done -> (
+            match List.rev steps with x :: _ -> Some x.D.post | [] -> Some st)
+        | _ -> None
+      in
+      match try_load base "From mathcomp Require Import zify." with
+      | Some b2 -> (
+          mc_tactics := true;
+          match try_load b2 "From mathcomp Require Import lra." with
+          | Some b3 -> b3
+          | None -> b2)
+      | None -> base
     end
     else base
   in
@@ -924,11 +956,19 @@ let portfolio_base =
   [ "lra."; "lia."; "nra."; "nia."; "field."; "intros. nra.";
     "ring."; "ring_simplify. lra."; "ring_simplify. nra."; "auto with real arith." ]
 
-let portfolio =
+let portfolio () =
   let base =
     if Sys.getenv_opt "ROCQ_HINTS_SSR" = Some "1" then
       "by []." :: "done." :: "by lia." :: portfolio_base
     else portfolio_base
+  in
+  let base =
+    (* A32: with algebra-tactics/mczify loaded, ssreflect-style closers and
+       the bridged arithmetic tactics gain real power on mathcomp goals *)
+    if !mc_tactics then
+      "by []." :: "done." :: "by lia." :: "by ring." :: "by lra."
+      :: "by nia." :: base
+    else base
   in
   (* counterfactual-replay hook: extra newline-separated finishers *)
   match Sys.getenv_opt "ROCQ_PORTFOLIO_EXTRA" with
@@ -961,7 +1001,7 @@ let auto_close_tool : M.tool =
           let t0 = Unix.gettimeofday () in
           let tried = ref [] in
           let winner = ref None in
-          let cands = portfolio @ auto2_scripts st in
+          let cands = portfolio () @ auto2_scripts st in
           List.iter
             (fun cand ->
               if !winner = None then begin
