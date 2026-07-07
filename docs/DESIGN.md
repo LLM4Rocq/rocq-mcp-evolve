@@ -27,7 +27,7 @@ Derived before building anything, to be validated/falsified by measurement:
 
 ## Substrate decision
 
-Link against installed Rocq 9.2 OCaml libraries (`rocq-runtime.*`), no source
+Link against installed Rocq 9.1.1 OCaml libraries (9.2.0 at start; downgraded by the Coquelicot install, A7) (`rocq-runtime.*`), no source
 changes to Rocq. The interaction core is built directly on the public vernac /
 proof-engine API. [Baseline deliberately ignores all of the above requirements:
 one `check(file)` tool, full `rocq compile` per call.]
@@ -101,9 +101,11 @@ effect (266 ms → ~1 ms/interaction measured in the session smoke).
    call, first success commits). Motivation: 97 % of the winner's failures die
    at max-turns; closers were enumerated manually at 1 turn each.
    **[KEPT — session_try_hints_auto_dev60: pass@1 up in every bucket (easy
-   +8 %, medium +16 %, hard +13 %); hard +2 strictly-new, 0 lost; cost flat;
-   71 % of auto_close calls closed a goal, top winner `auto with real arith.`
-   (46/64) — a tactic the policy never tried unprompted. The interface
+   +8 %, medium +16 %, hard +13 %); hard +2 strictly-new, 0 lost; cost flat.
+   NOTE (A22): the initially-reported mechanism stat (71 % close rate, `auto
+   with real arith` 46/64) was inflated by a false-winner bug and is
+   retracted; post-fix accounting shows ~23 % real close rate with lra/synth
+   leading. The pass@1 verdict is end-to-end and unaffected. The interface
    should enumerate; the model should strategize.]**
 8. `+did-you-mean` — unknown-reference errors carry up to 5 real near-miss
    lemma names (push-based premise help; the pull-based `search` tool was
