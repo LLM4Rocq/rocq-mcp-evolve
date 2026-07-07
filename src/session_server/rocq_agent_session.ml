@@ -59,7 +59,10 @@ let prover_base () =
 
 let make_session prefix =
   let st0 = prover_base () in
-  let steps, stop = D.exec_text ~timeout_s:120. ~qed_timeout_s:120. st0 prefix in
+  let steps, stop =
+    D.exec_text ~cache:D.prefix_cache ~timeout_s:300. ~qed_timeout_s:300. st0
+      prefix
+  in
   (match stop with
   | D.Done -> ()
   | D.Error_at { text; msg; _ } ->
@@ -595,10 +598,8 @@ let step_tool : M.tool =
                     if s.complete && n_ok > 0 then begin
                       s.complete <- true;
                       write_candidate s;
-                      Printf.sprintf
-                        "%sok: %d sentence(s) committed.\nPROOF COMPLETE — the \
-                         file is saved. Reply DONE."
-                        (fmt_msgs all_msgs) n_ok
+                      Printf.sprintf "%sok: %d sentence(s) committed.\n%s"
+                        (fmt_msgs all_msgs) n_ok (complete_msg s)
                     end
                     else
                       Printf.sprintf "%sok: %d sentence(s) committed.\n%s"
@@ -1397,7 +1398,8 @@ let open_tool =
           close_in ic;
           let base0 = prover_base () in
           let steps, stop =
-            D.exec_text ~timeout_s:180. ~qed_timeout_s:180. base0 text
+            D.exec_text ~cache:D.prefix_cache ~timeout_s:300. ~qed_timeout_s:300.
+              base0 text
           in
           let stmt_re name =
             Str.regexp

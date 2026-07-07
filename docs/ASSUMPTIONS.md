@@ -307,3 +307,16 @@ re-open same file trailing goal -> check -> script.
 Haiku A/B clean (35/35, 0 poisoned): medium unchanged, short −.10 → REVERTED
 to opt-in. Fable arm confounded by pool throttling; not re-run (worst-case
 rule decides). Mechanism ships gated; quality verified; test-covered.
+
+## A30 — prefix replay memoization (Jul 7 evening, from user design review)
+User: heavy mathcomp imports reload per open. Measured: all_ssreflect +
+all_algebra prefix = 7.5 s at first load; re-open of the same file was
+14.4 s (full redundant re-exec, doubled by open's probe+make_session).
+Fix: sentence-level replay cache in the driver — re-execution from the
+pristine state skips the interpreter for every leading sentence whose text
+matches the previous run, resuming at the divergence snapshot. Measured
+after: re-open 0.4 s (36x), opening a SIBLING file sharing the import block
+0.5 s (imports paid once per process). Correctness: cache entries are real
+snapshots from identical sentence sequences off the identical start state;
+only prefix/open paths pass the cache. Cross-process warm-pool forking
+remains the documented next step (DESIGN A12).

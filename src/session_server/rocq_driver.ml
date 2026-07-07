@@ -310,8 +310,15 @@ type exec_stop =
 (* Execute all sentences of [src] starting from [st]. Returns committed steps
    (in order) and how execution stopped. Parsing is interleaved with execution
    because the parser needs the current proof mode. *)
-let exec_text ~(timeout_s : float) ~(qed_timeout_s : float) (st : Vernacstate.t)
-    (src : string) : exec_step list * exec_stop =
+(* Replay memoization (A30): re-executing text from the SAME starting state
+   skips the interpreter for every leading sentence whose text matches the
+   previous run, resuming from the cached snapshot at the first divergence.
+   Callers pass the cache ONLY when starting from the pristine post-init
+   state (prefix loads / open), so cached snapshots are always reachable by
+   genuine re-execution. Heavy imports (e.g. the mathcomp bundles) then cost
+   once per process instead of once per open. *)
+let exec_text ?cache ~(timeout_s : float) ~(qed_timeout_s : float)
+    (st : Vernacstate.t) (src : string) : exec_step list * exec_stop =
   let pa =
     Procq.Parsable.make ~loc:(Loc.initial Loc.ToplevelInput)
       (Gramlib.Stream.of_string src)
@@ -324,7 +331,13 @@ let exec_text ~(timeout_s : float) ~(qed_timeout_s : float) (st : Vernacstate.t)
         let b = max 0 b and e = min (String.length src) e in
         if e > b then String.sub src b (e - b) else "<sentence>"
   in
-  let rec loop st acc =
+  let save acc =
+    match cache with
+    | Some c ->
+        c := List.rev_map (fun x -> (x.text, x.post)) acc
+    | None -> ()
+  in
+  let rec loop st remaining_cache acc =
     Vernacstate.unfreeze_full_state st;
     let pm =
       if proof_open st then Some (Synterp.get_default_proof_mode ()) else None
@@ -332,25 +345,42 @@ let exec_text ~(timeout_s : float) ~(qed_timeout_s : float) (st : Vernacstate.t)
     match Procq.Entry.parse (Pvernac.main_entry pm) pa with
     | exception e when CErrors.noncritical e ->
         let e, info = Exninfo.capture e in
+        save acc;
         ( List.rev acc,
           Parse_error
             {
               msg = Pp.string_of_ppcmds (CErrors.iprint (e, info));
               loc = Option.map Loc.unloc (Loc.get_loc info);
             } )
-    | None -> (List.rev acc, Done)
-    | Some vc ->
+    | None ->
+        save acc;
+        (List.rev acc, Done)
+    | Some vc -> (
         let text = sentence_text vc.CAst.loc in
-        let tmo = if is_qed_like text then qed_timeout_s else timeout_s in
-        let t0 = Unix.gettimeofday () in
-        (match exec_sentence ~timeout_s:tmo st vc with
-        | Ok_st (st', msgs) ->
-            let ms = (Unix.gettimeofday () -. t0) *. 1000. in
-            loop st'
-              ({ text; post = st'; msgs; ms; is_query = is_query_sentence text }
+        match remaining_cache with
+        | (ctext, cpost) :: ctl when String.equal ctext text ->
+            (* cache hit: skip the interpreter, adopt the cached snapshot *)
+            loop cpost ctl
+              ({ text; post = cpost; msgs = []; ms = 0.;
+                 is_query = is_query_sentence text }
               :: acc)
-        | Err { msg; loc; messages } ->
-            (List.rev acc, Error_at { text; msg; loc; msgs = messages })
-        | Timeout t -> (List.rev acc, Timeout_at { text; timeout_s = t }))
+        | _ ->
+            let tmo = if is_qed_like text then qed_timeout_s else timeout_s in
+            let t0 = Unix.gettimeofday () in
+            (match exec_sentence ~timeout_s:tmo st vc with
+            | Ok_st (st', msgs) ->
+                let ms = (Unix.gettimeofday () -. t0) *. 1000. in
+                loop st' []
+                  ({ text; post = st'; msgs; ms;
+                     is_query = is_query_sentence text }
+                  :: acc)
+            | Err { msg; loc; messages } ->
+                save acc;
+                (List.rev acc, Error_at { text; msg; loc; msgs = messages })
+            | Timeout t ->
+                save acc;
+                (List.rev acc, Timeout_at { text; timeout_s = t })))
   in
-  loop st []
+  loop st (match cache with Some c -> !c | None -> []) []
+
+let prefix_cache : (string * Vernacstate.t) list ref = ref []
