@@ -1,5 +1,66 @@
 # Results report — AI-native Rocq tooling
 
+## Executive summary
+
+**What was built.** A tool layer for LLM agents driving the Rocq prover,
+implemented in OCaml directly on the installed rocq-runtime libraries: a
+persistent in-process proof session with commit-good-prefix semantics,
+speculative multi-tactic evaluation, a machine-enumerated finisher portfolio
+with mechanical hint-term synthesis, enriched error payloads (Lean-ism
+rewrites, near-miss lemma names), a uniform preloaded tactic environment,
+real-project load-path support (dune/_CoqProject), and a multi-agent
+shared-proof daemon. Every component was admitted or rejected by a measured
+per-difficulty-bucket A/B against its predecessor; four honest reversions are
+part of the record.
+
+**The design law the data converged on.** Interface value for LLM agents
+concentrates in one currency: *prover-grounded information per model turn, at
+zero marginal turn cost*. Everything that pushed information into existing
+turns won (sessions, batched speculation, portfolios, synthesized hints,
+error enrichment, environment preloading); everything that asked the agent to
+spend turns pulling information, or withheld context to save tokens, lost
+(a search tool with heavy adoption and zero rescue effect; compact
+goal-delta rendering; a three-agent relay team).
+
+**Headline numbers.**
+- Fixed weak policy (claude-haiku-4-5), dev60 per-bucket pass@1: baseline
+  .44/.25/.30 → best .675/.575/.475 across ten measured changes, at −45 %
+  cost and −55 % wall per attempt; per-interaction prover latency 266 ms →
+  ~1 ms.
+- Held-out (miniF2F test, single mechanically-unlocked run of the frozen
+  config): pass@1 .519/.127/.043, pass@2 .569/.165/.057 — efficiency
+  transfers within ~15 % of dev; the medium-bucket drop vs dev is analyzed
+  honestly in §7.
+- Policy-neutrality (the A24 `universal` configuration, one server + one
+  neutral prompt): at claude-sonnet-5 it beats the naive interface in every
+  bucket (.95/1.00/.85 vs .925/.95/.80, 2 reps) at −40 % wall — the first
+  session-substrate configuration to dominate naive at a strong policy — and
+  is best-or-tied at the weak policy. The earlier "optimal interface is
+  policy-dependent" finding (§5b) was largely a fixable handshake defect,
+  found by qualitative failure analysis (§FAILURE_ATLAS) and closed the same
+  day.
+- Scalability (corrected, §5): both configs scale healthily to N=8 parallel
+  agents; the winner's advantage is a ~2.7× per-attempt speed level → ≈6×
+  solved-proof throughput at N=8, with the local prover substrate never the
+  constraint.
+- SOTA comparison (rocq-mcp, first contact only after design freeze — git
+  history proves independence): at-baseline solve rates at Haiku despite
+  heavy interactive-tool adoption, trailing everything at Sonnet — evidence
+  that interactivity without turn-compression does not convert.
+- Multi-agent proving (shared-proof daemon): infrastructure fully validated
+  (branch-per-subgoal, merge-by-replay, gate-verified composed proofs);
+  the coordinator/workers/finisher pattern measured decisively NEGATIVE at
+  equal wall-clock, on both natural and structurally decomposable problems —
+  kept in the record as the parallel axis's honest boundary.
+
+**Process results worth as much as the numbers.** A mechanically-enforced
+held-out lock (single logged unlock); a layered anti-gaming gate that
+survived an adversarial audit (one real soundness hole found by a 43-agent
+review, fixed, and shown by audit of all 2 267 recorded solves to have never
+been exploited); pre-registered predictions (A19, A24) stated before their
+measurements; and public retraction of two contaminated measurement claims
+(§5) with full confounder disclosure.
+
 Every number here is reproducible from raw logs:
 `python3 harness/report.py <run_id> [--compare baseline_dev60]` and
 `python3 harness/profile.py <run_id>`. Plots: `harness/plots.py` (report phase).
@@ -474,9 +535,57 @@ defects (full verdicts in the workflow journal; the material ones):
   merges): FIXED before the decomposable team rerun.
 
 ## 8. Threats to validity
-- Policy nondeterminism (no seed control in CLI) → ≥2 reps, variance reported.
-- Shared machine: evals run alone under caffeinate; sleep-contaminated attempts
-  flagged (`machine_slept`) and excluded from timing aggregates.
-- Solve-rate differences shift the "per solved proof" conditioning set across
-  configs; per-bucket reporting + identical problem sets mitigate composition
-  effects; pass@k on identical reps.
+- **Policy nondeterminism** (no sampling-seed control in the CLI): ≥2 reps on
+  every load-bearing comparison, rep variance reported; 1-rep cells (A24
+  haiku-hard, ssreflect probe, some annex arms) are labeled as such.
+- **Environment instability**: laptop sleep and time-of-day endpoint load
+  both contaminated measurements; both were detected (wall/monotonic drift
+  flag; cross-window comparison), disclosed, and the affected tables
+  re-measured in single windows (§5). Residual risk: cross-config sweep
+  levels compare across different windows.
+- **Composition effects**: solve-rate differences shift the per-solved-proof
+  conditioning set; mitigated by per-bucket reporting, identical problem
+  sets, and per-problem overlap analysis on keep/revert calls.
+- **Indirect adaptation to dev**: several kept changes were motivated by dev
+  failure modes; the held-out medium-bucket drop (§7) is consistent with
+  selection optimism on that bucket. The test split influenced nothing
+  (mechanical lock, single access).
+- **Memorization**: the policy has likely seen stdlib and competition
+  problems in training; absolute solve rates are therefore optimistic, while
+  config-vs-config deltas (shared policy) remain valid.
+- **Measured-code correctness**: a 43-agent adversarial review confirmed 31
+  defects (§7b); all number-affecting ones are fixed or quantified; the gate
+  soundness hole was audited against every recorded solve (zero affected).
+- **SOTA comparison fairness**: rocq-mcp ran through a submit sidecar and
+  suffered a startup race in some attempts (§SOTA); its numbers are a lower
+  bound and the mechanism analysis (adoption without conversion) is the
+  robust claim, not the exact gap.
+- **The team negative** is bounded by this coordinator/prompt design and
+  2-way-split problems; deeper decomposition structures were not available
+  in these datasets.
+
+## 9. Conclusions
+
+1. **The interface is a multiplier, not a magician.** The same weak policy
+   moved from .44/.25/.30 to .675/.575/.475 purely through interface changes
+   — but hard miniF2F remained at ≈4-6 % under every design: tooling
+   multiplies capability that exists; it does not create mathematical
+   insight.
+2. **One neutral configuration suffices.** After fixing the defects that
+   qualitative analysis exposed, a single policy-agnostic server with a
+   neutral prompt is best-or-tied everywhere measured, refuting our own
+   interim "policy-dependent interface" conclusion. Interaction style
+   belongs to the prompt; capability belongs to the server; the server
+   should serve every style first-class.
+3. **Turn-compression is the differentiator** — between our baseline and
+   winner, and between rocq-mcp and both. Sessions alone do not convert;
+   machine-enumerated trials and zero-turn information do.
+4. **Deterministic machinery beats agentic machinery where both apply.**
+   The portfolio, hint synthesis, auto-Qed, and error enrichment are plain
+   code — no model calls — and account for a large share of the gains. The
+   most cost-effective "AI" in this system is the part that isn't AI.
+5. **Measure the measurement.** The two most consequential defects of the
+   project (a gate soundness hole; a fabricated-victory handshake worth
+   10 pp at the strong policy) were found not by more benchmarking but by
+   adversarial review and qualitative reading of transcripts. Instrument
+   first; audit what you instrument.
