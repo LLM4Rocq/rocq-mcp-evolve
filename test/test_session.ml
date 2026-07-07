@@ -242,6 +242,50 @@ let a10 () =
     end
   end
 
+(* ---- A11 exemplar retrieval (A27) ------------------------------------ *)
+let a11 () =
+  let name = "A11 exemplar retrieval" in
+  (* Distinctive rare token `foobarqux` guarantees a high-IDF statement match
+     so the score clears the >0.8 ranking gate. *)
+  let sib =
+    "Lemma sib_addz_zero : forall foobarqux : nat, foobarqux + 0 = foobarqux.\n\
+     Proof. induction foobarqux; simpl; auto. Qed.\n\n"
+  in
+  let tgt_stmt =
+    "Lemma tgt_addz_zero_twice : forall foobarqux : nat, (foobarqux + 0) + 0 = \
+     foobarqux.\n"
+  in
+  (* the target's OWN proof — lives AFTER the prefix in the same file and must
+     never be retrievable (leak-proofing); "now rewrite" is its marker *)
+  let tgt_proof = "Proof. intros n. now rewrite <- !plus_n_O. Qed.\n" in
+  (* TASK prefix = file content up to and including the target statement line *)
+  let prefix = sib ^ tgt_stmt in
+  (* project source dir holds the FULL file (prefix is an exact byte-prefix of
+     it, so the server flags it same-file and only admits the region before) *)
+  let proj = tmpdir "sessA_exempl" in
+  write_file (Filename.concat proj "proj.v") (prefix ^ tgt_proof);
+  let wd, tf = setup_task prefix in
+  let s =
+    spawn_server
+      ~env:
+        (base_env ~workdir:wd ~taskfile:tf ~tools:"state,step"
+           [ ("ROCQ_EXEMPLARS", "1"); ("ROCQ_PROJECT_SRC", proj) ])
+      session_exe
+  in
+  initialize s;
+  let r1 = call s ~name:"state" ~args:(`Assoc []) in
+  check (contains r1 "similar PROVED lemmas")
+    (name ^ ": exemplar block delivered on first tool response");
+  check (contains r1 "sib_addz_zero") (name ^ ": sibling PROVED lemma retrieved");
+  check
+    (not (contains r1 "now rewrite"))
+    (name ^ ": target's own proof (after prefix) not leaked");
+  let r2 = call s ~name:"state" ~args:(`Assoc []) in
+  check
+    (not (contains r2 "similar PROVED lemmas"))
+    (name ^ ": exemplar block pushed exactly once");
+  close s
+
 let () =
   a1 ();
   a2 ();
@@ -253,4 +297,5 @@ let () =
   a8 ();
   a9 ();
   a10 ();
+  a11 ();
   summary "suite A"
