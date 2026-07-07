@@ -211,6 +211,61 @@ def ladder_slope(stats_by_cfg):
     return "".join(parts)
 
 
+def metric_slope(stats_by_cfg, key, title_txt, fmt, per_solve=True, width=370):
+    """Small-multiple: one efficiency metric across ladder steps, 3 bucket lines.
+    per_solve divides the per-attempt mean by pass@1 (expected spend per
+    solved proof, failed attempts included)."""
+    cfgs = [c for c in LADDER_ORDER if c in stats_by_cfg]
+    if len(cfgs) < 2:
+        return ""
+    height, left, top = 210, 52, 26
+    plot_w, plot_h = width - left - 20, height - top - 46
+    vals, vmax = {}, 0.0
+    for b in BUCKETS:
+        vs = []
+        for cfg in cfgs:
+            st = stats_by_cfg[cfg].get(b) or {}
+            v = st.get(key)
+            p = st.get("pass@1")
+            if v is not None and per_solve:
+                v = v / p if p else None
+            vs.append(v)
+            if v is not None:
+                vmax = max(vmax, v)
+        vals[b] = vs
+    if vmax == 0:
+        return ""
+    def sx(i):
+        return left + i / (len(cfgs) - 1) * plot_w
+    def sy(v):
+        return top + plot_h - (v / vmax) * plot_h
+    parts = [f'<svg viewBox="0 0 {width} {height}" width="{width}" role="img" '
+             f'aria-label="{esc(title_txt)} across ladder steps">']
+    parts.append(f'<text x="{left}" y="14" class="vlab">{esc(title_txt)}</text>')
+    for gy in (0, 0.5, 1.0):
+        yy = sy(gy * vmax)
+        parts.append(f'<line class="grid" x1="{left}" y1="{yy:.0f}" x2="{left + plot_w}" y2="{yy:.0f}"/>')
+        parts.append(f'<text class="tick" x="{left - 6}" y="{yy + 4:.0f}" text-anchor="end">{fmt(gy * vmax)}</text>')
+    for i, cfg in enumerate(cfgs):
+        parts.append(f'<text class="tick" x="{sx(i):.0f}" y="{height - 8}" '
+                     f'text-anchor="middle" font-size="9.5">'
+                     f'{esc(LADDER_INFO[cfg][0].split(" ", 1)[0])}</text>')
+    for b in BUCKETS:
+        col = f"var(--s-{b})"
+        pts = [(sx(i), sy(v), cfgs[i], v) for i, v in enumerate(vals[b]) if v is not None]
+        if len(pts) < 2:
+            continue
+        d = "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y, *_ in pts)
+        parts.append(f'<path d="{d}" fill="none" stroke="{col}" stroke-width="2" '
+                     f'stroke-linejoin="round" stroke-linecap="round"/>')
+        for x, y, cfg, v in pts:
+            parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3" fill="{col}" '
+                         f'stroke="var(--surface-1)" stroke-width="1.5">'
+                         f'<title>{esc(LADDER_INFO[cfg][0])} · {b}: {fmt(v)}</title></circle>')
+    parts.append("</svg>")
+    return "".join(parts)
+
+
 # ---------- chart: A24 policy-neutrality comparison ----------
 
 def a24_chart(groups):
@@ -369,6 +424,17 @@ def build():
         f'<div class="tile card"><div class="lbl">policy spend, whole experiment</div>'
         f'<div class="val">${total_cost:,.0f}</div><div class="delta">{total_attempts:,} gated attempts</div></div>',
     ]
+    bmed = naive_h.get("medium") or {}
+    umed = uni_h.get("medium") or {}
+    if bmed.get("pass@1") and umed.get("pass@1"):
+        cb = (bmed.get("cost_usd_mean") or 0) / bmed["pass@1"]
+        cu = (umed.get("cost_usd_mean") or 0) / umed["pass@1"]
+        wb = (bmed.get("wall_s_mean") or 0) / bmed["pass@1"]
+        wu = (umed.get("wall_s_mean") or 0) / umed["pass@1"]
+        tiles.insert(2,
+            f'<div class="tile card"><div class="lbl">per SOLVED medium proof · haiku</div>'
+            f'<div class="val">${cb:.2f} → ${cu:.2f}</div>'
+            f'<div class="delta">wall {wb:.0f}s → {wu:.0f}s · naive → universal</div></div>')
 
     # ladder table: step, change, verdict, outcome, numbers
     lrows = []
@@ -383,6 +449,27 @@ def build():
                     + "".join(f"<th class=num>{b}</th>" for b in BUCKETS)
                     + "</tr>" + "".join(lrows) + "</table>")
 
+    eff_charts = (metric_slope(stats_by_cfg, "cost_usd_mean", "cost $ / solved proof", lambda v: f"${v:.2f}")
+                  + metric_slope(stats_by_cfg, "wall_s_mean", "wall s / solved proof", lambda v: f"{v:.0f}")
+                  + metric_slope(stats_by_cfg, "tokens_out_mean", "output tokens / solved proof", lambda v: f"{v/1000:.0f}k"))
+    ef_rows = []
+    for cfg in LADDER_ORDER:
+        st = stats_by_cfg.get(cfg)
+        if not st:
+            continue
+        tds = []
+        for k, f in (("cost_usd_mean", lambda v: f"{v:.3f}"),
+                     ("wall_s_mean", lambda v: f"{v:.0f}"),
+                     ("tokens_out_mean", lambda v: f"{v/1000:.1f}k")):
+            for b in BUCKETS:
+                v = (st.get(b) or {}).get(k)
+                tds.append(f"<td class=num>{'–' if v is None else f(v)}</td>")
+        ef_rows.append(f"<tr><td><b>{esc(LADDER_INFO[cfg][0])}</b></td>{''.join(tds)}</tr>")
+    eff_table = ("<table><tr><th>step</th>"
+                 + "".join(f"<th class=num>{b} {m}</th>" for m in ("$", "wall", "tok")
+                           for b in BUCKETS)
+                 + "</tr>" + "".join(ef_rows) + "</table>")
+
     # A24 comparison chart
     a24 = ""
     if uni_h and uni_s:
@@ -394,9 +481,27 @@ def build():
              [("naive", "var(--c-baseline)", {b: p1(naive_s, b) for b in BUCKETS}),
               ("universal", "var(--c-winner)", {b: p1(uni_s, b) for b in BUCKETS})]),
         ]
+        def a24row(name, st):
+            cs, ws = [], []
+            for b in BUCKETS:
+                x = st.get(b) or {}
+                p = x.get("pass@1")
+                cs.append(f"${(x.get('cost_usd_mean') or 0)/p:.2f}" if p else "–")
+                ws.append(f"{x.get('wall_s_mean') or 0:.0f}s" if x else "–")
+            return (f"<tr><td>{esc(name)}</td>"
+                    + "".join(f"<td class=num>{c}</td>" for c in cs)
+                    + "".join(f"<td class=num>{w}</td>" for w in ws) + "</tr>")
+        a24_tbl = ("<details><summary>cost per solve &amp; wall per attempt</summary>"
+                   "<table><tr><th>config</th>"
+                   + "".join(f"<th class=num>{b} $/solve</th>" for b in BUCKETS)
+                   + "".join(f"<th class=num>{b} wall</th>" for b in BUCKETS)
+                   + "</tr>"
+                   + a24row("naive @ haiku", naive_h) + a24row("universal @ haiku", uni_h)
+                   + a24row("naive @ sonnet", naive_s) + a24row("universal @ sonnet", uni_s)
+                   + "</table></details>")
         a24 = (legend_html([("naive whole-file interface", "var(--c-baseline)"),
                             ("universal (recommended)", "var(--c-winner)")])
-               + a24_chart(groups))
+               + a24_chart(groups) + a24_tbl)
 
     # annex table: everything measured that is not on the haiku ladder
     annex = []
@@ -438,6 +543,16 @@ per bucket; reverted steps are part of the record but not of the shipped
 tool. Hover any point for exact values.</p>
 <div class="card">{legend_html(BUCKET_LEGEND)}{ladder_slope(stats_by_cfg)}
 <details><summary>step-by-step table</summary>{ladder_table}</details></div>
+
+<h2>Cost and time — expected spend per solved proof</h2>
+<p class="caption">The experiment's other two objectives. Each chart divides the
+per-attempt mean by pass@1: the expected cost (or wall-clock, or model-output
+tokens) to obtain ONE solved proof, failed attempts included. Same ladder
+steps and buckets as above — solve rate rose while $ and time per proof fell.
+Hover for values; hard-bucket spikes at early steps reflect near-zero solve
+rates there.</p>
+<div class="card">{legend_html(BUCKET_LEGEND)}{eff_charts}
+<details><summary>per-attempt table (cost $, wall s, tokens out — mean per attempt)</summary>{eff_table}</details></div>
 
 <h2>Policy-neutrality — the headline result (A24)</h2>
 <p class="caption">One server, one neutral prompt, measured at both a weak and a
