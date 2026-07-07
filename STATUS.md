@@ -1,76 +1,55 @@
-# STATUS — AI-native Rocq tooling experiment
+# STATUS — AI-native Rocq tooling experiment · RUN COMPLETE
 
-_Last updated: 2026-07-04 01:45 · day 4 of the run (hard stop Jul 7 EOD)_
+_Final update: 2026-07-07 · all deliverables shipped and pushed_
 
-## ★ Headlines
+## The run in one paragraph
+Starting from a deliberately-naive control, ten measured interface changes
+(six kept, four honestly reverted) turned a weak policy's .44/.25/.30 into
+.675/.575/.475 (dev60 pass@1 e/m/h) at −45 % cost — and after two
+Fable-driven quality passes (a 43-attempt failure atlas and a 31-finding
+adversarial measurement audit) exposed and fixed the defects that made
+interfaces look policy-dependent, ONE policy-neutral configuration
+(`universal`) is best-or-tied everywhere measured, including **beating the
+naive interface in every bucket at the strong policy** (.95/1.00/.85 vs
+.925/.95/.80, 2 reps). The held-out protocol number (frozen config, single
+mechanically-logged unlock): pass@1 .519/.127/.043 on miniF2F test.
 
-**Held-out (the protocol number)** — single logged run of the frozen config on
-miniF2F test: pass@1 **.519 / .127 / .043** (easy/medium/hard), pass@2
-.569/.165/.057. Unlock 2026-07-03 13:57:42; zero test influence on any
-decision; 488/488 attempts clean.
+## Final deliverables (all in this repo, all pushed)
+- **README.md** — describe / install / try-in-2-minutes (verified commands),
+  MCP client wiring, real-project usage
+- **docs/REPORT.md** — full report: executive summary, every A/B with
+  per-bucket numbers, corrected scalability (§5, with retractions), annexes
+  (cross-policy, SOTA, teams, in-project context, ssreflect), held-out (§7),
+  measurement audit (§7b), threats, conclusions
+- **Test suite** — `dune runtest`: 4 suites, 67 checks, all green
+  (session contracts + atlas/audit regressions; multi-agent daemon incl.
+  merge-renumbering; scalability bounds; gate soundness incl. the
+  comment-desync exploit)
+- **docs/DESIGN.md** (per-decision rationale) · **docs/FAILURE_ATLAS.md** ·
+  **docs/ASSUMPTIONS.md** (A1–A25) · **docs/TASK.md** (original brief)
+- **The tool layer**: src/mcp_core, src/session_server (the universal
+  surface), src/psession (multi-agent daemon + shim), src/baseline_server,
+  src/submit_server; configs/ for every measured condition; configs/FROZEN.md
+- **Harness**: runner, anti-gaming gate, team orchestrator, report/profile/
+  monitor/dashboard/plots/sweep, manifests, project_args, repro/setup.sh
 
-**Recommended configuration (A24, pre-registered worst-case criterion)** —
-`universal`: ONE policy-neutral server (whole-proof `check` with
-repair-from-failure + step/try/auto_close+hint-synthesis + error enrichment +
-env-v2), ONE neutral prompt. It equals or beats the naive interface in
-**every bucket at both measured policies** (1 rep each):
-haiku .650/.600/.500 (best measured) · sonnet **.950/1.000/.800**
-(first substrate config to dominate naive; −40 % wall).
+## Reproduce anything
+`./repro/setup.sh <dir>` recreates the pinned environment (Rocq 9.1.1);
+`python3 harness/report.py <run_id>` reproduces any table from raw logs;
+`python3 harness/dashboard.py` renders the live view; `dune runtest` proves
+the shipped binaries honor every measured contract.
 
-**Baseline → best-at-haiku across the ladder**: pass@1 .44/.25/.30 →
-.65/.60/.50, cost −45 %, wall −55 %, prover latency 266 ms → ~1 ms/call.
+## Honest boundaries (details in REPORT §8)
+Hard competition problems remain policy-bound (~4-6 % under every design);
+the haiku-hard cell of `universal` is noisy at 2 reps (σ=.21); the team
+pattern is decisively negative at this scale; ssreflect-idiom proving needs
+per-project knowledge distillation (roadmap in DESIGN); two measurement
+claims were publicly retracted after contamination was found (§5).
 
-## Scoreboard (dev60 pass@1 easy/med/hard unless noted)
-| config | result | verdict |
-|---|---|---|
-| baseline (naive) @ haiku | .44/.25/.30 (4 reps) | control |
-| session | +30 % med/hard, −80 % out-tokens | KEPT |
-| + try | easy +37 %, med/hard +15 % | KEPT |
-| + compact render | −2.5 pp everywhere | REVERTED |
-| + search tool (pull) | adoption w/o rescue | REVERTED |
-| + hints | medium +27 % | KEPT |
-| + auto_close portfolio | all buckets up | KEPT |
-| + did-you-mean (push) | easy +8 %, med +9 % | KEPT |
-| env-v2 (miniF2F axis) | .57/.30/.06 vs .32/.13/.00 | KEPT |
-| rung 9b hint synthesis | medium +28 %; transfers to sonnet (hard .85 > naive .80) | KEPT |
-| rung 10 atlas fixes (auto-Qed, dead tools, search flip) | closed the sonnet medium gap | KEPT |
-| **universal (A24)** | ≥ naive everywhere, both policies | **RECOMMENDED** |
-| team k=3 (hard70 AND decomposable27) | ~½ of solo at equal wall | REVERTED (infra validated) |
-| rocq-mcp SOTA | ≈ baseline @ haiku; trails all @ sonnet | comparison |
-| in-project ctx (A20) | lean holds short at 2.8× fewer tokens; full wins medium | both modes shipped |
-| ssreflect probe | short .50, medium .07 | regime limit, honest |
-
-## Fable-powered quality artifacts (Jul 3 night)
-- **Failure atlas** (docs/FAILURE_ATLAS.md): 43 attempts deep-read; found the
-  Qed-handshake hole (= the entire sonnet incremental gap), dead advertised
-  tools (psatz/csdp, field_simp), Search direction blindness → all fixed as
-  rung 10 and confirmed by measurement within 12 h.
-- **Adversarial measurement review**: 31 confirmed findings; critical gate
-  soundness hole FIXED (comment/string lexer desync) and audited — **0 of
-  2 267 recorded solves affected**; daemon merge-renumbering fixed before it
-  could bite; accounting caveats documented in REPORT §7b.
-- **Sweep corrected (REPORT §5)**: the original "baseline saturates at N=2,
-  wall ×3.2" was a sleep artifact on a daytime-load confound. Clean single-
-  window data: BOTH configs scale healthily (efficiency at N=8: winner 80 %
-  vs baseline 72 %); the winner's parallel advantage is its ~2.7× per-attempt
-  speed level → ≈6× solved-throughput at N=8 (the earlier 19× is retracted).
-
-## Infrastructure deliverables beyond the benchmark
-Real-project support (A23): `_CoqProject`/dune load-path discovery
-(`harness/project_args.py`), ROCQ_INIT_ARGS/-Q plumbed through session,
-baseline, gate; validated end-to-end on a dune project (proof using a project
-lemma, gate-verified). Shared-proof daemon + MCP shim (k agents, one proof).
-Dashboard (`logs/dashboard.html`), one-command repro (`repro/setup.sh`).
-
-## Budget
-Policy spend ≈ $220 total (ladder+confirmations+annexes+SOTA+final).
-Fable: 2 workflows ≈ 3.4 M subagent tokens (atlas + review). Machine: ~60 h.
-Remaining: sweep rerun (running), optional universal 2nd rep, consolidation.
-
-## Plan to close (Jul 4–7)
-Jul 4: finish sweep correction → REPORT §5 rewrite; full report coherence
-pass; DESIGN final read. Jul 5: universal 2nd rep (if pool allows), figures,
-report freeze. Jul 6–7: buffer + final push, clean end.
+## Budget actuals
+Policy pool ≈ $250 total across ~6 000 gated attempts · Fable: 2 workflows +
+3 implementation agents (~3.7 M subagent tokens) · wall: 6 days incl. two
+overnight autonomous pipelines · every number's provenance in logs/ + git.
 
 ## Needs your input
-_(empty — nothing blocking)_
+_(empty — the run is complete)_
