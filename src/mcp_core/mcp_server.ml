@@ -88,10 +88,14 @@ let handle_tools_call tools id params =
   | Some t ->
       let t0 = Unix.gettimeofday () in
       let r =
-        try t.handler args
-        with e ->
-          text_result ~is_error:true
-            (Printf.sprintf "internal tool error: %s" (Printexc.to_string e))
+        try t.handler args with
+        | Failure m ->
+            (* Failure messages are crafted for the agent — surface them
+               verbatim, without the exception-printer wrapper *)
+            text_result ~is_error:true m
+        | e ->
+            text_result ~is_error:true
+              (Printf.sprintf "internal tool error: %s" (Printexc.to_string e))
       in
       let dur_ms = (Unix.gettimeofday () -. t0) *. 1000. in
       let result_text = content_text_of r.content in

@@ -286,6 +286,53 @@ let a11 () =
     (name ^ ": exemplar block pushed exactly once");
   close s
 
+(* ---- A12 runtime `open` tool (no task file) -------------------------- *)
+let a12 () =
+  let name = "A12 open tool" in
+  (* no ROCQ_TASK_FILE: the session starts EMPTY and must be opened at
+     runtime with the `open` tool; plain stdlib, no project needed *)
+  let wd = tmpdir "sessA12" in
+  let file = Filename.concat wd "work.v" in
+  write_file file
+    "Lemma a12_helper : forall n : nat, n + 0 = n.\n\
+     Proof. induction n; simpl; auto. Qed.\n\n\
+     Theorem a12_target : forall n : nat, (n + 0) + 0 = n.\n\
+     Proof.\n\
+     Admitted.\n\n\
+     Theorem a12_tail : forall n m : nat, n + m = m + n.\n";
+  let s =
+    spawn_server
+      ~env:
+        [ ("ROCQ_WORKDIR", wd);
+          ("ROCQ_ENABLE_TOOLS", "open,step,state,auto_close");
+          ("ROCQ_EXEMPLARS", "0") ]
+      session_exe
+  in
+  initialize s;
+  (* 1. a proof tool BEFORE any open must direct the agent to `open` first *)
+  let r0 = call s ~name:"state" ~args:(`Assoc []) in
+  check (contains r0 "open") (name ^ ": state before open points at the `open` tool");
+  (* 2. open a specific (Admitted) theorem by name *)
+  let r1 =
+    call s ~name:"open"
+      ~args:(`Assoc [ ("file", `String file); ("theorem", `String "a12_target") ])
+  in
+  check (contains r1 "proving a12_target") (name ^ ": opens a12_target by name");
+  check (contains r1 "goals: 1") (name ^ ": a12_target has one goal");
+  (* 3. auto_close finishes the opened goal (lia) *)
+  let r2 = call s ~name:"auto_close" ~args:(`Assoc []) in
+  check (contains r2 "PROOF COMPLETE") (name ^ ": auto_close closes a12_target");
+  check (contains r2 "proof script") (name ^ ": completion returns the proof script");
+  check (contains r2 "lia") (name ^ ": lia closes a12_target");
+  (* 4. open with no theorem => the file's final open statement (a12_tail) *)
+  let r3 = call s ~name:"open" ~args:(`Assoc [ ("file", `String file) ]) in
+  check (contains r3 "proving the final open statement")
+    (name ^ ": no theorem falls to the final open statement");
+  (* 5. opening a missing file is a clean error *)
+  let r4 = call s ~name:"open" ~args:(`Assoc [ ("file", `String "/nonexistent/x.v") ]) in
+  check (contains r4 "no such file") (name ^ ": missing file reported");
+  close s
+
 let () =
   a1 ();
   a2 ();
@@ -298,4 +345,5 @@ let () =
   a9 ();
   a10 ();
   a11 ();
+  a12 ();
   summary "suite A"
