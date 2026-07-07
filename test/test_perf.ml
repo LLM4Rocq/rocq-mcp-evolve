@@ -96,20 +96,27 @@ let c1 () =
     (fun () ->
       H.initialize srv;
       (* first tool call triggers the lazy prover init + prefix compile *)
-      let _ = H.call srv ~name:"step" ~args:(`Assoc [ ("text", `String "intros n.") ]) in
+      let r0 =
+        H.call srv ~name:"step" ~args:(`Assoc [ ("text", `String "intros n.") ])
+      in
       let init_dt = now () -. t0 in
+      (* content sanity: the prover really ran (guards vacuous timing checks) *)
+      H.check (H.contains r0 "sentence(s) committed") "C1 session actually ran";
       H.check (init_dt < 15.) (Printf.sprintf "C1 session init < 15s (%.2fs)" init_dt);
       (* 20 trivial steps, measure per-call round-trip *)
       let n = 20 in
       let times = Array.make n 0. in
+      let ok_steps = ref 0 in
       let steps_t0 = now () in
       for i = 0 to n - 1 do
         let a = now () in
-        let _ =
+        let r =
           H.call srv ~name:"step" ~args:(`Assoc [ ("text", `String "idtac.") ])
         in
-        times.(i) <- now () -. a
+        times.(i) <- now () -. a;
+        if H.contains r "sentence(s) committed" then incr ok_steps
       done;
+      H.check (!ok_steps = n) "C1 all 20 steps committed";
       let steps_total = now () -. steps_t0 in
       let sorted = Array.copy times in
       Array.sort compare sorted;

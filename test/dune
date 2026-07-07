@@ -3,8 +3,13 @@
  (modules helpers)
  (libraries yojson unix str))
 
-; TEMP: test_session stanza disabled during suite-B/C verification
-; (another agent owns test_session.ml); restored before finishing.
+(test
+ (name test_session)
+ (modules test_session)
+ (libraries test_helpers yojson unix str)
+ (deps
+  (glob_files fixtures/*)
+  %{exe:../src/session_server/rocq_agent_session.exe}))
 
 (test
  (name test_daemon)
