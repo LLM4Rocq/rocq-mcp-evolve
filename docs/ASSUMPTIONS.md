@@ -359,3 +359,15 @@ DOCUMENTED, NOT FIXED (accepted): mk_prefix drops comments between sentences
 cutting (memoized thereafter); preload re-executes per open (~0.3 s);
 strip_comments depth-0 string literals containing "(*"; score recomputation
 in sort; Failure-only clean surfacing; cache memory footprint.
+
+## A32 verdict (Jul 7 night)
+A/B at haiku on mathcomp35, clean (0 poisoned), portfolio confirmed loaded
+(16 candidates incl. by lia/by ring): short .50 = .50, medium 0/14 vs 1/14
+(noise). NO measured lift — mathcomp35 mediums are not final-goal-arithmetic
+failures; they need structural ssreflect steps first (fourth consistent
+confirmation: atlas, counterfactual replay, A26, now A32). DISPOSITION: the
+conditional SHIPS (regime-gated, zero cost when absent, mechanically
+verified capability on arithmetic-shaped goals — the mathcomp analog of
+env-v2, whose miniF2F win came precisely from arithmetic-shaped goals) but
+claims NO benchmark improvement. The honest boundary stands: weak-policy
+ssreflect proving is bounded by structural competence, not by closers.

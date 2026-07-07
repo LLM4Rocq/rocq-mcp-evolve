@@ -91,7 +91,10 @@ Cross-cutting enrichments (zero extra turns, all default-on; disable with `=0`):
   policies can be distracted by it), so off by default; retrieval quality
   itself is verified and leak-proof.
 - **tactic preloading** (`ROCQ_PRELOAD`) — loads Lia/Lra/Psatz after the
-  statement so the standard closers always exist. (`ROCQ_ENV_V2=1`
+  statement so the standard closers always exist. In a **mathcomp** file,
+  additionally preloads `zify`/`algebra-tactics` when installed
+  (`ROCQ_MC_TACTICS=0` to disable), giving `by lia`/`by ring`/`by lra` real
+  power over boolean-reflection and ssralg goals. (`ROCQ_ENV_V2=1`
   additionally *refuses* mid-proof `Require` — a benchmark anti-gaming
   policy, off for normal use.)
 
