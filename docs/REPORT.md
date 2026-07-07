@@ -410,6 +410,15 @@ context-on-demand by default; full-context as a fallback mode. (Absolute
 short-bucket rates likely benefit from policy memorization of stdlib — noted
 per A20; the config A/B is unaffected.)
 
+### A27 exemplar retrieval status
+Server-side exemplar retrieval (statement-similar proved lemmas pushed at
+session start; leak-proof; suite-tested) is BUILT with verified retrieval
+quality; its fable-arm A/B was confounded by API throttling (single turns
+stretching to 171 s after ~100 back-to-back fable attempts) and the haiku
+arm by a transient network failure — the haiku A/B is re-running; verdict
+recorded when clean. Until then exemplars remain default-on as a
+zero-turn-cost feature whose only measured risk is neutral.
+
 ### A24-ext: the strongest available tier (claude-fable-5, dev60, 1 rep)
 
 | interface | pass@1 e/m/h | note |
@@ -459,6 +468,24 @@ awaiting problems with deeper structure (and stronger coordinators).
 short .500 (10/20) · medium .071 (1/14) · long 0/1 — out-of-dialect proving
 degrades gracefully on short lemmas (portfolio closers still fire) and
 collapses where ssreflect idioms dominate.
+
+**The .07 decomposed (fable-tier probe, runs ctx_{full,lean}_fable_mathcomp).**
+Same tools, same 14 medium lemmas, claude-fable-5: full-context .929, lean
+.929 (short 1.00/.95). The mathcomp-medium cliff was a POLICY limit, not a
+tool limit — the stack carries a strong policy to near-ceiling on real
+mathcomp code, and context mode is irrelevant at that tier. The honest
+restatement: out-of-dialect proving is bounded by policy competence; the
+interface neither causes nor can fully compensate it (haiku short .50-.55 is
+what the tools contribute there).
+
+**Counterfactual portfolio replay (272 recorded failures, zero policy cost).**
+Every failure's final committed state was replayed offline against the
+shipped portfolio and three candidate expansions (intros-prefixed closers,
+field_simplify variants, deeper nra). Shipped portfolio re-run rescues
+15/272 (13 hard, 2 medium — states the agent left closeable without calling
+auto_close: turn censoring); ALL expansions add ZERO rescues. Portfolio v3
+is rejected with corpus-wide evidence: the finisher set is not the binding
+constraint (consistent with H3 and the atlas — turns and knowledge are).
 
 **A26 distillation test (negative-to-neutral).** An evidence-mined ssreflect
 hint table (Search-idiom guidance — the corpus's #1 failure at 66 instances —
