@@ -113,7 +113,9 @@ That's it — no configuration at all. Then just ask your agent to finish a
 proof: it calls `open{file}` (optionally `theorem:<name>` to target an
 `Admitted` or any specific statement mid-file), works the proof with the
 other tools, and on completion receives the finished script to insert into
-your file. One session can open several proofs in the same project.
+your file. One session can open several proofs in the same project — the
+import prefix is **replay-memoized**, so even mathcomp-heavy imports are
+paid once per session, not once per open (re-open: ~0.4 s).
 Everything else is automatic:
 
 - **Project load paths are auto-discovered** — the server walks up from the

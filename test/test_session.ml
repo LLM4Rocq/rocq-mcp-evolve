@@ -333,6 +333,54 @@ let a12 () =
   check (contains r4 "no such file") (name ^ ": missing file reported");
   close s
 
+(* ---- A13 prefix replay memoization (A30) ----------------------------- *)
+let a13 () =
+  let name = "A13 prefix replay memoization" in
+  (* two files sharing their first two sentences; opening the second must reuse
+     the cached snapshots for the shared definitions (prefix_cache hit) then run
+     the divergent tail live — we assert functional correctness, not timing *)
+  let wd = tmpdir "sessA13" in
+  let m1 = Filename.concat wd "m1.v" in
+  let m2 = Filename.concat wd "m2.v" in
+  write_file m1
+    "Definition a13_c : nat := 7.\n\
+     Definition a13_d : nat := 35.\n\n\
+     Theorem a13_t1 : a13_c + a13_c = 14.\n";
+  write_file m2
+    "Definition a13_c : nat := 7.\n\
+     Definition a13_d : nat := 35.\n\n\
+     Theorem a13_t2 : a13_d = 5 * a13_c.\n";
+  let s =
+    spawn_server
+      ~env:
+        [ ("ROCQ_WORKDIR", wd);
+          ("ROCQ_ENABLE_TOOLS", "open,step,state");
+          ("ROCQ_EXEMPLARS", "0") ]
+      session_exe
+  in
+  initialize s;
+  (* 1. open m1 => its final open statement (a13_t1) *)
+  let r1 = call s ~name:"open" ~args:(`Assoc [ ("file", `String m1) ]) in
+  check (contains r1 "proving the final open statement")
+    (name ^ ": m1 opens to its final open statement");
+  (* 2. prove a13_t1 (a13_c + a13_c = 14) *)
+  let r2 = step s "Proof. reflexivity. Qed." in
+  check (contains r2 "PROOF COMPLETE") (name ^ ": a13_t1 proved");
+  (* 3. open m2 => shared definitions hit the cache, divergent theorem runs live *)
+  let r3 = call s ~name:"open" ~args:(`Assoc [ ("file", `String m2) ]) in
+  check (contains r3 "proving the final open statement")
+    (name ^ ": m2 opens to its final open statement after prefix cache hit");
+  check (contains r3 "a13_d")
+    (name ^ ": m2 renders the correct new goal (a13_d), not a stale cached one");
+  (* 4. proving works on a memoized base (a13_d = 5 * a13_c) *)
+  let r4 = step s "Proof. reflexivity. Qed." in
+  check (contains r4 "PROOF COMPLETE") (name ^ ": a13_t2 proved on a memoized base");
+  (* 5. re-open m1 — cache now belongs to m2's run; divergence both ways is safe *)
+  let r5 = call s ~name:"open" ~args:(`Assoc [ ("file", `String m1) ]) in
+  check (contains r5 "proving the final open statement")
+    (name ^ ": re-open m1 safe after m2 cached the shared prefix");
+  close s
+
 let () =
   a1 ();
   a2 ();
@@ -346,4 +394,5 @@ let () =
   a10 ();
   a11 ();
   a12 ();
+  a13 ();
   summary "suite A"

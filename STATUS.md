@@ -69,7 +69,13 @@ overnight autonomous pipelines · every number's provenance in logs/ + git.
   in-server (no Python in the usage path); completion returns the insertable
   proof script; clean error surfacing. README rewritten (SOTA + all three
   evaluation dimensions in the headline).
-- Test suite: 95 checks across 4 suites, all green.
+- **A30 prefix replay memoization** (user design review): heavy-import
+  re-open 14.4 s -> 0.4 s; sibling-file open 0.5 s — imports cost once per
+  process. Warm-pool forking across processes = documented next step.
+- **CI**: GitHub Actions builds + runs the full suite on push/PR
+  (.github/workflows/ci.yml); test PATH resolution made portable.
+- **Merged to `main`** (default-branch switch left to the owner).
+- Test suite: 4 suites, all green (~100 checks incl. A13 memoization).
 
 ## Needs your input
 _(empty — the run is complete)_

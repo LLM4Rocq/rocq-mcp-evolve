@@ -153,3 +153,22 @@ Uses harness/gate.py directly (import). Cases (each cites its origin):
 ## Non-goals
 No mocking, no unit tests, no coverage of the Python harness beyond the
 gate, no network. Time budget hard cap: any single suite > 120 s is a bug.
+
+
+## Additions after v1 (kept in sync with the suite)
+
+- **A11 exemplar retrieval (A27)**: block delivered once, sibling retrieved,
+  the target's own proof (after the prefix in the same file) NOT retrievable
+  (leak-proofing), push-once semantics. Requires ROCQ_EXEMPLARS=1 (opt-in
+  since the A27 verdict).
+- **A12 runtime `open` (A29)**: pre-open tools direct the agent to `open`;
+  open at a named Admitted theorem; trailing-goal default; missing-file
+  error.
+- **A13 prefix replay memoization (A30)**: opening a second file sharing
+  leading sentences reuses cached snapshots — correct goal after divergence,
+  proving works on a memoized base, both-ways re-open safe.
+- **B4-B6 contention/conflict pack**: double-focus refusal (ownership
+  guard), concurrent mutating writes from parallel threads, trunk-mutation-
+  under-branch (conclusion-digest renumbering exercised).
+- **helpers.ml portability**: base_path falls back to the inherited PATH
+  when the sibling _opam layout is absent (CI).
