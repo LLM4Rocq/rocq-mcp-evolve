@@ -14,6 +14,6 @@
  (depends
   (ocaml (>= 4.14))
   dune
-  (rocq-runtime (>= 9.1))
+  (rocq-runtime (>= 9.1) (< 9.2))
   (rocq-stdlib :with-test)
   yojson))
