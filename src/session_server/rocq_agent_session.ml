@@ -857,8 +857,9 @@ let auto_close_tool : M.tool =
     name = "auto_close";
     description =
       "Run the standard finishing portfolio against the CURRENT goal in one \
-       call: lia, lra, nra, nia, field_simp+lra/nra, ring, ring_simplify+lra, \
-       psatz, auto with real arith. If one fully succeeds it is committed \
+       call: lia, lra, nra, nia, field, ring, ring_simplify variants, auto \
+       with real arith — plus mechanically synthesized square-nonnegativity \
+       hints when enabled. If one fully succeeds it is committed \
        automatically. Call this first on every new goal before hand-crafting \
        tactics; if it fails, do structural work (intros/destruct/assert) and \
        call it again on the simplified goal.";

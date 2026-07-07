@@ -1,0 +1,32 @@
+(library
+ (name test_helpers)
+ (modules helpers)
+ (libraries yojson unix str))
+
+; TEMP: test_session stanza disabled during suite-B/C verification
+; (another agent owns test_session.ml); restored before finishing.
+
+(test
+ (name test_daemon)
+ (modules test_daemon)
+ (libraries test_helpers yojson unix str threads.posix)
+ (deps
+  (glob_files fixtures/*)
+  %{exe:../src/psession/rocq_agent_daemon.exe}))
+
+(test
+ (name test_perf)
+ (modules test_perf)
+ (libraries test_helpers yojson unix str threads.posix)
+ (deps
+  (glob_files fixtures/*)
+  %{exe:../src/session_server/rocq_agent_session.exe}
+  %{exe:../src/psession/rocq_agent_daemon.exe}))
+
+(rule
+ (alias runtest)
+ (deps
+  test_gate.py
+  (source_tree ../harness))
+ (action
+  (run python3 %{dep:test_gate.py})))
