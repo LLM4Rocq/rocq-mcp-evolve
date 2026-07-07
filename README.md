@@ -85,13 +85,15 @@ installs the `rocq-mcp` binary into your opam switch (needs `rocq-runtime`
 (Claude Code, `claude` CLI, or anything MCP-speaking):
 
 ```json
-{ "mcpServers": { "rocq": {
-    "command": "rocq-mcp",
-    "env": { "ROCQ_TASK_FILE": "/path/to/your/project/proofs/goal.v" } } } }
+{ "mcpServers": { "rocq": { "command": "rocq-mcp" } } }
 ```
 
-That's it. `goal.v` is any file ending with an unproven statement (your
-imports + `Theorem my_goal : ...`). Everything else is automatic:
+That's it — no configuration at all. Then just ask your agent to finish a
+proof: it calls `open{file}` (optionally `theorem:<name>` to target an
+`Admitted` or any specific statement mid-file), works the proof with the
+other tools, and on completion receives the finished script to insert into
+your file. One session can open several proofs in the same project.
+Everything else is automatic:
 
 - **Project load paths are auto-discovered** — the server walks up from the
   task file to your `_CoqProject`/`_RocqProject` (parsed for `-Q/-R/-I`) or
@@ -105,16 +107,20 @@ imports + `Theorem my_goal : ...`). Everything else is automatic:
   error hints, near-miss suggestions, and project exemplar retrieval.
   Trim with `ROCQ_ENABLE_TOOLS=step,state,...` or disable features with
   `ROCQ_HINTS=0`, `ROCQ_SUGGEST=0`, `ROCQ_AUTO2=0`, `ROCQ_EXEMPLARS=0`.
-- The completed proof is written to `candidate.v` (in `ROCQ_WORKDIR`, or the
-  temp dir) — assembled by the server from what actually executed.
+- On completion the response carries the **finished proof script** (assembled
+  from what actually executed — the agent inserts it into your file); a
+  standalone `candidate.v` is also written to `ROCQ_WORKDIR`/temp.
+- `ROCQ_TASK_FILE` (optional) presets a file at launch — used by the
+  benchmark harness; interactive use never needs it.
 
 Quick smoke without any MCP client:
 
 ```sh
-printf '%s\n%s\n' \
+printf '%s\n%s\n%s\n' \
   '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' \
-  '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"auto_close","arguments":{}}}' \
-  | ROCQ_TASK_FILE=/path/to/goal.v rocq-mcp
+  '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"open","arguments":{"file":"/path/to/your/File.v","theorem":"my_admitted_lemma"}}}' \
+  '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"auto_close","arguments":{}}}' \
+  | rocq-mcp
 ```
 
 For multi-agent work on one proof, `rocq-mcp-daemon` + `rocq-mcp-shim` are

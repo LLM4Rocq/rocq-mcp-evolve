@@ -10,6 +10,10 @@
 
 let initialized = ref false
 
+(* set before init by the `open` tool so load-path discovery starts from the
+   opened file rather than a launch-time env var *)
+let discovery_origin : string option ref = ref None
+
 (* Feedback messages (warnings, Search/Check output, ...) emitted during the
    last exec, oldest first. *)
 let messages : string list ref = ref []
@@ -53,9 +57,12 @@ let init () =
     let discover_project_args () =
       let ( / ) = Filename.concat in
       let task =
-        match Sys.getenv_opt "ROCQ_TASK_FILE" with
-        | Some f when f <> "" -> f
-        | _ -> Sys.getcwd () / "x"
+        match !discovery_origin with
+        | Some f -> f
+        | None -> (
+            match Sys.getenv_opt "ROCQ_TASK_FILE" with
+            | Some f when f <> "" -> f
+            | _ -> Sys.getcwd () / "x")
       in
       let rec find_root dir n =
         if n = 0 || dir = "/" || dir = "." then None

@@ -41,7 +41,54 @@ let session : session option ref = ref None
 let cur_state s =
   match s.committed with (_, st) :: _ -> st | [] -> s.base
 
-(* Lazy one-time startup: init prover, execute the task prefix. *)
+(* Lazy one-time startup: init prover, execute the task prefix. The prover
+   initializes once per process (load paths fixed at init); sessions can be
+   (re)created from any prefix text via make_session — used by both the
+   launch-time ROCQ_TASK_FILE path and the runtime `open` tool. *)
+
+let pristine : Vernacstate.t option ref = ref None
+
+let prover_base () =
+  match !pristine with
+  | Some st -> st
+  | None ->
+      D.init ();
+      let st0 = D.freeze () in
+      pristine := Some st0;
+      st0
+
+let make_session prefix =
+  let st0 = prover_base () in
+  let steps, stop = D.exec_text ~timeout_s:120. ~qed_timeout_s:120. st0 prefix in
+  (match stop with
+  | D.Done -> ()
+  | D.Error_at { text; msg; _ } ->
+      failwith (Printf.sprintf "task prefix failed at %S: %s" text msg)
+  | D.Timeout_at { text; _ } ->
+      failwith (Printf.sprintf "task prefix timed out at %S" text)
+  | D.Parse_error { msg; _ } ->
+      failwith (Printf.sprintf "task prefix parse error: %s" msg));
+  let base = match List.rev steps with s :: _ -> s.D.post | [] -> st0 in
+  (* preload standard tactic modules by default (ROCQ_PRELOAD=0 to disable).
+     The Require-REFUSAL policy remains tied to ROCQ_ENV_V2 (experiment/gate
+     alignment); real projects may Require freely. *)
+  let base =
+    if Sys.getenv_opt "ROCQ_PRELOAD" <> Some "0" then begin
+      let steps2, stop2 =
+        D.exec_text ~timeout_s:60. ~qed_timeout_s:60. base
+          "From Stdlib Require Import Lia Lra Psatz."
+      in
+      match stop2 with
+      | D.Done -> (
+          match List.rev steps2 with s :: _ -> s.D.post | [] -> base)
+      | _ -> base
+    end
+    else base
+  in
+  let s = { committed = []; base; complete = false; prefix } in
+  session := Some s;
+  s
+
 let get_session () =
   match !session with
   | Some s -> s
@@ -49,50 +96,15 @@ let get_session () =
       let prefix_file =
         match Sys.getenv_opt "ROCQ_TASK_FILE" with
         | Some f when f <> "" -> f
-        | _ -> failwith "ROCQ_TASK_FILE not set"
+        | _ ->
+            failwith
+              "no proof is open — call the `open` tool with the path of a .v \
+               file first"
       in
       let ic = open_in_bin prefix_file in
       let prefix = really_input_string ic (in_channel_length ic) in
       close_in ic;
-      D.init ();
-      let st0 = D.freeze () in
-      let steps, stop =
-        D.exec_text ~timeout_s:120. ~qed_timeout_s:120. st0 prefix
-      in
-      (match stop with
-      | D.Done -> ()
-      | D.Error_at { text; msg; _ } ->
-          failwith (Printf.sprintf "task prefix failed at %S: %s" text msg)
-      | D.Timeout_at { text; _ } ->
-          failwith (Printf.sprintf "task prefix timed out at %S" text)
-      | D.Parse_error { msg; _ } ->
-          failwith (Printf.sprintf "task prefix parse error: %s" msg));
-      let base =
-        match List.rev steps with s :: _ -> s.D.post | [] -> st0
-      in
-      (* environment v2 (A11): preload scope-neutral tactic modules AFTER the
-         prefix (statement already parsed under shipped imports, so meaning
-         cannot shift); the gate compiles candidates with the same modules
-         injected, so in-session success and gate success stay aligned. *)
-      let base =
-        (* preload standard tactic modules by default (ROCQ_PRELOAD=0 to
-           disable). The Require-REFUSAL policy remains tied to ROCQ_ENV_V2
-           (experiment/gate alignment); real projects may Require freely. *)
-        if Sys.getenv_opt "ROCQ_PRELOAD" <> Some "0" then begin
-          let steps2, stop2 =
-            D.exec_text ~timeout_s:60. ~qed_timeout_s:60. base
-              "From Stdlib Require Import Lia Lra Psatz."
-          in
-          match stop2 with
-          | D.Done -> (
-              match List.rev steps2 with s :: _ -> s.D.post | [] -> base)
-          | _ -> base (* preload failure: proceed with shipped env *)
-        end
-        else base
-      in
-      let s = { committed = []; base; complete = false; prefix } in
-      session := Some s;
-      s
+      make_session prefix
 
 let env_v2 = lazy (Sys.getenv_opt "ROCQ_ENV_V2" = Some "1")
 
@@ -206,6 +218,15 @@ let try_auto_qed s =
       | _ -> false
     end
     else false
+
+let proof_script s =
+  String.concat "\n" (List.rev_map fst s.committed)
+
+let complete_msg s =
+  Printf.sprintf
+    "PROOF COMPLETE. The finished proof script (insert it after the theorem \
+     statement in your file):\n%s"
+    (truncate 3000 (proof_script s))
 
 let fmt_msgs msgs =
   match msgs with
@@ -797,7 +818,7 @@ let try_tool : M.tool =
                 outcomes
             in
             let tail =
-              if s.complete then "\nPROOF COMPLETE — the file is saved. Reply DONE."
+              if s.complete then "\n" ^ complete_msg s
               else if !committed_idx >= 0 then
                 "\nafter commit:\n" ^ goals_block ~prev:st (cur_state s)
               else "\nnothing committed; state unchanged."
@@ -978,9 +999,8 @@ let auto_close_tool : M.tool =
                 ignore (try_auto_qed s);
                 if s.complete then
                   Printf.sprintf
-                    "`%s` closes it — COMMITTED.\nPROOF COMPLETE — the file is \
-                     saved. Reply DONE."
-                    cand
+                    "`%s` closes it — COMMITTED.\n%s"
+                    cand (complete_msg s)
                 else
                   Printf.sprintf "`%s` closes the current goal — COMMITTED.\n%s"
                     cand
@@ -1058,7 +1078,7 @@ let check_tool : M.tool =
               let body =
                 match stop with
                 | D.Done when s.complete && n_ok > 0 ->
-                    "PROOF COMPLETE — the file is saved. Reply DONE."
+                    complete_msg s
                 | D.Done ->
                     Printf.sprintf
                       "script accepted but the proof is not closed (%d \
@@ -1340,14 +1360,123 @@ let with_exemplars (t : M.tool) =
             { r with M.content }
         | _ -> r) }
 
+
+let open_tool =
+  {
+    M.name = "open";
+    description =
+      "Open a Rocq .v file and start (or restart) a proof session on it. \
+       Give `file` (absolute path). If the file ends with an unproven \
+       statement, that statement becomes the goal; to prove a specific \
+       theorem inside the file (e.g. one currently Admitted), also give \
+       `theorem` (its name) — the file is loaded UP TO that statement and \
+       everything after it is ignored. Project load paths (_CoqProject / \
+       dune) are discovered automatically from the file's location.";
+    input_schema =
+      `Assoc
+        [ ("type", `String "object");
+          ( "properties",
+            `Assoc
+              [ ("file", `Assoc [ ("type", `String "string") ]);
+                ("theorem", `Assoc [ ("type", `String "string") ]) ] );
+          ("required", `List [ `String "file" ]) ];
+    handler =
+      (fun args ->
+        let file = JU.member "file" args |> JU.to_string in
+        let thm =
+          match JU.member "theorem" args with `String t -> Some t | _ -> None
+        in
+        if not (Sys.file_exists file) then
+          M.text_result ~is_error:true (Printf.sprintf "no such file: %s" file)
+        else begin
+          Rocq_driver.discovery_origin := Some file;
+          let ic = open_in_bin file in
+          let text = really_input_string ic (in_channel_length ic) in
+          close_in ic;
+          let base0 = prover_base () in
+          let steps, stop =
+            D.exec_text ~timeout_s:180. ~qed_timeout_s:180. base0 text
+          in
+          let stmt_re name =
+            Str.regexp
+              ("\\(Theorem\\|Lemma\\|Fact\\|Corollary\\|Proposition\\|Goal\\)[ \\t\\n]+"
+              ^ Str.quote name ^ "\\b")
+          in
+          let is_stmt_of name (x : D.exec_step) =
+            (try ignore (Str.search_forward (stmt_re name) x.D.text 0); true
+             with Not_found -> false)
+            && D.proof_open x.D.post
+          in
+          let mk_prefix upto =
+            let texts =
+              List.filteri (fun i _ -> i <= upto) (List.map (fun (x : D.exec_step) -> x.D.text) steps)
+            in
+            String.concat "\n" texts
+          in
+          let finish prefix goal_desc =
+            exemplars_pending :=
+              (match Sys.getenv_opt "ROCQ_EXEMPLARS" with
+              | Some "0" -> None
+              | _ -> Some "");
+            let s = make_session prefix in
+            M.text_result
+              (Printf.sprintf "opened %s — proving %s.\n%s" file goal_desc
+                 (goals_block (cur_state s)))
+          in
+          match thm with
+          | Some name -> (
+              let idx = ref (-1) in
+              List.iteri
+                (fun i x -> if !idx = -1 && is_stmt_of name x then idx := i)
+                steps;
+              if !idx = -1 then
+                M.text_result ~is_error:true
+                  (Printf.sprintf
+                     "theorem %s not found in %s (or its statement failed to \
+                      execute)" name file)
+              else finish (mk_prefix !idx) name)
+          | None -> (
+              match stop with
+              | D.Done when steps <> [] && D.proof_open (List.nth steps (List.length steps - 1)).D.post
+                ->
+                  finish (mk_prefix (List.length steps - 1)) "the final open statement"
+              | D.Done ->
+                  let admitted =
+                    List.filter
+                      (fun (x : D.exec_step) ->
+                        try ignore (Str.search_forward (Str.regexp "Admitted") x.D.text 0); true
+                        with Not_found -> false)
+                      steps
+                  in
+                  M.text_result ~is_error:true
+                    (Printf.sprintf
+                       "%s executes to the end with no open goal. To prove a \
+                        specific theorem, pass theorem:<name>.%s" file
+                       (if admitted <> [] then
+                          Printf.sprintf " (%d Admitted found in the file)"
+                            (List.length admitted)
+                        else ""))
+              | D.Error_at { text; msg; _ } ->
+                  M.text_result ~is_error:true
+                    (Printf.sprintf "%s fails at %S: %s" file (truncate 120 text)
+                       (truncate 400 msg))
+              | D.Timeout_at { text; _ } ->
+                  M.text_result ~is_error:true
+                    (Printf.sprintf "%s: timeout at %S" file (truncate 120 text))
+              | D.Parse_error { msg; _ } ->
+                  M.text_result ~is_error:true
+                    (Printf.sprintf "%s: parse error: %s" file (truncate 400 msg)))
+        end);
+  }
+
 let () =
   let enabled =
     match Sys.getenv_opt "ROCQ_ENABLE_TOOLS" with
     | Some s when s <> "" -> String.split_on_char ',' s |> List.map String.trim
-    | _ -> [ "check"; "step"; "rollback"; "state"; "try"; "auto_close" ]
+    | _ -> [ "open"; "check"; "step"; "rollback"; "state"; "try"; "auto_close" ]
   in
   let all =
-    [ step_tool; rollback_tool; state_tool; try_tool; search_tool;
+    [ open_tool; step_tool; rollback_tool; state_tool; try_tool; search_tool;
       auto_close_tool; check_tool ]
   in
   M.run

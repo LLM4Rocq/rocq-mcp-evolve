@@ -287,3 +287,17 @@ refusal stays opt-in via ROCQ_ENV_V2). All historical configs pinned with
 explicit values so their semantics are unchanged and self-describing.
 Verified hermetically: installed binary + ROCQ_TASK_FILE alone proves a
 lemma in a fresh dune project (auto-discovery + preload + portfolio).
+
+
+## A29 — runtime `open` tool (Jul 7, from user review)
+User: "why ROCQ_TASK_FILE — can't I just register the mcp and ask the agent
+to finish a proof in a file?" Correct: task-at-launch was harness DNA. New
+`open{file, theorem?}` tool: executes the file (project auto-discovered from
+its location), targets the named theorem's statement (everything after it,
+e.g. its Admitted, is ignored) or the trailing open statement; session
+resets per open (several proofs per session, one project per process);
+missing-file/no-goal/failing-file errors are directive. Completion messages
+now carry the finished proof script so the CLIENT agent inserts it into the
+user's file (server proves, agent edits). ROCQ_TASK_FILE remains as the
+harness preset. Verified: open Admitted theorem -> auto_close -> script;
+re-open same file trailing goal -> check -> script.
