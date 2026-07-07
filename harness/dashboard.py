@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
-"""Self-refreshing HTML dashboard over the experiment logs.
+"""Final results dashboard over the experiment logs.
 
-    python3 harness/dashboard.py            # write logs/dashboard.html once
-    python3 harness/dashboard.py --watch    # regenerate every 15 s
+    python3 harness/dashboard.py            # write logs/dashboard.html
+    python3 harness/dashboard.py --watch    # regenerate every 15 s (live mode)
 
-Open logs/dashboard.html in a browser; the page reloads itself every 30 s.
-Stdlib only; charts are inline SVG. Colors follow the validated reference
-palette (light+dark; buckets easy/med/hard = categorical slots 1-3, fixed
-order; per-mark <title> tooltips; every chart has a table view).
-"""
+Open logs/dashboard.html in a browser. Stdlib only; charts are inline SVG.
+Colors follow the validated reference palette (light+dark; buckets
+easy/med/hard = categorical slots 1-3; per-mark <title> tooltips; every
+chart has a table view)."""
 
 import argparse
 import html
@@ -25,48 +24,36 @@ from report import bucket_stats
 BUCKETS = ["easy", "medium", "hard"]
 LADDER_SUFFIX = "_dev60"
 
-# keep/revert decisions, updated as each A/B lands (source of truth:
-# docs/DESIGN.md "Interface iterations" + STATUS.md scoreboard)
-VERDICTS = {
-    "baseline": ("control", "the deliberately-naive control"),
-    "session": ("KEPT", "pass@1 +30 % med/hard, tokens_out −80 %, prover ms −98 %"),
-    "session_try": ("KEPT", "pass@1 easy +37 %, med/hard +15 %, cost flat"),
-    "session_try_compact": ("REVERTED",
-        "pass@1 −2.5 pp all buckets; tokens_in +11 % — policy re-fetches elided context"),
-    "session_try_search": ("REVERTED",
-        "pass@1 noise-level (−/−/+); high adoption, zero rescue effect"),
-    "session_try_hints": ("KEPT",
-        "medium +27 % pass@1 (3 strictly-new problems), easy/hard within variance"),
-    "session_try_hints_auto": ("KEPT",
-        "pass@1 up ALL buckets (easy +8 %, med +16 %, hard +13 %); portfolio closes 71 % of calls"),
-    "session_try_hints_auto_sugg": ("KEPT",
-        "easy +8 %, medium +9 %, hard flat; easy tokens_in −22 % — FINAL SOLO WINNER"),
-    "baseline_sonnet": ("annex",
-        "A10 cross-policy control @ sonnet-5: .925/.95/.80 — near ceiling through the NAIVE interface (3 turns/proof)"),
-    "session_try_hints_auto_sonnet": ("annex",
-        "A10 winner interface @ sonnet-5: solve −10…−12 pp med/hard BUT cost −12…−32 %, wall −28…−36 % — optimal interface is policy-dependent (REPORT §5b)"),
-    "unified": ("REVERTED",
-        "A15 draft-first @ haiku: .40/.18/.22 vs winner .70/.525/.425 — interaction style must match policy capability; frozen config stands (pre-registered rule)"),
-    "unified_sonnet": ("annex",
-        "A15 draft-first @ sonnet-5: .92/.85/.75 — closes ~half the incremental gap, still below naive; matrix diagonal confirmed"),
-    "sonnet_native": ("annex",
-        "persistence prompting @ sonnet: easy .95 BEATS naive at 2x lower cost; med/hard gap to naive persists"),
-    "winner_autofix": ("annex",
-        "rung 9a bugfix: metrics unchanged within noise; kept on correctness grounds"),
-    "winner_auto2": ("annex", "rung 9b: hint-term synthesis — measuring"),
-    "rocq_mcp_sonnet": ("annex",
-        "SOTA @ sonnet: .825/.725/.725 — trails naive AND our substrate in every bucket at highest cost"),
-    "rocq_mcp": ("annex",
-        "SOTA @ haiku: .45/.225/.225 = baseline-level despite heavy interactive-tool use — turn-compression is the differentiator (REPORT)"),
-    "sonnet_native_auto2": ("annex",
-        "synthesis @ sonnet (1 rep): 1.00/.85/.85 — hard BEATS naive (.85 vs .80); synthesis transfers across policies"),
-    "universal": ("KEPT",
-        "A24 RECOMMENDED: equals/beats naive in every bucket at BOTH policies (haiku .65/.60/.50; sonnet .95/1.0/.80)"),
-    "universal_sonnet": ("annex",
-        "universal @ sonnet-5: .95/1.00/.80 — first substrate config to dominate naive everywhere; medium gap was the Qed handshake"),
-    "team_k3": ("REVERTED",
-        "hard70: .32 vs solo .40 at equal wall; 114/140 problems don't decompose — relay overhead, zero complementarity"),
-}
+# The ladder, in experimental order: config -> (short label, what changed,
+# verdict, one-line outcome in plain words). Source of truth: docs/DESIGN.md.
+LADDER = [
+    ("baseline", "0 naive", "whole-file compile per call (control)",
+     "control", "the deliberately-naive starting point"),
+    ("session", "1 session", "persistent prover; sentence steps, O(1) undo",
+     "KEPT", "medium/hard solve +30 %, output tokens −80 %"),
+    ("session_try", "2 +try", "k candidate tactics tested in one call",
+     "KEPT", "easy +37 %, medium/hard +15 %"),
+    ("session_try_compact", "3 compact", "token-thrifty goal rendering",
+     "REVERTED", "−2.5 pp everywhere — agents re-fetch what you elide"),
+    ("session_try_search", "4 search", "a Search tool the agent can call",
+     "REVERTED", "heavily used, rescued nothing — pull wastes turns"),
+    ("session_try_hints", "5 +hints", "errors carry Lean→Rocq rewrite hints",
+     "KEPT", "medium +27 %"),
+    ("session_try_hints_auto", "6 +auto_close", "server-side finisher portfolio",
+     "KEPT", "every bucket up (+8/+16/+13 %)"),
+    ("session_try_hints_auto_sugg", "7 +did-you-mean", "unknown names get near-miss suggestions",
+     "KEPT", "easy +8 %, medium +9 % — push beats pull"),
+    ("unified", "8 draft-first", "whole-proof-first prompt style at haiku",
+     "REVERTED", "far below the incremental winner at this policy"),
+    ("winner_autofix", "9a fix", "false-winner bug fix (A22)",
+     "KEPT", "numbers unchanged; correctness fix"),
+    ("winner_auto2", "9b synthesis", "server synthesizes goal-specific hint terms",
+     "KEPT", "medium +28 % — new haiku best"),
+    ("universal", "10 universal", "style-agnostic check + neutral prompt + atlas fixes",
+     "RECOMMENDED", "best worst-case across BOTH policies (A24)"),
+]
+LADDER_ORDER = [c for c, *_ in LADDER]
+LADDER_INFO = {c: (lab, chg, v, why) for c, lab, chg, v, why in LADDER}
 
 CSS = """
 :root { color-scheme: light dark; }
@@ -92,16 +79,16 @@ body { margin:0; padding:24px; background:#f9f9f7; color:#0b0b0b;
   }
 }
 h1 { font-size:20px; margin:0 0 2px; }
-h2 { font-size:15px; margin:28px 0 10px; color:var(--ink-1); }
+h2 { font-size:15px; margin:30px 0 4px; color:var(--ink-1); }
+.caption { color:var(--ink-3); font-size:12px; margin:0 0 10px; max-width:760px; }
 .sub { color:var(--ink-3); font-size:12px; margin-bottom:20px; }
 .card { background:var(--surface-1); border:1px solid var(--ring);
   border-radius:10px; padding:16px 18px; }
 .tiles { display:flex; gap:12px; flex-wrap:wrap; }
 .tile { min-width:150px; flex:1; }
 .tile .lbl { color:var(--ink-2); font-size:12px; }
-.tile .val { font-size:30px; font-weight:600; margin:2px 0; }
-.tile .delta { font-size:12px; }
-.up-good { color:var(--good); } .down-bad { color:var(--bad); }
+.tile .val { font-size:26px; font-weight:600; margin:2px 0; white-space:nowrap; }
+.tile .delta { font-size:12px; color:var(--ink-3); }
 .legend { display:flex; gap:16px; font-size:12px; color:var(--ink-2); margin:4px 0 8px; }
 .legend .sw { display:inline-block; width:10px; height:10px; border-radius:3px;
   margin-right:5px; vertical-align:-1px; }
@@ -110,17 +97,13 @@ th { text-align:left; color:var(--ink-2); font-weight:600; }
 th,td { padding:4px 10px 4px 0; border-bottom:1px solid var(--grid); }
 td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; }
 details { margin-top:8px; } summary { cursor:pointer; color:var(--ink-3); font-size:12px; }
-.meter { background:var(--track); border-radius:5px; height:10px; width:160px;
-  display:inline-block; vertical-align:middle; }
-.meter > div { background:var(--accent); border-radius:5px; height:10px; }
-.status-running { color:var(--good); font-weight:600; }
-.status-done { color:var(--ink-3); }
-.verdict-kept { color:var(--good); font-weight:600; }
-.verdict-reverted { color:var(--bad); font-weight:600; }
-.verdict-other { color:var(--ink-3); font-weight:600; }
-.tools code { background:transparent; border:1px solid var(--grid); border-radius:4px;
-  padding:0 5px; margin-right:4px; font-size:11.5px; white-space:nowrap; }
-td.desc { color:var(--ink-2); max-width:420px; }
+.badge { display:inline-block; font-size:11px; font-weight:600; border-radius:4px;
+  padding:1px 7px; white-space:nowrap; }
+.b-kept { color:var(--good); border:1px solid var(--good); }
+.b-rev { color:var(--bad); border:1px solid var(--bad); }
+.b-rec { color:var(--surface-1); background:var(--good); }
+.b-other { color:var(--ink-3); border:1px solid var(--ink-3); }
+td.why { color:var(--ink-2); }
 svg text { fill:var(--ink-2); font:11px system-ui,-apple-system,"Segoe UI",sans-serif; }
 svg .tick { fill:var(--ink-3); font-variant-numeric:tabular-nums; }
 svg .vlab { fill:var(--ink-1); font-weight:600; }
@@ -129,8 +112,17 @@ svg .axis { stroke:var(--axis); stroke-width:1; }
 """
 
 
+def esc(s):
+    return html.escape(str(s))
+
+
+def badge(v):
+    cls = {"KEPT": "b-kept", "REVERTED": "b-rev",
+           "RECOMMENDED": "b-rec"}.get(v, "b-other")
+    return f'<span class="badge {cls}">{esc(v)}</span>'
+
+
 def load_runs():
-    """[(run_id, meta, rows)] sorted by start time."""
     root = common.LOGS / "runs"
     out = []
     if not root.exists():
@@ -151,167 +143,119 @@ def load_runs():
     return out
 
 
-LADDER_ORDER = [
-    "baseline", "session", "session_try", "session_try_compact",
-    "session_try_search", "session_try_hints", "session_try_hints_auto",
-    "session_try_hints_auto_sugg", "unified",
-]
-SONNET_ORDER = ["baseline_sonnet", "session_try_hints_auto_sonnet", "unified_sonnet"]
+def stats_for(runs, run_id):
+    for rid, _, rows in runs:
+        if rid == run_id and rows:
+            return bucket_stats(rows)
+    return {}
 
 
-def ladder_runs(runs, family="haiku"):
-    """dev60 evals of one policy family, one per config, in EXPERIMENTAL order
-    (resumed runs refresh their started-timestamp, so time order lies)."""
-    order = SONNET_ORDER if family == "sonnet" else LADDER_ORDER
-    seen = {}
-    for rid, meta, rows in runs:
-        is_sonnet = "_sonnet" in rid
-        if rid.endswith(LADDER_SUFFIX) and rows and is_sonnet == (family == "sonnet"):
-            seen[rid] = (rid, meta, rows)
-    def key(item):
-        cfg = item[2][0].get("config_id", item[0]) if item[2] else item[0]
-        return (order.index(cfg) if cfg in order else 99, item[1].get("started", ""))
-    return sorted(seen.values(), key=key)
+def legend_html(items):
+    return ('<div class="legend">'
+            + "".join(f'<span><span class="sw" style="background:{c}"></span>{esc(t)}</span>'
+                      for t, c in items) + "</div>")
 
 
-def per_solve_stats(stats_by_cfg):
-    """mean-per-attempt / pass@1 = expected spend per solved proof."""
-    out = {}
-    for cfg, st in stats_by_cfg.items():
-        d = {}
-        for b, x in st.items():
-            p1 = x.get("pass@1") or 0
-            if p1 > 0:
-                ti = (x.get("tokens_in_mean") or 0) + (x.get("tokens_out_mean") or 0)
-                d[b] = {"tokens_per_solve": ti / p1,
-                        "cost_per_solve": (x.get("cost_usd_mean") or 0) / p1,
-                        "wall_per_solve": (x.get("wall_s_mean") or 0) / p1}
-            else:
-                d[b] = {}
-        out[cfg] = d
-    return out
+BUCKET_LEGEND = [(b, f"var(--s-{b})") for b in BUCKETS]
 
 
-PER_SOLVE_MINIS = [
-    ("total tokens / solve", "tokens_per_solve", lambda v: f"{v/1000:.0f}k"),
-    ("cost $ / solve", "cost_per_solve", lambda v: f"{v:.2f}"),
-    ("wall s / solve", "wall_per_solve", lambda v: f"{v:.0f}"),
-]
+# ---------- chart: ladder slope (one compact chart, 3 series) ----------
 
-
-def esc(s):
-    return html.escape(str(s))
-
-
-def rounded_bar(x, y, w, h, color, title):
-    """Horizontal bar: square at baseline (left), 4px rounded data end."""
-    r = min(4, w / 2, h / 2)
-    if w <= 1:
-        return ""
-    path = (f"M{x:.1f},{y:.1f} h{w - r:.1f} q{r:.1f},0 {r:.1f},{r:.1f} "
-            f"v{h - 2 * r:.1f} q0,{r:.1f} {-r:.1f},{r:.1f} h{-(w - r):.1f} z")
-    return (f'<path d="{path}" fill="{color}"><title>{esc(title)}</title></path>')
-
-
-def ladder_chart(stats_by_cfg):
-    """Grouped horizontal bars: pass@1 per config x bucket."""
-    cfgs = list(stats_by_cfg.keys())
-    bar_h, gap, group_pad = 14, 2, 14
-    group_h = 3 * bar_h + 2 * gap + group_pad
-    left, right, top = 150, 60, 18
-    width = 720
-    plot_w = width - left - right
-    height = top + group_h * len(cfgs) + 24
-    parts = [f'<svg viewBox="0 0 {width} {height}" width="100%" role="img" '
-             f'aria-label="pass@1 per config and difficulty bucket">']
-    for gx in (0, 0.25, 0.5, 0.75, 1.0):
-        x = left + gx * plot_w
-        parts.append(f'<line class="grid" x1="{x:.0f}" y1="{top - 6}" x2="{x:.0f}" '
-                     f'y2="{height - 20}"/>')
-        parts.append(f'<text class="tick" x="{x:.0f}" y="{height - 6}" '
-                     f'text-anchor="middle">{gx:g}</text>')
-    parts.append(f'<line class="axis" x1="{left}" y1="{top - 6}" x2="{left}" y2="{height - 20}"/>')
-    for i, cfg in enumerate(cfgs):
-        y0 = top + i * group_h
-        parts.append(f'<text x="{left - 8}" y="{y0 + bar_h * 1.5 + gap + 4}" '
-                     f'text-anchor="end" class="vlab">{esc(cfg)}</text>')
-        for j, b in enumerate(BUCKETS):
-            st = stats_by_cfg[cfg].get(b) or {}
-            v = st.get("pass@1")
-            if v is None:
-                continue
-            y = y0 + j * (bar_h + gap)
-            w = v * plot_w
-            col = f"var(--s-{b})"
-            parts.append(rounded_bar(left, y, w, bar_h, col,
-                                     f"{cfg} · {b}: pass@1 {v:.3f} "
-                                     f"({st.get('solved')}/{st.get('attempts')})"))
-            parts.append(f'<text x="{left + w + 6}" y="{y + bar_h - 3}" '
-                         f'class="tick">{v:.2f}</text>')
-    parts.append("</svg>")
-    return "".join(parts)
-
-
-def mini_line(title_txt, stats_by_cfg, key, fmt):
-    """Small-multiple line chart of one metric across ladder steps, 3 series."""
-    cfgs = list(stats_by_cfg.keys())
+def ladder_slope(stats_by_cfg):
+    cfgs = [c for c in LADDER_ORDER if c in stats_by_cfg]
     if len(cfgs) < 2:
         return ""
-    width, height, left, top = 320, 150, 46, 26
-    plot_w, plot_h = width - left - 14, height - top - 30
-    vals = {}
-    vmax = 0.0
-    for b in BUCKETS:
-        vs = []
-        for cfg in cfgs:
-            v = (stats_by_cfg[cfg].get(b) or {}).get(key)
-            vs.append(v)
-            if v is not None:
-                vmax = max(vmax, v)
-        vals[b] = vs
-    if vmax == 0:
-        return ""
+    width, height, left, top = 760, 240, 40, 16
+    plot_w, plot_h = width - left - 20, height - top - 52
     def sx(i):
-        return left + (i / max(len(cfgs) - 1, 1)) * plot_w
+        return left + i / (len(cfgs) - 1) * plot_w
     def sy(v):
-        return top + plot_h - (v / vmax) * plot_h
-    parts = [f'<svg viewBox="0 0 {width} {height}" width="{width}" role="img" '
-             f'aria-label="{esc(title_txt)} across configs">']
-    parts.append(f'<text x="{left}" y="14" class="vlab">{esc(title_txt)}</text>')
-    for gy in (0, 0.5, 1.0):
-        y = top + plot_h - gy * plot_h
+        return top + plot_h - v * plot_h
+    parts = [f'<svg viewBox="0 0 {width} {height}" width="100%" role="img" '
+             f'aria-label="pass@1 per bucket across the ladder">']
+    for gy in (0, 0.25, 0.5, 0.75, 1.0):
+        y = sy(gy)
         parts.append(f'<line class="grid" x1="{left}" y1="{y:.0f}" x2="{left + plot_w}" y2="{y:.0f}"/>')
-        parts.append(f'<text class="tick" x="{left - 6}" y="{y + 4:.0f}" '
-                     f'text-anchor="end">{fmt(gy * vmax)}</text>')
+        parts.append(f'<text class="tick" x="{left - 6}" y="{y + 4:.0f}" text-anchor="end">{gy:g}</text>')
     for i, cfg in enumerate(cfgs):
-        parts.append(f'<text class="tick" x="{sx(i):.0f}" y="{height - 8}" '
-                     f'text-anchor="middle">{i}</text>')
+        lab = LADDER_INFO[cfg][0]
+        _, _, v, _ = LADDER_INFO[cfg]
+        parts.append(f'<text class="tick" x="{sx(i):.0f}" y="{height - 34}" '
+                     f'text-anchor="middle">{esc(lab.split(" ", 1)[0])}</text>')
+        word = lab.split(" ", 1)[1] if " " in lab else lab
+        parts.append(f'<text class="tick" x="{sx(i):.0f}" y="{height - 20}" '
+                     f'text-anchor="middle" font-size="9.5">{esc(word[:12])}</text>')
+        if v == "REVERTED":
+            parts.append(f'<text class="tick" x="{sx(i):.0f}" y="{height - 7}" '
+                         f'text-anchor="middle" fill="var(--bad)" font-size="9">reverted</text>')
     for b in BUCKETS:
-        pts = [(sx(i), sy(v)) for i, v in enumerate(vals[b]) if v is not None]
+        col = f"var(--s-{b})"
+        pts = []
+        for i, cfg in enumerate(cfgs):
+            v = (stats_by_cfg[cfg].get(b) or {}).get("pass@1")
+            if v is not None:
+                pts.append((sx(i), sy(v), cfg, v))
         if len(pts) < 2:
             continue
-        d = "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y in pts)
-        col = f"var(--s-{b})"
+        d = "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y, *_ in pts)
         parts.append(f'<path d="{d}" fill="none" stroke="{col}" stroke-width="2" '
                      f'stroke-linejoin="round" stroke-linecap="round"/>')
-        ex, ey = pts[-1]
-        parts.append(f'<circle cx="{ex:.1f}" cy="{ey:.1f}" r="4" fill="{col}" '
-                     f'stroke="var(--surface-1)" stroke-width="2">'
-                     f'<title>{esc(title_txt)} · {b}: '
-                     + ", ".join(fmt(v) for v in vals[b] if v is not None)
-                     + "</title></circle>")
+        for x, y, cfg, v in pts:
+            parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3.5" fill="{col}" '
+                         f'stroke="var(--surface-1)" stroke-width="1.5">'
+                         f'<title>{esc(LADDER_INFO[cfg][0])} · {b}: pass@1 {v:.3f}</title></circle>')
+        x, y, _, v = pts[-1]
+        parts.append(f'<text class="tick" x="{x + 7:.0f}" y="{y + 4:.0f}" '
+                     f'fill="{col}">{v:.2f}</text>')
     parts.append("</svg>")
     return "".join(parts)
 
 
+# ---------- chart: A24 policy-neutrality comparison ----------
+
+def a24_chart(groups):
+    """groups: [(group label, [(series label, color, {bucket: v}), ...])]"""
+    width, left = 760, 10
+    bar_h, gap = 16, 3
+    series_n = max(len(s) for _, s in groups)
+    block_h = len(BUCKETS) * (series_n * (bar_h + gap) + 10) + 26
+    height = sum(block_h for _ in groups) + 10
+    plot_x, plot_w = 170, width - 170 - 60
+    parts = [f'<svg viewBox="0 0 {width} {height}" width="100%" role="img" '
+             f'aria-label="naive vs universal, per policy and bucket">']
+    y = 6
+    for glabel, series in groups:
+        parts.append(f'<text x="{left}" y="{y + 12}" class="vlab">{esc(glabel)}</text>')
+        y += 22
+        for b in BUCKETS:
+            parts.append(f'<text x="{plot_x - 8}" y="{y + bar_h * series_n / 2 + 5}" '
+                         f'text-anchor="end" class="tick">{b}</text>')
+            for slabel, col, vals in series:
+                v = vals.get(b)
+                if v is None:
+                    y += bar_h + gap
+                    continue
+                w = v * plot_w
+                parts.append(f'<rect x="{plot_x}" y="{y}" width="{w:.1f}" height="{bar_h}" '
+                             f'rx="3" fill="{col}"><title>{esc(glabel)} · {esc(slabel)} · '
+                             f'{b}: {v:.3f}</title></rect>')
+                parts.append(f'<text class="tick" x="{plot_x + w + 6:.1f}" y="{y + bar_h - 4}">'
+                             f'{v:.2f}</text>')
+                y += bar_h + gap
+            y += 10
+        y += 4
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+# ---------- chart: scalability ----------
+
 def load_sweeps():
-    """{config: [summary rows sorted by N]} from logs/sweep_*_summary.jsonl."""
     out = {}
     for p in sorted(common.LOGS.glob("sweep_*_summary.jsonl")):
         rows = common.read_jsonl(p)
         if rows:
             cfg = rows[0].get("config", p.stem)
-            # keep latest record per N
             by_n = {}
             for r in rows:
                 by_n[r["N"]] = r
@@ -319,46 +263,34 @@ def load_sweeps():
     return out
 
 
-SWEEP_METRICS = [
-    ("attempts / hour", "attempts_per_hour", lambda v: f"{v:.0f}"),
-    ("peak RSS (MB)", "peak_rss_mb", lambda v: f"{v:.0f}"),
-    ("mean CPU (%)", "cpu_pct_mean", lambda v: f"{v:.0f}"),
-    ("wall s / attempt", "wall_s_mean", lambda v: f"{v:.0f}"),
-]
-
-SWEEP_COLORS = {}  # config -> css var, assigned in fixed order
+SWEEP_NAMES = {"baseline": ("naive baseline", "var(--c-baseline)"),
+               "session_try_hints_auto": ("session winner", "var(--c-winner)")}
 
 
-def sweep_color(cfg):
-    if cfg not in SWEEP_COLORS:
-        SWEEP_COLORS[cfg] = ("var(--c-baseline)" if len(SWEEP_COLORS) == 0
-                             else "var(--c-winner)")
-    return SWEEP_COLORS[cfg]
-
-
-def sweep_mini(title_txt, sweeps, key, fmt):
+def sweep_chart(sweeps, key, title_txt, fmt, width=370):
     ns = sorted({r["N"] for rows in sweeps.values() for r in rows})
     if not ns:
         return ""
-    width, height, left, top = 320, 150, 50, 26
-    plot_w, plot_h = width - left - 14, height - top - 30
+    height, left, top = 220, 52, 26
+    plot_w, plot_h = width - left - 46, height - top - 36
     vmax = max((r.get(key) or 0) for rows in sweeps.values() for r in rows) or 1
     def sx(n):
-        return left + (ns.index(n) / max(len(ns) - 1, 1)) * plot_w
+        return left + ns.index(n) / max(len(ns) - 1, 1) * plot_w
     def sy(v):
         return top + plot_h - (v / vmax) * plot_h
     parts = [f'<svg viewBox="0 0 {width} {height}" width="{width}" role="img" '
-             f'aria-label="{esc(title_txt)} vs N agents">']
+             f'aria-label="{esc(title_txt)} vs N parallel agents">']
     parts.append(f'<text x="{left}" y="14" class="vlab">{esc(title_txt)}</text>')
     for gy in (0, 0.5, 1.0):
-        y = top + plot_h - gy * plot_h
-        parts.append(f'<line class="grid" x1="{left}" y1="{y:.0f}" x2="{left + plot_w}" y2="{y:.0f}"/>')
-        parts.append(f'<text class="tick" x="{left - 6}" y="{y + 4:.0f}" text-anchor="end">{fmt(gy * vmax)}</text>')
+        yy = sy(gy * vmax)
+        parts.append(f'<line class="grid" x1="{left}" y1="{yy:.0f}" x2="{left + plot_w}" y2="{yy:.0f}"/>')
+        parts.append(f'<text class="tick" x="{left - 6}" y="{yy + 4:.0f}" text-anchor="end">{fmt(gy * vmax)}</text>')
     for n in ns:
-        parts.append(f'<text class="tick" x="{sx(n):.0f}" y="{height - 8}" text-anchor="middle">N={n}</text>')
+        parts.append(f'<text class="tick" x="{sx(n):.0f}" y="{height - 8}" '
+                     f'text-anchor="middle">N={n}</text>')
     for cfg, rows in sweeps.items():
-        col = sweep_color(cfg)
-        pts = [(sx(r["N"]), sy(r.get(key) or 0), r) for r in rows]
+        name, col = SWEEP_NAMES.get(cfg, (cfg, "var(--ink-3)"))
+        pts = [(sx(r["N"]), sy(r.get(key) or 0), r) for r in rows if r.get(key) is not None]
         if len(pts) >= 2:
             d = "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y, _ in pts)
             parts.append(f'<path d="{d}" fill="none" stroke="{col}" stroke-width="2" '
@@ -366,8 +298,10 @@ def sweep_mini(title_txt, sweeps, key, fmt):
         for x, y, r in pts:
             parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4" fill="{col}" '
                          f'stroke="var(--surface-1)" stroke-width="2">'
-                         f'<title>{esc(cfg)} N={r["N"]}: {fmt(r.get(key) or 0)} '
+                         f'<title>{esc(name)} · N={r["N"]}: {fmt(r.get(key) or 0)} '
                          f'({r.get("solved")}/{r.get("attempts")} solved)</title></circle>')
+            parts.append(f'<text class="tick" x="{x:.0f}" y="{y - 8:.0f}" '
+                         f'text-anchor="middle">{fmt(r.get(key) or 0)}</text>')
     parts.append("</svg>")
     return "".join(parts)
 
@@ -375,235 +309,161 @@ def sweep_mini(title_txt, sweeps, key, fmt):
 def sweep_section():
     sweeps = load_sweeps()
     if not sweeps:
-        return ('<div class="card"><span style="color:var(--ink-3)">No sweep data yet — '
-                'the baseline sweep (N ∈ {1,2,4,8}) is queued in the pipeline; results '
-                'land here automatically (logs/sweep_*_summary.jsonl).</span></div>')
-    legend = ('<div class="legend">'
-              + "".join(f'<span><span class="sw" style="background:{sweep_color(c)}"></span>{esc(c)}</span>'
-                        for c in sweeps)
-              + "</div>")
-    minis = "".join(sweep_mini(t, sweeps, k, f) for t, k, f in SWEEP_METRICS)
-    head = ("<tr><th>config</th><th class=num>N</th><th class=num>attempts/h</th>"
-            "<th class=num>makespan s</th><th class=num>peak RSS MB</th>"
-            "<th class=num>CPU %</th><th class=num>solved</th></tr>")
+        return '<div class="card"><span style="color:var(--ink-3)">No sweep data.</span></div>'
+    legend = legend_html([SWEEP_NAMES.get(c, (c, "var(--ink-3)")) for c in sweeps])
+    charts = (sweep_chart(sweeps, "attempts_per_hour", "throughput — attempts / hour",
+                          lambda v: f"{v:.0f}")
+              + sweep_chart(sweeps, "wall_s_mean", "wall-clock per attempt (s)",
+                            lambda v: f"{v:.0f}"))
+    head = ("<tr><th>interface</th><th class=num>N agents</th><th class=num>attempts/h</th>"
+            "<th class=num>wall s/attempt</th><th class=num>solved</th>"
+            "<th class=num>peak RSS MB*</th><th class=num>CPU %</th></tr>")
     trs = "".join(
-        f"<tr><td>{esc(cfg)}</td><td class=num>{r['N']}</td>"
-        f"<td class=num>{r.get('attempts_per_hour','–')}</td>"
-        f"<td class=num>{r.get('makespan_s','–')}</td>"
-        f"<td class=num>{r.get('peak_rss_mb','–')}</td>"
-        f"<td class=num>{r.get('cpu_pct_mean','–')}</td>"
-        f"<td class=num>{r.get('solved')}/{r.get('attempts')}</td></tr>"
+        f"<tr><td>{esc(SWEEP_NAMES.get(cfg, (cfg,))[0])}</td><td class=num>{r['N']}</td>"
+        f"<td class=num>{r.get('attempts_per_hour', '–')}</td>"
+        f"<td class=num>{r.get('wall_s_mean', '–')}</td>"
+        f"<td class=num>{r.get('solved')}/{r.get('attempts')}</td>"
+        f"<td class=num>{r.get('peak_rss_mb', '–')}</td>"
+        f"<td class=num>{r.get('cpu_pct_mean', '–')}</td></tr>"
         for cfg, rows in sweeps.items() for r in rows)
-    return (f'<div class="card">{legend}{minis}'
-            f'<details><summary>table view</summary><table>{head}{trs}</table></details></div>')
+    return (f'<div class="card">{legend}{charts}'
+            f'<details><summary>full table (incl. resources; *RSS is a machine-wide '
+            f'upper bound)</summary><table>{head}{trs}</table></details></div>')
 
 
-def legend_html():
-    return ('<div class="legend">'
-            + "".join(f'<span><span class="sw" style="background:var(--s-{b})"></span>{b}</span>'
-                      for b in BUCKETS)
-            + "</div>")
-
-
-def stats_table(stats_by_cfg, keys):
-    head = "<tr><th>config</th>" + "".join(
-        f"<th class=num>{b} {k}</th>" for k in keys for b in BUCKETS) + "</tr>"
-    rows = []
-    for cfg, st in stats_by_cfg.items():
-        tds = []
-        for k in keys:
-            for b in BUCKETS:
-                v = (st.get(b) or {}).get(k)
-                if v is None:
-                    tds.append("<td class=num>–</td>")
-                elif isinstance(v, float):
-                    tds.append(f"<td class=num>{v:,.3g}</td>")
-                else:
-                    tds.append(f"<td class=num>{v}</td>")
-        rows.append(f"<tr><td>{esc(cfg)}</td>{''.join(tds)}</tr>")
-    return f"<table>{head}{''.join(rows)}</table>"
-
+# ---------- page ----------
 
 def build():
     runs = load_runs()
-    ladder = ladder_runs(runs)
+
+    # ladder stats: one dev60 run per ladder config
     stats_by_cfg = {}
-    for rid, meta, rows in ladder:
-        cfg = rows[0].get("config_id", rid)
-        stats_by_cfg[cfg] = bucket_stats(rows)
+    for rid, meta, rows in runs:
+        if rid.endswith(LADDER_SUFFIX) and rows:
+            cfg = rows[0].get("config_id", rid)
+            if cfg in LADDER_INFO:
+                stats_by_cfg[cfg] = bucket_stats(rows)
 
     total_cost = sum((r.get("total_cost_usd") or 0) for _, _, rows in runs for r in rows)
     total_attempts = sum(len(rows) for _, _, rows in runs)
 
-    # stat tiles: latest config vs baseline
-    tiles = []
-    base = stats_by_cfg.get("baseline", {})
-    if stats_by_cfg:
-        latest_cfg = list(stats_by_cfg)[-1]
-        latest = stats_by_cfg[latest_cfg]
-        for b in BUCKETS:
-            v = (latest.get(b) or {}).get("pass@1")
-            bv = (base.get(b) or {}).get("pass@1")
-            delta = ""
-            if v is not None and bv is not None:
-                d = v - bv
-                cls = "up-good" if d >= 0 else "down-bad"
-                delta = f'<div class="delta {cls}">{d:+.3f} vs baseline</div>'
-            val = "–" if v is None else f"{v:.2f}"
-            tiles.append(f'<div class="tile card"><div class="lbl">{b} pass@1 · '
-                         f'{esc(latest_cfg)}</div><div class="val">{val}</div>{delta}</div>')
-    tiles.append(f'<div class="tile card"><div class="lbl">policy spend, all runs</div>'
-                 f'<div class="val">${total_cost:,.2f}</div>'
-                 f'<div class="delta">{total_attempts:,} attempts</div></div>')
+    def p1(st, b):
+        return (st.get(b) or {}).get("pass@1")
 
-    # ladder narrative: tools + change description per step, from run_meta
-    ladder_desc_rows = []
-    for step, (rid, meta, rows) in enumerate(ladder):
-        cfg_meta = meta.get("config", {})
-        cfg = rows[0].get("config_id", rid)
-        tools = [t.replace("mcp__rocq__", "") for t in cfg_meta.get("allowed_tools", [])]
-        desc = cfg_meta.get("description", "")
-        total = (meta.get("n_problems") or 0) * (meta.get("reps") or 1)
-        if cfg in VERDICTS:
-            v, why = VERDICTS[cfg]
-            cls = ("verdict-kept" if v == "KEPT"
-                   else "verdict-reverted" if v == "REVERTED" else "verdict-other")
-            verdict = f'<span class="{cls}">{esc(v)}</span><br><span style="color:var(--ink-3)">{esc(why)}</span>'
-        elif total and len(rows) < total:
-            verdict = '<span class="status-running">measuring…</span>'
-        else:
-            verdict = '<span class="verdict-other">awaiting A/B</span>'
-        ladder_desc_rows.append(
-            f"<tr><td class=num>{step}</td><td><b>{esc(cfg)}</b></td>"
-            f'<td class="tools">{"".join(f"<code>{esc(t)}</code>" for t in tools)}</td>'
-            f'<td class="desc">{esc(desc)}</td><td>{verdict}</td></tr>')
-    ladder_desc = ("<table><tr><th>step</th><th>config</th><th>agent-facing tools</th>"
-                   "<th>what changed</th><th>verdict</th></tr>"
-                   + "".join(ladder_desc_rows) + "</table>")
+    def fmt3(st):
+        vs = [p1(st, b) for b in BUCKETS]
+        return " / ".join("–" if v is None else f"{v:.2f}" for v in vs)
 
-    # cross-policy annex (A10): separate population — never on the ladder axis
-    annex_rows = []
+    uni_h = stats_by_cfg.get("universal", {})
+    uni_s = stats_for(runs, "universal_sonnet_dev60")
+    naive_h = stats_by_cfg.get("baseline", {})
+    naive_s = stats_for(runs, "baseline_sonnet_dev60")
+
+    tiles = [
+        f'<div class="tile card"><div class="lbl">recommended config (universal) · haiku</div>'
+        f'<div class="val">{fmt3(uni_h)}</div><div class="delta">pass@1 e/m/h · 4 reps · dev60</div></div>',
+        f'<div class="tile card"><div class="lbl">universal · sonnet</div>'
+        f'<div class="val">{fmt3(uni_s)}</div><div class="delta">≥ naive in every bucket · 2 reps</div></div>',
+        f'<div class="tile card"><div class="lbl">held-out (miniF2F test, frozen config)</div>'
+        f'<div class="val">.52 / .13 / .04</div><div class="delta">single locked run · REPORT §7</div></div>',
+        f'<div class="tile card"><div class="lbl">policy spend, whole experiment</div>'
+        f'<div class="val">${total_cost:,.0f}</div><div class="delta">{total_attempts:,} gated attempts</div></div>',
+    ]
+
+    # ladder table: step, change, verdict, outcome, numbers
+    lrows = []
+    for cfg, lab, chg, v, why in LADDER:
+        st = stats_by_cfg.get(cfg, {})
+        nums = "".join(f"<td class=num>{'–' if p1(st, b) is None else f'{p1(st, b):.2f}'}</td>"
+                       for b in BUCKETS)
+        lrows.append(f"<tr><td><b>{esc(lab)}</b></td><td class=why>{esc(chg)}</td>"
+                     f"<td>{badge(v)}</td><td class=why>{esc(why)}</td>{nums}</tr>")
+    ladder_table = ("<table><tr><th>step</th><th>what changed</th><th>verdict</th>"
+                    "<th>measured outcome</th>"
+                    + "".join(f"<th class=num>{b}</th>" for b in BUCKETS)
+                    + "</tr>" + "".join(lrows) + "</table>")
+
+    # A24 comparison chart
+    a24 = ""
+    if uni_h and uni_s:
+        groups = [
+            ("claude-haiku-4-5 (weak policy)",
+             [("naive", "var(--c-baseline)", {b: p1(naive_h, b) for b in BUCKETS}),
+              ("universal", "var(--c-winner)", {b: p1(uni_h, b) for b in BUCKETS})]),
+            ("claude-sonnet-5 (strong policy)",
+             [("naive", "var(--c-baseline)", {b: p1(naive_s, b) for b in BUCKETS}),
+              ("universal", "var(--c-winner)", {b: p1(uni_s, b) for b in BUCKETS})]),
+        ]
+        a24 = (legend_html([("naive whole-file interface", "var(--c-baseline)"),
+                            ("universal (recommended)", "var(--c-winner)")])
+               + a24_chart(groups))
+
+    # annex table: everything measured that is not on the haiku ladder
+    annex = []
+    seen = set()
     for rid, meta, rows in runs:
-        if "_sonnet" in rid and rows:
-            st = bucket_stats(rows)
-            def cps(b):
-                x = st.get(b) or {}
-                c, p = x.get("cost_usd_mean"), x.get("pass@1")
-                return f"{p:.2f} / ${c/p:.3f}" if c and p else "–"
-            annex_rows.append(f"<tr><td>{esc(rows[0].get('config_id', rid))}</td>"
-                              f"<td>{cps('easy')}</td><td>{cps('medium')}</td><td>{cps('hard')}</td></tr>")
-    annex_html = ""  # superseded by sonnet_section
-    if annex_rows:
-        annex_html = ("<h2>Cross-policy annex (claude-sonnet-5) — pass@1 / cost per SOLVE</h2>"
-                      '<div class="card"><table><tr><th>config</th><th>easy</th><th>medium</th>'
-                      "<th>hard</th></tr>" + "".join(annex_rows) +
-                      '</table><details><summary>why separate</summary>'
-                      '<span style="color:var(--ink-3)">Different policy = different population; '
-                      'bars would measure model strength, not interface quality. Haiku-winner is '
-                      'cheaper per solve in every bucket; Sonnet buys coverage (REPORT §5b).</span>'
-                      "</details></div>")
-
-    # runs table
-    now = time.time()
-    run_rows = []
-    for rid, meta, rows in runs:
-        total = (meta.get("n_problems") or 0) * (meta.get("reps") or 1)
-        done = len(rows)
-        solved = sum(1 for r in rows if r.get("solved"))
-        cost = sum((r.get("total_cost_usd") or 0) for r in rows)
-        latest_ts = max((r.get("ts", 0) for r in rows), default=0)
-        running = total and done < total and (now - latest_ts) < 900
-        pct = 100 * done / total if total else 0
-        status = ('<span class="status-running">running</span>' if running
-                  else '<span class="status-done">done</span>' if total and done >= total
-                  else '<span class="status-done">partial</span>')
-        q = common.LOGS / "runs" / rid / "results.quarantine.jsonl"
-        qn = len(common.read_jsonl(q)) if q.exists() else 0
-        per_bucket = defaultdict(lambda: [0, 0])
-        for r in rows:
-            pb = per_bucket[r.get("difficulty", "?")]
-            pb[0] += 1
-            pb[1] += bool(r.get("solved"))
-        pb_txt = " · ".join(f"{b}:{per_bucket[b][1]}/{per_bucket[b][0]}"
-                            for b in BUCKETS if b in per_bucket)
-        run_rows.append(
-            f"<tr><td>{esc(rid)}</td><td>{status}</td>"
-            f'<td><span class="meter"><div style="width:{pct:.0f}%"></div></span> '
-            f"{done}/{total or '?'}</td>"
-            f"<td>{solved}</td><td>{esc(pb_txt)}</td>"
-            f"<td class=num>${cost:.2f}</td><td class=num>{qn or ''}</td></tr>")
-
-    # rejects across ladder runs
-    rej = defaultdict(lambda: defaultdict(int))
-    for rid, meta, rows in ladder:
+        if not rows:
+            continue
         cfg = rows[0].get("config_id", rid)
-        for r in rows:
-            if r.get("reject_reason"):
-                rej[cfg][r["reject_reason"]] += 1
-    rej_rows = "".join(
-        f"<tr><td>{esc(cfg)}</td><td>" +
-        ", ".join(f"{esc(k)}×{v}" for k, v in sorted(d.items(), key=lambda kv: -kv[1])[:6])
-        + "</td></tr>"
-        for cfg, d in rej.items())
-
-    minis = "".join(mini_line(t, per_solve_stats(stats_by_cfg), k, f)
-                    for t, k, f in PER_SOLVE_MINIS)
-
-    # sonnet family: same forms, separate population
-    sonnet_stats = {}
-    for rid, meta, rows in ladder_runs(runs, family="sonnet"):
-        sonnet_stats[rows[0].get("config_id", rid)] = bucket_stats(rows)
-    sonnet_section = ""
-    if sonnet_stats:
-        sminis = "".join(mini_line(t, per_solve_stats(sonnet_stats), k, f)
-                         for t, k, f in PER_SOLVE_MINIS)
-        sonnet_section = (
-            "<h2>Cross-policy annex — claude-sonnet-5 (A10/A15; separate population, "
-            "never compared to the haiku bars)</h2>"
-            f'<div class="card">{legend_html()}{ladder_chart(sonnet_stats)}{sminis}'
-            "<details><summary>table view</summary>"
-            f'{stats_table(sonnet_stats, ["pass@1", "solved", "attempts", "cost_usd_mean", "wall_s_mean"])}'
-            "</details></div>")
+        if cfg in LADDER_INFO and rid.endswith(LADDER_SUFFIX):
+            continue
+        if rid in seen:
+            continue
+        seen.add(rid)
+        st = bucket_stats(rows)
+        model = (meta.get("config", {}) or {}).get("model", "")
+        annex.append(f"<tr><td>{esc(rid)}</td><td>{esc(model)}</td>"
+                     f"<td class=num>{len(rows)}</td><td>{fmt3(st)}</td></tr>")
+    annex_table = ("<table><tr><th>run</th><th>policy</th><th class=num>attempts</th>"
+                   "<th>pass@1 e/m/h</th></tr>" + "".join(annex) + "</table>")
+    n_annex = len(annex)
 
     updated = time.strftime("%Y-%m-%d %H:%M:%S")
     return f"""<!doctype html>
 <html><head><meta charset="utf-8">
-<meta http-equiv="refresh" content="30">
-<title>rocq-tools experiment dashboard</title>
+<title>rocq-tools — final results</title>
 <style>{CSS}</style></head>
 <body class="viz-root">
-<h1>AI-native Rocq tooling — experiment dashboard</h1>
-<div class="sub">generated {updated} · auto-reloads every 30 s · regenerate:
-<code>python3 harness/dashboard.py --watch</code> · details: STATUS.md, docs/REPORT.md</div>
+<h1>AI-native Rocq tooling — final results</h1>
+<div class="sub">experiment complete (Jun 30 – Jul 7, 2026) · generated {updated} ·
+full analysis: docs/REPORT.md · per-decision rationale: docs/DESIGN.md · repo README for install &amp; try</div>
 
 <div class="tiles">{''.join(tiles)}</div>
 
-<h2>Ladder steps — what each config changes</h2>
-<div class="card">{ladder_desc}</div>
+<h2>The ladder — one measured change at a time</h2>
+<p class="caption">Each step was A/B-tested against its predecessor on the same 60
+problems (20 per difficulty bucket), same weak policy (claude-haiku-4-5), ≥2
+repetitions; kept only if the per-bucket numbers improved. Lines show pass@1
+per bucket; reverted steps are part of the record but not of the shipped
+tool. Hover any point for exact values.</p>
+<div class="card">{legend_html(BUCKET_LEGEND)}{ladder_slope(stats_by_cfg)}
+<details><summary>step-by-step table</summary>{ladder_table}</details></div>
 
-<h2>Ladder — pass@1 by difficulty bucket (dev60, FIXED policy claude-haiku-4-5)</h2>
-<div class="card">{legend_html()}{ladder_chart(stats_by_cfg)}
-<details><summary>table view</summary>
-{stats_table(stats_by_cfg, ["pass@1", "solved", "attempts"])}</details></div>
+<h2>Policy-neutrality — the headline result (A24)</h2>
+<p class="caption">One server, one neutral prompt, measured at both a weak and a
+strong policy. The universal config beats the naive interface in every bucket
+at sonnet (first substrate config to do so) and is best-or-tied at haiku
+except hard, where the haiku-tuned variant keeps a .075 edge (within ½σ).
+pass@1, dev60.</p>
+<div class="card">{a24}</div>
 
-<h2>Efficiency per SOLVED proof — claude-haiku-4-5 (metric ÷ pass@1; failed attempts included; x = ladder step)</h2>
-<div class="card">{legend_html()}{minis}
-<details><summary>table view</summary>
-{stats_table(stats_by_cfg, ["tokens_out_mean", "cost_usd_mean", "wall_s_mean", "tool_calls_mean"])}</details></div>
-
-{sonnet_section}
-
-<h2>Scalability — fixed stratified batch vs N parallel agents</h2>
+<h2>Scalability — N parallel agents on one machine</h2>
+<p class="caption">Each point is one full run of a fixed 24-problem stratified
+batch (8 per bucket) executed with N = 1, 2, 4, 8 concurrent agents — eight
+runs total (4 per interface), all in a single night window (Jul 3–4) after two
+earlier measurement artifacts were caught and disclosed (REPORT §5). Both
+interfaces scale healthily (flat wall per attempt, ~72–80 % parallel
+efficiency at N=8); the winner's advantage is its ~2.7× per-attempt speed,
+compounding to ≈6× solved-proofs-per-hour at N=8. The local prover is never
+the bottleneck (CPU ≤ 24 % of a 14-core laptop).</p>
 {sweep_section()}
 
-<h2>Runs</h2>
-<div class="card"><table>
-<tr><th>run</th><th>status</th><th>progress</th><th>solved</th><th>per bucket</th>
-<th class=num>cost</th><th class=num>quarantined</th></tr>
-{''.join(run_rows)}</table></div>
-
-<h2>Gate rejections (ladder runs)</h2>
-<div class="card"><table><tr><th>config</th><th>reasons</th></tr>{rej_rows}</table></div>
+<h2>Everything else measured</h2>
+<p class="caption">Cross-policy annexes, SOTA comparison, team experiments,
+in-project probes, held-out — each analyzed in docs/REPORT.md. Raw per-run
+numbers below; reproduce any row with <code>python3 harness/report.py
+&lt;run&gt;</code>.</p>
+<div class="card"><details><summary>all {n_annex} non-ladder runs</summary>{annex_table}</details></div>
 </body></html>"""
 
 
