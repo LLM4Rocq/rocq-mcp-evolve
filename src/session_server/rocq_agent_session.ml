@@ -230,8 +230,23 @@ let goals_block ?prev st =
 let write_candidate s =
   let sentences = List.rev_map fst s.committed in
   let body = String.concat "\n" sentences in
+  (* product mode: candidate.v must be STANDALONE — the session preloaded
+     tactic modules (and possibly the mathcomp bridge), so the emitted file
+     must carry the same Requires. Harness mode (ROCQ_ENV_V2=1) keeps the
+     bare shape: its gate forbids Require in the agent region and injects
+     the modules via -ri at recompile instead (dogfood report, bug 3). *)
+  let preload =
+    if Sys.getenv_opt "ROCQ_ENV_V2" = Some "1" then ""
+    else
+      (if Sys.getenv_opt "ROCQ_PRELOAD" <> Some "0" then
+         "From Stdlib Require Import Lia Lra Psatz.\n"
+       else "")
+      ^ (if !mc_tactics then
+           "From mathcomp Require Import zify.\nFrom mathcomp Require Import lra.\n"
+         else "")
+  in
   let oc = open_out (Filename.concat (Lazy.force workdir) "candidate.v") in
-  output_string oc (s.prefix ^ "\n" ^ body ^ "\n");
+  output_string oc (s.prefix ^ "\n" ^ preload ^ body ^ "\n");
   close_out oc
 
 (* Atlas fix 1: when a tool leaves zero open goals but the proof is not
@@ -1010,6 +1025,11 @@ let auto_close_tool : M.tool =
         if s.complete then
           M.text_result
             "The proof is already COMPLETE. Reply DONE — do not call more tools."
+        else if not (D.proof_open (cur_state s)) then
+          M.text_result
+            "no proof open — nothing to close. Use open{file, theorem?} to \
+             start one (the loaded file ran to completion without leaving a \
+             goal)."
         else
           let st = cur_state s in
           let t0 = Unix.gettimeofday () in
@@ -1469,10 +1489,19 @@ let open_tool =
           ("required", `List [ `String "file" ]) ];
     handler =
       (fun args ->
-        let file = JU.member "file" args |> JU.to_string in
+        let file =
+          match JU.member "file" args with
+          | `String f when f <> "" -> Some f
+          | _ -> Sys.getenv_opt "ROCQ_TASK_FILE" (* fall back to the preset *)
+        in
         let thm =
           match JU.member "theorem" args with `String t -> Some t | _ -> None
         in
+        match file with
+        | None ->
+            M.text_result ~is_error:true
+              "open needs a file argument (no ROCQ_TASK_FILE preset is active)"
+        | Some file ->
         if not (Sys.file_exists file) then
           M.text_result ~is_error:true (Printf.sprintf "no such file: %s" file)
         else begin

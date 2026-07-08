@@ -115,5 +115,13 @@ edges easy; universal +.225 med / +.075 hard); rocq-tools' robust edge is
 ~2x cost-per-solve at sonnet and 20-35 % less wall. "Dominated on all three
 axes" was wrong and is corrected everywhere. CI green on both branches.
 
+## Jul 8 evening — dogfood validation (A38)
+Fresh-switch install via README verbatim: works. The installed binary,
+driven as a raw MCP by a frontier-tier agent, solved 10/10 hard AIME
+problems from miniF2F (<=7 calls each, independently recompiled) — an
+anecdote, not a benchmark row, but a strong end-to-end validation. Three
+small product bugs found and fixed (open null-args, auto_close no-proof
+message, standalone candidate.v).
+
 ## Needs your input
 _(empty — the run is complete)_

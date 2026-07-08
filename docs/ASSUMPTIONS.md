@@ -437,3 +437,16 @@ accuracy-parity (.95/.925/.80 vs universal .95/1.00/.85), haiku mixed
 (rocq-mcp edges easy .675; universal +.225 med/+.075 hard); rocq-tools'
 robust edge = weak-policy med/hard + ~2x cost efficiency at sonnet. The
 "dominated on all three axes" claim was wrong and is corrected everywhere.
+
+## A38 — dogfood round (Jul 8): fresh-switch install + 10 hard AIME, 3 fixes
+A fresh-switch agent followed the README verbatim: switch create + opam pin
+worked with no deviation (rocq-mcp installed, smoke passed). Driving the
+INSTALLED binary over raw MCP, it solved 10/10 hard-tier miniF2F problems
+(AIME; <=7 calls each; every candidate independently recompiled) — an
+informal frontier-policy anecdote, not a benchmark row. Product bugs found
+and fixed: (1) open with empty args + preset -> raw Yojson error, now falls
+back to ROCQ_TASK_FILE or errors cleanly; (2) auto_close with no open proof
+claimed "no finisher applies", now says no proof open; (3) candidate.v was
+NOT standalone (missing preload Requires) — in product mode it now embeds
+the preload (and mathcomp-bridge) Requires; harness mode (ROCQ_ENV_V2=1)
+keeps the bare shape for the gate's -ri protocol. Bare-recompile verified.
