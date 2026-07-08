@@ -2,7 +2,7 @@
 (name rocq-tools)
 (generate_opam_files true)
 (source (github LLM4Rocq/rocq-tools))
-(license MIT)
+(license Apache-2.0)
 (authors "LLM4Rocq")
 (maintainers "guillaume.baudart@gmail.com")
 
