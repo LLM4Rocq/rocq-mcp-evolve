@@ -25,17 +25,18 @@ All three objectives, per difficulty bucket (easy / medium / hard), dev60.
 **$/solve** = mean cost per attempt ÷ pass@1 (expected spend per solved
 proof, failures included); **wall** = mean seconds per attempt. SOTA =
 [rocq-mcp](https://github.com/LLM4Rocq/rocq-mcp), measured under the
-identical harness, problems, gate, and policies (first contact only after
-our design freeze; its numbers are a lower bound — some attempts hit an MCP
-startup race, see REPORT §8).
+identical harness, problems, gate, and policies (first contact only after our
+design freeze; "fair" = rerun through an instant-handshake proxy after an
+audit found the original integration raced its server startup — full story
+in REPORT).
 
 | interface | policy | pass@1 | $ / solve | wall s |
 |---|---|---|---|---|
 | naive whole-file (control) | haiku | .44 / .25 / .30 | .18 / .44 / .49 | 90 / 122 / 157 |
-| rocq-mcp (SOTA) | haiku | .45 / .23 / .23 | .12 / .36 / .37 | 56 / 74 / 78 |
+| rocq-mcp (SOTA, fair) | haiku | .68 / .35 / .33 | .08 / .22 / .31 | 65 / 76 / 97 |
 | **`universal`** (recommended) | haiku | **.66 / .58 / .40** | .10 / .16 / .23 | 59 / 71 / 74 |
 | naive whole-file | sonnet | .93 / .95 / .80 | .09 / .15 / .18 | 61 / 77 / 112 |
-| rocq-mcp (SOTA) | sonnet | .83 / .73 / .73 | .11 / .23 / .21 | 60 / 92 / 114 |
+| rocq-mcp (SOTA, fair) | sonnet | .95 / .93 / .80 | .11 / .19 / .26 | 50 / 64 / 105 |
 | **`universal`** | sonnet | **.95 / 1.00 / .85** | **.07 / .09 / .13** | **36 / 42 / 85** |
 | naive whole-file | fable | .95 / 1.00 / .95 | — | (1 rep) |
 | **`universal`** | fable | **.95 / 1.00 / 1.00** | — | (1 rep) |
@@ -43,9 +44,9 @@ startup race, see REPORT §8).
 
 Readings: `universal` is best-or-tied in every bucket at **all three policy
 tiers**; at sonnet it is simultaneously the most accurate *and* the cheapest
-per solved proof of anything measured; the SOTA comparison shows heavy
-interactive-tool adoption does not convert without turn-compression
-(rocq-mcp ≈ naive at haiku, dominated on all three axes at sonnet).
+per solved proof of anything measured; the fair SOTA comparison: near accuracy-parity
+at sonnet, rocq-mcp edges easy at haiku; rocq-tools leads weak-policy
+medium/hard and costs about half per solved proof at sonnet.
 
 **Ladder (weak policy):** baseline `.44/.25/.30` → winner `.70/.525/.425`
 (4 reps) via 6 kept + 4 reverted measured changes, at **−45 % cost, −55 % wall**;

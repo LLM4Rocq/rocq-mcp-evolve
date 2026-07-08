@@ -427,3 +427,13 @@ each broken proof with `Admitted.`), so every hole `build` reports is
 directly openable and provable. Verified: h1 broken FIRST, open h2 -> proved,
 open main -> reached. The A14 fixture was restored to broken-first order as
 the regression test (109 checks green).
+
+## A37 — fair rocq-mcp comparison (Jul 8, user question "is it fair?")
+Audit: original runs had rocq-mcp pending at agent start in 116-118/120
+attempts (CLI sync-window vs Python startup); comparison retracted publicly.
+Fix: instant-handshake proxy (harness/mcp_prewarm_proxy.py). Rerun 2x dev60
+both policies: 120/120 connected, 0 poisoned. Fair verdict: sonnet near
+accuracy-parity (.95/.925/.80 vs universal .95/1.00/.85), haiku mixed
+(rocq-mcp edges easy .675; universal +.225 med/+.075 hard); rocq-tools'
+robust edge = weak-policy med/hard + ~2x cost efficiency at sonnet. The
+"dominated on all three axes" claim was wrong and is corrected everywhere.

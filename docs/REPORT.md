@@ -340,18 +340,31 @@ interface when only coverage matters.
 
 ### SOTA comparison (A16/A19) — runs `rocq_mcp_dev60`, `rocq_mcp_sonnet_dev60`
 
-**COMPARISON RETRACTED PENDING RERUN (Jul 8 audit).** A post-hoc audit found
-the rocq-mcp server was still "pending" (not connected) at agent start in
-116/120 haiku and 118/120 sonnet attempts — its Python startup (~0.5-1 s)
-exceeds the claude-CLI's synchronous MCP window, while our in-process OCaml
-servers answer in milliseconds. 30 (haiku) and 69 (sonnet) attempts never
-saw its tools at all and submitted blind; the tiny connected subsample
-solved at 3/4 and 2/2. The recorded rocq-mcp numbers are therefore an
-artifact of OUR harness integration and must not be read as a comparison of
-tool designs. The adoption-pattern analysis below survives only for the
-attempts where tools did become available mid-session; the headline
-"dominated on all three axes" claim is WITHDRAWN until a rerun with a
-fair (instant-handshake) integration.
+**FAIR-INTEGRATION RERUN (Jul 8; runs `rocq_mcp_fair_dev60`,
+`rocq_mcp_fair_sonnet_dev60`).** A user-prompted audit found the original
+comparison invalid: rocq-mcp's server was still connecting at agent start in
+116-118/120 attempts (its Python startup exceeds the claude-CLI's
+synchronous MCP window; our in-process servers answer in milliseconds), so
+30-69 attempts per arm submitted blind. Fixed with an instant-handshake
+proxy (harness/mcp_prewarm_proxy.py: handshake served from cache, calls
+forwarded once the real server warms); rerun 2 reps x dev60 per policy,
+audited 120/120 connected, 0 poisoned. The original raced runs are kept as
+the integration-artifact record; the earlier "dominated on all three axes"
+claim was WRONG and is replaced by the following.
+
+Fair numbers (pass@1 / $-per-solve / wall, easy-med-hard):
+- haiku: .675/.350/.325 · $.08/.22/.31 · 65/76/97 s
+- sonnet: .950/.925/.800 · $.11/.19/.26 · 50/64/105 s
+
+**Honest verdict.** Fairly integrated, rocq-mcp is a solid interactive
+server: at sonnet it reaches near accuracy-parity with `universal`
+(.95/.925/.80 vs .95/1.00/.85; ties naive on hard), and at haiku it EDGES
+every interface on easy (.675, cheapest per easy solve). rocq-tools' edge
+is concentrated where the design law predicts: weak-policy medium/hard
+(+.225/+.075) and EFFICIENCY everywhere — roughly half the cost per solved
+proof at sonnet ($.07/.09/.13 vs $.11/.19/.26) and 20-35 % less wall. The
+turn-compression mechanism story stands, but as a bucket- and
+efficiency-concentrated advantage, not domination.
 
 
 rocq-mcp v0.3.1 (coq-lsp/pet-backed, 11 tools) under the identical protocol:
@@ -542,19 +555,19 @@ included); wall = mean seconds per attempt.
 | naive @ haiku | .44 / .25 / .30 | .18 / .44 / .49 | 90 / 122 / 157 |
 | winner_auto2 @ haiku | .65 / .575 / .475 | .08 / .09 / .12 | 49 / 42 / 48 |
 | universal @ haiku | .66 / .575 / .40 | .10 / .16 / .23 | 59 / 71 / 74 |
-| rocq-mcp (SOTA) @ haiku | .45 / .225 / .225 | .12 / .36 / .37 | 56 / 74 / 78 |
+| rocq-mcp (SOTA, fair) @ haiku | .675 / .35 / .325 | .08 / .22 / .31 | 65 / 76 / 97 |
 | naive @ sonnet | .925 / .95 / .80 | .09 / .15 / .18 | 61 / 77 / 112 |
 | sonnet_native_auto2 | 1.00 / .85 / .85 | .09 / .12 / .15 | 42 / 47 / 93 |
 | universal @ sonnet | **.95 / 1.00 / .85** | **.07 / .09 / .13** | **36 / 42 / 85** |
-| rocq-mcp (SOTA) @ sonnet | .825 / .725 / .725 | .11 / .23 / .21 | 60 / 92 / 114 |
+| rocq-mcp (SOTA, fair) @ sonnet | .95 / .925 / .80 | .11 / .19 / .26 | 50 / 64 / 105 |
 
 Readings: (1) `universal` @ sonnet is simultaneously the most accurate cell
 AND the cheapest per solved proof of anything measured — including cheaper
 than naive-haiku — at the lowest wall of any sonnet cell. (2) The haiku
 winner family cuts cost/solve 4-5× and wall 2-3× versus naive while raising
-accuracy in every bucket. (3) rocq-mcp is dominated on all three axes at
-both policies: at sonnet, universal is more accurate in every bucket at
-roughly half the cost per solve and ~40 % less wall. (4) Efficiency deltas
+accuracy in every bucket. (3) fairly integrated, rocq-mcp reaches near accuracy-parity at sonnet and
+edges easy at haiku; universal leads weak-policy medium/hard and costs
+roughly half per solved proof at sonnet. (4) Efficiency deltas
 are LARGER than accuracy deltas throughout — the interface's clearest
 effect is economic.
 

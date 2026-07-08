@@ -598,8 +598,8 @@ def build():
                    "<th>pass@1 e/m/h</th></tr>" + "".join(annex) + "</table>")
     n_annex = len(annex)
 
-    sota_h = stats_for(runs, "rocq_mcp_dev60")
-    sota_s = stats_for(runs, "rocq_mcp_sonnet_dev60")
+    sota_h = stats_for(runs, "rocq_mcp_fair_dev60")
+    sota_s = stats_for(runs, "rocq_mcp_fair_sonnet_dev60")
     sota = ""
     if sota_h and sota_s:
         sgroups = [
@@ -681,16 +681,17 @@ except hard, where the haiku-tuned variant keeps a .075 edge (within ½σ).
 pass@1, dev60.</p>
 <div class="card">{a24}</div>
 
-<h2>Comparison with SOTA (rocq-mcp) — RETRACTED pending rerun</h2>
+<h2>Comparison with SOTA (rocq-mcp) — fair integration</h2>
 <p class="caption">github.com/LLM4Rocq/rocq-mcp, measured under the identical
 harness, gate, problems, and policies (first contact only after our design
 freeze; REPORT §SOTA). Bars: pass@1. Table: all three dimensions — $/solve =
 expected cost per solved proof (failures included), wall = mean s/attempt.
-RETRACTION (Jul 8): a post-hoc audit found rocq-mcp's server was not yet
-connected at agent start in 97-98 % of attempts (its Python startup exceeds
-the CLI's synchronous MCP window; our in-process servers answer instantly).
-These numbers measure OUR integration artifact, not their tool design, and
-the comparison is withdrawn until a fair rerun. Data kept for transparency.</p>
+Numbers from the FAIR rerun (Jul 8): an audit found the original runs
+started with rocq-mcp's server still connecting in 97-98 % of attempts (our
+integration artifact — retracted); an instant-handshake proxy fixed it,
+120/120 connected. Fair verdict: near accuracy-parity at sonnet, rocq-mcp
+edges easy at haiku; rocq-tools leads weak-policy medium/hard and costs
+about half per solved proof at sonnet. See REPORT for the full audit story.</p>
 <div class="card">{sota}</div>
 
 <h2>Scalability — N parallel agents on one machine</h2>
