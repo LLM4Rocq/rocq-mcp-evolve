@@ -381,6 +381,56 @@ let a13 () =
     (name ^ ": re-open m1 safe after m2 cached the shared prefix");
   close s
 
+(* ---- A14 build tool whole-file diagnosis (admit-and-continue) -------- *)
+let a14 () =
+  let name = "A14 build tool" in
+  (* no ROCQ_TASK_FILE: `build` diagnoses a whole .v file in one call.
+     b14_h1's proof FAILS (reflexivity can't close n + 0 = n); it is Admitted
+     in-session so b14_h2 and b14_main — which do NOT depend on b14_h1 — are
+     still checked (admit-and-continue). *)
+  let wd = tmpdir "sessA14" in
+  let file = Filename.concat wd "dev.v" in
+  write_file file
+    "Lemma b14_h1 : forall n : nat, n + 0 = n.\n\
+     Proof. reflexivity. Qed.\n\n\
+     Lemma b14_h2 : forall n : nat, (n + 0) + 0 = n.\n\
+     Proof. intros n. now rewrite <- !plus_n_O. Qed.\n\n\
+     Theorem b14_main : forall n : nat, (n + 0) + 0 = n + 0.\n\
+     Proof. intros n. now rewrite b14_h2, <- plus_n_O. Qed.\n";
+  let s =
+    spawn_server
+      ~env:
+        [ ("ROCQ_WORKDIR", wd);
+          ("ROCQ_ENABLE_TOOLS", "build,open,step");
+          ("ROCQ_EXEMPLARS", "0") ]
+      session_exe
+  in
+  initialize s;
+  (* 1. build reports the single broken proof, admits it, and still checks the
+     two independent blocks that follow *)
+  let r1 = call s ~name:"build" ~args:(`Assoc [ ("file", `String file) ]) in
+  check (contains r1 "hole(s)") (name ^ ": build reports hole(s)");
+  check (contains r1 "b14_h1") (name ^ ": failing block b14_h1 named as the hole");
+  check (contains r1 "Admitted — dependents still checked")
+    (name ^ ": b14_h1 admitted so dependents keep checking");
+  check (contains r1 "2 block(s) OK")
+    (name ^ ": h2 + main both check after h1 admitted");
+  (* 2. h2 and main are NOT holes: their names never head a `- NAME:` hole line
+     (the colon guards against matching the repair-hint line) *)
+  check (not (contains r1 "b14_h2:")) (name ^ ": b14_h2 is not reported as a hole");
+  check (not (contains r1 "b14_main:")) (name ^ ": b14_main is not reported as a hole");
+  (* 3. build is purely diagnostic: it must not disturb sessions — open b14_h2
+     afterwards and prove it live *)
+  let r2 =
+    call s ~name:"open"
+      ~args:(`Assoc [ ("file", `String file); ("theorem", `String "b14_h2") ])
+  in
+  Printf.eprintf "DEBUG open r2 = %s\n%!" r2;
+  check (contains r2 "proving b14_h2") (name ^ ": open b14_h2 after build");
+  let r3 = step s "Proof. intros n. now rewrite <- !plus_n_O. Qed." in
+  check (contains r3 "PROOF COMPLETE") (name ^ ": b14_h2 proves after build");
+  close s
+
 let () =
   a1 ();
   a2 ();
@@ -395,4 +445,5 @@ let () =
   a11 ();
   a12 ();
   a13 ();
+  a14 ();
   summary "suite A"

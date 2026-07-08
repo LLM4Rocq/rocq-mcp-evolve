@@ -73,6 +73,7 @@ features with `ROCQ_<FEATURE>=0`).
 
 | tool | what it does |
 |---|---|
+| `build{file}` | Diagnose a whole file in one call: every top-level block executes; a failed proof is `Admitted` in-session so dependents still check — you get **all** broken proofs at once, then fix each via `open`. Purely diagnostic. |
 | `open{file, theorem?}` | Open a .v file at runtime and start (or restart) a session on it: targets the named theorem's statement (its old proof/`Admitted` is ignored) or the file's trailing open goal. Project load paths auto-discovered from the file's location. |
 | `check{script}` | Submit a **complete** proof (`Proof. … Qed.`) in one call. On success, done; on failure the valid prefix stays committed and you stand at the failing sentence with the live goal — repair or resubmit. |
 | `step{text}` | Execute one or more sentences incrementally; each success commits permanently, the first failure reports a structured error and leaves state at the last success. Queries (`Search`/`Check`) run here too. |
@@ -94,6 +95,10 @@ Cross-cutting enrichments (zero extra turns, all default-on; disable with `=0`):
   into the first response. Measured neutral at the policies tested (weak
   policies can be distracted by it), so off by default; retrieval quality
   itself is verified and leak-proof.
+- **hang safety** — every sentence runs under a timeout; the uninterruptible
+  class (`vm_compute`/`native_compute`) is additionally fork-probed under a
+  hard kill deadline, so a divergent computation returns a structured
+  TIMEOUT instead of freezing the session.
 - **tactic preloading** (`ROCQ_PRELOAD`) — loads Lia/Lra/Psatz after the
   statement so the standard closers always exist. In a **mathcomp** file,
   additionally preloads `zify`/`algebra-tactics` when installed

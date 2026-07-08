@@ -350,6 +350,77 @@ let query_re = Str.regexp "^[ \t\n]*\\(Search\\|SearchPattern\\|SearchRewrite\\|
 
 let is_query_sentence text = Str.string_match query_re text 0
 
+
+(* A34 (user-reported divergence class): vm_compute/native_compute do not
+   reliably hit the interpreter's interrupt checkpoints, so Control.timeout
+   cannot stop them (empirically: vm_compute on unary-nat 2016^20214 hangs
+   forever). For sentences in this class we first PROBE in a forked child
+   under a hard SIGKILL deadline; only a probe that terminates within budget
+   is re-executed in-process. Deterministic tactics make the re-execution
+   sound; the session state is never touched by the child (COW). *)
+let uninterruptible_re =
+  Str.regexp "vm_compute\\|native_compute\\|vm_cast_no_check\\|native_cast_no_check"
+
+type probe_outcome = Probe_ok | Probe_err of string | Probe_timeout
+
+let fork_probe ~(timeout_s : float) (st : Vernacstate.t) vc : probe_outcome =
+  let rd, wr = Unix.pipe () in
+  match Unix.fork () with
+  | 0 ->
+      (* child: silence output, run, report one status byte + message, die
+         via SIGKILL so no at_exit/flush of shared channels runs *)
+      Unix.close rd;
+      (try
+         let devnull = Unix.openfile "/dev/null" [ Unix.O_WRONLY ] 0 in
+         Unix.dup2 devnull Unix.stdout;
+         Unix.dup2 devnull Unix.stderr
+       with Unix.Unix_error _ -> ());
+      let code, msg =
+        match exec_sentence ~timeout_s st vc with
+        | Ok_st _ -> ('0', "")
+        | Err { msg; _ } -> ('1', msg)
+        | Timeout _ -> ('2', "")
+        | exception _ -> ('1', "probe crashed")
+      in
+      (try
+         ignore (Unix.write_substring wr (Printf.sprintf "%c%s" code msg) 0
+                   (1 + String.length msg))
+       with Unix.Unix_error _ -> ());
+      (try Unix.close wr with Unix.Unix_error _ -> ());
+      Unix.kill (Unix.getpid ()) Sys.sigkill;
+      assert false
+  | pid ->
+      Unix.close wr;
+      let deadline = Unix.gettimeofday () +. timeout_s +. 2.0 in
+      let rec wait_child () =
+        match Unix.waitpid [ Unix.WNOHANG ] pid with
+        | 0, _ ->
+            if Unix.gettimeofday () > deadline then begin
+              (try Unix.kill pid Sys.sigkill with Unix.Unix_error _ -> ());
+              ignore (Unix.waitpid [] pid);
+              Probe_timeout
+            end
+            else begin
+              ignore (Unix.select [] [] [] 0.05);
+              wait_child ()
+            end
+        | _ ->
+            (* child finished: read its report *)
+            let buf = Bytes.create 4096 in
+            let n = try Unix.read rd buf 0 4096 with Unix.Unix_error _ -> 0 in
+            if n = 0 then Probe_timeout
+            else
+              let code = Bytes.get buf 0 in
+              let msg = Bytes.sub_string buf 1 (n - 1) in
+              (match code with
+              | '0' -> Probe_ok
+              | '1' -> Probe_err msg
+              | _ -> Probe_timeout)
+      in
+      let r = wait_child () in
+      (try Unix.close rd with Unix.Unix_error _ -> ());
+      r
+
 type exec_stop =
   | Done (* all sentences executed *)
   | Error_at of { text : string; msg : string; loc : (int * int) option; msgs : string list }
@@ -426,7 +497,21 @@ let exec_text ?cache ~(timeout_s : float) ~(qed_timeout_s : float)
         | _ ->
             let tmo = if is_qed_like text then qed_timeout_s else timeout_s in
             let t0 = Unix.gettimeofday () in
-            (match exec_sentence ~timeout_s:tmo st vc with
+            let guarded () =
+              let needs_probe =
+                try
+                  ignore (Str.search_forward uninterruptible_re text 0);
+                  true
+                with Not_found -> false
+              in
+              if not needs_probe then exec_sentence ~timeout_s:tmo st vc
+              else
+                match fork_probe ~timeout_s:tmo st vc with
+                | Probe_ok -> exec_sentence ~timeout_s:tmo st vc
+                | Probe_err msg -> Err { msg; loc = None; messages = [] }
+                | Probe_timeout -> Timeout tmo
+            in
+            (match guarded () with
             | Ok_st (st', msgs) ->
                 let ms = (Unix.gettimeofday () -. t0) *. 1000. in
                 loop st' []

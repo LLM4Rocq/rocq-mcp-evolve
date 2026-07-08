@@ -371,3 +371,35 @@ verified capability on arithmetic-shaped goals — the mathcomp analog of
 env-v2, whose miniF2F win came precisely from arithmetic-shaped goals) but
 claims NO benchmark improvement. The honest boundary stands: weak-policy
 ssreflect proving is bounded by structural competence, not by closers.
+
+
+## A33 — multi-error `build` tool (Jul 8, user suggestion)
+"Would it make sense to report multiple errors at once, e.g. building
+several helper lemmas?" Yes by the design law (n independent errors/turn >
+1). Rocq disallows nested Lemmas in proof mode, so the scenario lives at
+FILE level: new `build{file}` tool executes every top-level block with
+admit-and-continue (failed proof -> rolled back, statement Admitted so
+dependents still elaborate; unparseable block -> skipped to next block),
+reports every hole in one call, discards all state (pure diagnosis; the
+completion/auto-Qed guardrail question never arises). Smoke: h1+h3 broken,
+h2+main(depends on h2) OK -> exactly 2 holes reported with real errors.
+UNMEASURABLE on the benchmark manifests (single-statement tasks) — ships as
+suite-tested capability for the project axis, like the daemon.
+
+## A34 — uninterruptible-tactic hang guard (Jul 8, user-reported divergence class)
+User observed rocq-mcp diverging on hung tactics (vm_compute on
+2016^20214 mod 10). Empirical audit of OUR design: Control.timeout catches
+cbv/ltac runaways cleanly, but vm_compute and native_compute BYPASS it
+(hang forever — the VM misses the interrupt checkpoints on such workloads).
+The experiment was protected only by the harness's attempt-level
+process-tree watchdog; interactive/product mode was NOT safe. Fix:
+fork-probe — sentences matching vm_compute/native_compute/vm_cast/native_cast
+first execute in a forked child under a hard SIGKILL deadline (timeout+2s);
+only a probe that terminates within budget is re-executed in-process
+(deterministic => sound; session state untouched by the child; COW-cheap).
+Verified: the exact divergent case now returns a structured TIMEOUT in
+~5s; small vm_compute still succeeds (0.3s). Residual, documented: the
+probe costs 2x on slow-but-convergent heavy compute; the team daemon's
+older driver copy is NOT probed (covered by the harness watchdog; not the
+product path); exotic uninterruptible plugin loops outside the matched
+tactics remain covered only by client-side timeouts.

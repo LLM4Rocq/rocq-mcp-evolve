@@ -1548,15 +1548,150 @@ let open_tool =
         end);
   }
 
+
+let build_tool =
+  {
+    M.name = "build";
+    description =
+      "Diagnose a whole .v file in ONE call: executes every top-level block; \
+       when a lemma's PROOF fails, the lemma is Admitted in-session so later \
+       lemmas that depend on it are still checked, and execution continues — \
+       you get EVERY broken proof at once instead of stopping at the first. \
+       Purely diagnostic: does not change the current proof session. Fix \
+       holes afterwards with open{file, theorem:<name>}.";
+    input_schema =
+      `Assoc
+        [ ("type", `String "object");
+          ( "properties",
+            `Assoc [ ("file", `Assoc [ ("type", `String "string") ]) ] );
+          ("required", `List [ `String "file" ]) ];
+    handler =
+      (fun args ->
+        let file = JU.member "file" args |> JU.to_string in
+        if not (Sys.file_exists file) then
+          M.text_result ~is_error:true (Printf.sprintf "no such file: %s" file)
+        else begin
+          Rocq_driver.discovery_origin := Some file;
+          let ic = open_in_bin file in
+          let text = really_input_string ic (in_channel_length ic) in
+          close_in ic;
+          let st0 = prover_base () in
+          let block_name t =
+            try
+              ignore (Str.search_forward lemma_re t 0);
+              let rest = Str.string_after t (Str.match_end ()) in
+              (try
+                 ignore (Str.search_forward ident_re rest 0);
+                 Str.matched_string rest
+               with Not_found -> truncate 40 t)
+            with Not_found -> truncate 40 t
+          in
+          let qed_re = Str.regexp "\\(Qed\\|Defined\\|Admitted\\|Abort\\)[ \\t]*\\." in
+          let holes = ref [] in
+          let ok_blocks = ref 0 in
+          let count_ok steps =
+            List.iter
+              (fun (x : D.exec_step) ->
+                if Str.string_match (Str.regexp "\\(Qed\\|Defined\\)[ \\t]*\\.") x.D.text 0
+                then incr ok_blocks)
+              steps
+          in
+          let rec go st src iters =
+            if iters > 60 then holes := ("(build capped at 60 continuations)", "") :: !holes
+            else
+              let steps, stop = D.exec_text ~timeout_s:60. ~qed_timeout_s:120. st src in
+              count_ok steps;
+              match stop with
+              | D.Done -> ()
+              | D.Timeout_at { text = t; _ } ->
+                  holes := (block_name t, "timeout at `" ^ truncate 60 t ^ "`") :: !holes
+              | D.Parse_error { msg; loc } -> (
+                  match loc with
+                  | Some (_, e) when e < String.length src ->
+                      holes := ("(parse)", truncate 200 msg) :: !holes;
+                      skip_to_next_block st src e iters
+                  | _ -> holes := ("(parse)", truncate 200 msg) :: !holes)
+              | D.Error_at { text = et; msg; loc; _ } -> (
+                  (* locate the failing block's statement among executed steps *)
+                  let arr = Array.of_list steps in
+                  let stmt_idx = ref (-1) in
+                  Array.iteri
+                    (fun i (x : D.exec_step) ->
+                      try
+                        ignore (Str.search_forward lemma_re x.D.text 0);
+                        if D.proof_open x.D.post then stmt_idx := i
+                      with Not_found -> ())
+                    arr;
+                  let after_err =
+                    match loc with Some (_, e) -> e | None -> String.length src
+                  in
+                  if !stmt_idx >= 0 && D.proof_open (if steps = [] then st else (arr.(Array.length arr - 1)).D.post)
+                  then begin
+                    let stmt = arr.(!stmt_idx) in
+                    let pre =
+                      if !stmt_idx = 0 then st else (arr.(!stmt_idx - 1)).D.post
+                    in
+                    holes :=
+                      (block_name stmt.D.text,
+                       Printf.sprintf "proof fails at `%s`: %s (Admitted — dependents still checked)"
+                         (truncate 60 et) (truncate 200 msg))
+                      :: !holes;
+                    match
+                      D.exec_text ~timeout_s:60. ~qed_timeout_s:60. pre
+                        (stmt.D.text ^ "\nAdmitted.")
+                    with
+                    | steps2, D.Done when steps2 <> [] ->
+                        let st' = (List.nth steps2 (List.length steps2 - 1)).D.post in
+                        (* skip the rest of the failed proof up to its closer *)
+                        let rest = Str.string_after src after_err in
+                        let cont =
+                          try
+                            ignore (Str.search_forward qed_re rest 0);
+                            Str.string_after rest (Str.match_end ())
+                          with Not_found -> ""
+                        in
+                        if String.trim cont <> "" then go st' cont (iters + 1)
+                    | _ ->
+                        holes := (block_name stmt.D.text, "(could not admit — later blocks may cascade)") :: !holes;
+                        skip_to_next_block st src after_err iters
+                  end
+                  else begin
+                    holes := (block_name et, truncate 200 msg) :: !holes;
+                    skip_to_next_block
+                      (if steps = [] then st else (arr.(Array.length arr - 1)).D.post)
+                      src after_err iters
+                  end)
+          and skip_to_next_block st src from iters =
+            let rest = Str.string_after src from in
+            match Str.search_forward lemma_re rest 0 with
+            | i -> go st (Str.string_after rest i) (iters + 1)
+            | exception Not_found -> ()
+          in
+          go st0 text 0;
+          let hs = List.rev !holes in
+          let body =
+            if hs = [] then
+              Printf.sprintf "BUILD OK: %d proof block(s), no holes." !ok_blocks
+            else
+              Printf.sprintf "BUILD: %d block(s) OK, %d hole(s):\n%s\nFix a hole \
+                              with open{file, theorem:<name>} then prove it."
+                !ok_blocks (List.length hs)
+                (String.concat "\n"
+                   (List.map (fun (n, e) -> Printf.sprintf "- %s: %s" n e) hs))
+          in
+          M.text_result body
+        end);
+  }
+
 let () =
   let enabled =
     match Sys.getenv_opt "ROCQ_ENABLE_TOOLS" with
     | Some s when s <> "" -> String.split_on_char ',' s |> List.map String.trim
-    | _ -> [ "open"; "check"; "step"; "rollback"; "state"; "try"; "auto_close" ]
+    | _ -> [ "open"; "build"; "check"; "step"; "rollback"; "state"; "try"; "auto_close" ]
   in
   let all =
-    [ open_tool; step_tool; rollback_tool; state_tool; try_tool; search_tool;
-      auto_close_tool; check_tool ]
+    [ open_tool; build_tool; step_tool; rollback_tool; state_tool; try_tool;
+      search_tool; auto_close_tool; check_tool ]
   in
   M.run
     (List.map with_exemplars
