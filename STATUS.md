@@ -105,5 +105,15 @@ overnight autonomous pipelines · every number's provenance in logs/ + git.
   bridges as depopts; only rocq-mcp{,-daemon,-shim} installed (experiment
   servers stay private); module header + tool descriptions refreshed.
 
+## Jul 8 — fair SOTA comparison (A37, user-prompted audit)
+The original rocq-mcp comparison was an integration artifact (server still
+connecting at agent start in 97-98 % of attempts) — retracted publicly,
+fixed with an instant-handshake proxy, rerun 2x/dev60 both policies
+(120/120 connected, 0 poisoned). Fair verdict: near accuracy-parity at
+sonnet (.95/.925/.80 vs universal .95/1.00/.85), mixed at haiku (rocq-mcp
+edges easy; universal +.225 med / +.075 hard); rocq-tools' robust edge is
+~2x cost-per-solve at sonnet and 20-35 % less wall. "Dominated on all three
+axes" was wrong and is corrected everywhere. CI green on both branches.
+
 ## Needs your input
 _(empty — the run is complete)_
