@@ -681,16 +681,16 @@ except hard, where the haiku-tuned variant keeps a .075 edge (within ½σ).
 pass@1, dev60.</p>
 <div class="card">{a24}</div>
 
-<h2>Comparison with SOTA (rocq-mcp) — accuracy, cost, latency</h2>
+<h2>Comparison with SOTA (rocq-mcp) — RETRACTED pending rerun</h2>
 <p class="caption">github.com/LLM4Rocq/rocq-mcp, measured under the identical
 harness, gate, problems, and policies (first contact only after our design
 freeze; REPORT §SOTA). Bars: pass@1. Table: all three dimensions — $/solve =
 expected cost per solved proof (failures included), wall = mean s/attempt.
-At both policies rocq-mcp is dominated on all three axes; at sonnet,
-universal is more accurate in every bucket at roughly half the cost per
-solve and ~40 % less wall. Caveat: some rocq-mcp attempts hit an MCP startup
-race (REPORT §8) — its numbers are a lower bound; the mechanism analysis is
-the robust claim.</p>
+RETRACTION (Jul 8): a post-hoc audit found rocq-mcp's server was not yet
+connected at agent start in 97-98 % of attempts (its Python startup exceeds
+the CLI's synchronous MCP window; our in-process servers answer instantly).
+These numbers measure OUR integration artifact, not their tool design, and
+the comparison is withdrawn until a fair rerun. Data kept for transparency.</p>
 <div class="card">{sota}</div>
 
 <h2>Scalability — N parallel agents on one machine</h2>

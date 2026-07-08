@@ -340,10 +340,18 @@ interface when only coverage matters.
 
 ### SOTA comparison (A16/A19) — runs `rocq_mcp_dev60`, `rocq_mcp_sonnet_dev60`
 
-All-dimension verdict (details in §6b): dominated on accuracy, cost/solve,
-and wall at both policies — @ sonnet: .825/.725/.725 vs universal's
-.95/1.00/.85, at $.11/.23/.21 per solve vs $.07/.09/.13, wall 60/92/114 s vs
-36/42/85 s. Mechanism analysis below.
+**COMPARISON RETRACTED PENDING RERUN (Jul 8 audit).** A post-hoc audit found
+the rocq-mcp server was still "pending" (not connected) at agent start in
+116/120 haiku and 118/120 sonnet attempts — its Python startup (~0.5-1 s)
+exceeds the claude-CLI's synchronous MCP window, while our in-process OCaml
+servers answer in milliseconds. 30 (haiku) and 69 (sonnet) attempts never
+saw its tools at all and submitted blind; the tiny connected subsample
+solved at 3/4 and 2/2. The recorded rocq-mcp numbers are therefore an
+artifact of OUR harness integration and must not be read as a comparison of
+tool designs. The adoption-pattern analysis below survives only for the
+attempts where tools did become available mid-session; the headline
+"dominated on all three axes" claim is WITHDRAWN until a rerun with a
+fair (instant-handshake) integration.
 
 
 rocq-mcp v0.3.1 (coq-lsp/pet-backed, 11 tools) under the identical protocol:
