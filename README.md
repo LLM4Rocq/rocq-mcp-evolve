@@ -38,8 +38,8 @@ in REPORT).
 | naive whole-file | sonnet | .93 / .95 / .80 | .09 / .15 / .18 | 61 / 77 / 112 |
 | rocq-mcp (SOTA, fair) | sonnet | .95 / .93 / .80 | .11 / .19 / .26 | 50 / 64 / 105 |
 | **`universal`** | sonnet | **.95 / 1.00 / .85** | **.07 / .09 / .13** | **36 / 42 / 85** |
-| naive whole-file | fable | .95 / 1.00 / .95 | — | (1 rep) |
-| **`universal`** | fable | **.95 / 1.00 / 1.00** | — | (1 rep) |
+| naive whole-file | fable | .95 / 1.00 / .95 | .09 / .19 / .35 | 51 / 40 / 73 (1 rep) |
+| **`universal`** | fable | **.95 / 1.00 / 1.00** | .14 / .16 / .29 | 49 / 41 / 57 (1 rep) |
 | `frozen` — **held-out** miniF2F test | haiku | .52 / .13 / .04 | — | single logged run |
 
 Readings: `universal` is best-or-tied in every bucket at **all three policy

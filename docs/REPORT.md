@@ -563,6 +563,8 @@ included); wall = mean seconds per attempt.
 | naive @ sonnet | .925 / .95 / .80 | .09 / .15 / .18 | 61 / 77 / 112 |
 | sonnet_native_auto2 | 1.00 / .85 / .85 | .09 / .12 / .15 | 42 / 47 / 93 |
 | universal @ sonnet | **.95 / 1.00 / .85** | **.07 / .09 / .13** | **36 / 42 / 85** |
+| naive @ fable (1 rep) | .95 / 1.00 / .95 | .09 / .19 / .35 | 51 / 40 / 73 |
+| universal @ fable (1 rep) | .95 / 1.00 / 1.00 | .14 / .16 / .29 | 49 / 41 / 57 |
 | rocq-mcp (SOTA, fair) @ sonnet | .95 / .925 / .80 | .11 / .19 / .26 | 50 / 64 / 105 |
 
 Readings: (1) `universal` @ sonnet is simultaneously the most accurate cell
