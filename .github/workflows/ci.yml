@@ -1,7 +1,7 @@
 name: CI
 on:
   push:
-    branches: [main, agent-tooling]
+    branches: [main]
   pull_request:
 
 jobs:
