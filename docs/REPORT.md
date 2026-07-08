@@ -24,7 +24,8 @@ goal-delta rendering; a three-agent relay team).
 
 **Headline numbers.**
 - Fixed weak policy (claude-haiku-4-5), dev60 per-bucket pass@1: baseline
-  .44/.25/.30 → best .675/.575/.475 across ten measured changes, at −45 %
+  .44/.25/.30 → best .65/.575/.475 (winner_auto2, rung 9b) across ten
+  measured changes, at −45 %
   cost and −55 % wall per attempt; per-interaction prover latency 266 ms →
   ~1 ms.
 - Held-out (miniF2F test, single mechanically-unlocked run of the frozen

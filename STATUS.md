@@ -5,7 +5,7 @@ _Final update: 2026-07-08 · run complete; product hardened (multi-error build, 
 ## The run in one paragraph
 Starting from a deliberately-naive control, ten measured interface changes
 (six kept, four honestly reverted) turned a weak policy's .44/.25/.30 into
-.675/.575/.475 (dev60 pass@1 e/m/h) at −45 % cost — and after two
+.65/.575/.475 (winner_auto2; dev60 pass@1 e/m/h) at −45 % cost — and after two
 Fable-driven quality passes (a 43-attempt failure atlas and a 31-finding
 adversarial measurement audit) exposed and fixed the defects that made
 interfaces look policy-dependent, ONE policy-neutral configuration
@@ -21,12 +21,12 @@ mechanically-logged unlock): pass@1 .519/.127/.043 on miniF2F test.
   per-bucket numbers, corrected scalability (§5, with retractions), annexes
   (cross-policy, SOTA, teams, in-project context, ssreflect), held-out (§7),
   measurement audit (§7b), threats, conclusions
-- **Test suite** — `dune runtest`: 4 suites, 83 checks, all green (incl. contention/conflict pack)
+- **Test suite** — `dune runtest`: 4 suites, 109 checks, all green
   (session contracts + atlas/audit regressions; multi-agent daemon incl.
   merge-renumbering; scalability bounds; gate soundness incl. the
   comment-desync exploit)
 - **docs/DESIGN.md** (per-decision rationale) · **docs/FAILURE_ATLAS.md** ·
-  **docs/ASSUMPTIONS.md** (A1–A26) · **docs/TASK.md** (original brief)
+  **docs/ASSUMPTIONS.md** (A1–A37) · **docs/TASK.md** (original brief)
 - **The tool layer**: src/mcp_core, src/session_server (the universal
   surface), src/psession (multi-agent daemon + shim), src/baseline_server,
   src/submit_server; configs/ for every measured condition; configs/FROZEN.md
@@ -75,7 +75,7 @@ overnight autonomous pipelines · every number's provenance in logs/ + git.
 - **CI**: GitHub Actions builds + runs the full suite on push/PR
   (.github/workflows/ci.yml); test PATH resolution made portable.
 - **Merged to `main`**; **CI GREEN on both branches** (GitHub Actions:
-  full build + 101-check suite on every push, ~12 min warm). Cold-path
+  full build + 109-check suite on every push, ~12 min warm). Cold-path
   install verified: `opam pin add rocq-tools <github-url>` builds and
   installs a working `rocq-mcp` (the uncommitted-opam-file and
   rocq-runtime-9.2-API failures were found and fixed by exactly this test).
@@ -87,7 +87,7 @@ overnight autonomous pipelines · every number's provenance in logs/ + git.
   capability (`by lia` closes ssrnat goals), regime-gated, no benchmark
   lift at the weak policy — the structural-competence boundary confirmed a
   fourth time.
-- Test suite: 4 suites, all green (~100 checks incl. A13 memoization).
+- Test suite: 4 suites, 109 checks, all green.
 
 ## Jul 8 hardening (all measured/verified, suite 109 checks green)
 - **`build{file}`** (A33): whole-file diagnosis — every broken proof in one

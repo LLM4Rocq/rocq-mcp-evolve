@@ -22,7 +22,8 @@ from pathlib import Path
 # --- environment: make `rocq` findable before importing the gate -------------
 # The pinned opam switch bin lives outside any dune sandbox, so its absolute
 # location is hardcoded (per the suite spec); an env override wins if present.
-_DEFAULT_OPAM_BIN = "/Users/gbaudart/Project/llm4rocq/rocq-tools/_opam/bin"
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_DEFAULT_OPAM_BIN = os.path.join(os.path.dirname(_REPO_ROOT), "_opam", "bin")
 _OPAM_BIN = os.environ.get("ROCQ_OPAM_BIN", _DEFAULT_OPAM_BIN)
 os.environ["PATH"] = _OPAM_BIN + os.pathsep + os.environ.get("PATH", "")
 

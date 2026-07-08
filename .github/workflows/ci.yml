@@ -20,5 +20,5 @@ jobs:
           opam install rocq-stdlib --yes
       - name: Build
         run: opam exec -- dune build
-      - name: Test suite (4 suites, 95 checks)
+      - name: Test suite (4 suites, 109 checks)
         run: opam exec -- dune runtest

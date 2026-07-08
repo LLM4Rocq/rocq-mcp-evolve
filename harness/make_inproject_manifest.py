@@ -12,6 +12,7 @@ ground-truth proof length in sentences: short 1-3, medium 4-10, long >10.
 """
 
 import json
+import os
 import random
 import re
 import subprocess
@@ -24,11 +25,15 @@ import common
 from gate import ENV_INJECT
 
 # (root, subdirs, source tag, output manifest)
+# project checkouts live as siblings of the rocq-tools clone (override: ROCQ_DATASETS_DIR)
+_DATASETS = Path(os.environ.get("ROCQ_DATASETS_DIR",
+                                Path(__file__).resolve().parents[2].parent))
+
 PROJECTS = {
-    "stdlib": (Path("/Users/gbaudart/Project/llm4rocq/rocq-stdlib/theories"),
+    "stdlib": (_DATASETS / "rocq-stdlib/theories",
                ["Reals", "Arith", "ZArith", "NArith", "Lists"],
                "stdlib_project", "inproject60.jsonl"),
-    "mathcomp": (Path("/Users/gbaudart/Project/llm4rocq/math-comp"),
+    "mathcomp": (_DATASETS / "math-comp",
                  ["boot", "order"],
                  "mathcomp_project", "mathcomp60.jsonl"),
 }
