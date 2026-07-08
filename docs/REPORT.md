@@ -43,10 +43,13 @@ goal-delta rendering; a three-agent relay team).
   agents; the winner's advantage is a ~2.7× per-attempt speed level → ≈6×
   solved-proof throughput at N=8, with the local prover substrate never the
   constraint.
-- SOTA comparison (rocq-mcp, first contact only after design freeze — git
-  history proves independence): at-baseline solve rates at Haiku despite
-  heavy interactive-tool adoption, trailing everything at Sonnet — evidence
-  that interactivity without turn-compression does not convert.
+- SOTA comparison (rocq-mcp, first contact only after design freeze; our
+  first comparison raced its server startup and was retracted — the fair
+  rerun through an instant-handshake proxy is the record): near
+  accuracy-parity at Sonnet, rocq-mcp edges the easy bucket at Haiku;
+  rocq-tools' robust advantages are weak-policy medium/hard (+.23/+.08) and
+  efficiency — about half the cost per solved proof at Sonnet, 20-35 % less
+  wall everywhere.
 - Multi-agent proving (shared-proof daemon): infrastructure fully validated
   (branch-per-subgoal, merge-by-replay, gate-verified composed proofs);
   the coordinator/workers/finisher pattern measured decisively NEGATIVE at

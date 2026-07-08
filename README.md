@@ -215,7 +215,7 @@ test/                dune-driven integration suites (A–D above)
 Docs: [`docs/REPORT.md`](docs/REPORT.md) ·
 [`STATUS.md`](STATUS.md) · [`docs/DESIGN.md`](docs/DESIGN.md) ·
 [`docs/FAILURE_ATLAS.md`](docs/FAILURE_ATLAS.md) ·
-[`docs/ASSUMPTIONS.md`](docs/ASSUMPTIONS.md) (autonomous-decision log A1–A36) ·
+[`docs/ASSUMPTIONS.md`](docs/ASSUMPTIONS.md) (autonomous-decision log A1–A37) ·
 [`docs/TASK.md`](docs/TASK.md) (original brief).
 
 ## Reproduce the experiment
