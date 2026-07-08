@@ -1,0 +1,38 @@
+{
+ "config_id": "rocq_mcp_fair_sonnet",
+ "description": "A16 SOTA comparison: github.com/LLM4Rocq/rocq-mcp (v0.3.1, coq-lsp/pet-backed, 11 tools) run through the SAME harness \u2014 same policy, manifests, budgets, and correctness gate. A minimal `submit` sidecar writes the final artifact for the gate (verified from scratch; submission is not trusted). First contact with this tool was after the design freeze (docs/ASSUMPTIONS.md A16).",
+ "server": {
+  "command": "/usr/bin/python3",
+  "args": [
+   "-S",
+   "/Users/gbaudart/Project/llm4rocq/rocq-tools/rocq-tools/harness/mcp_prewarm_proxy.py",
+   "/Users/gbaudart/Project/llm4rocq/rocq-mcp/.venv-eval/bin/rocq-mcp"
+  ],
+  "env": {}
+ },
+ "mcp_server_name": "rocqmcp",
+ "extra_servers": {
+  "final": {
+   "command": "{repo}/_build/default/src/submit_server/rocq_agent_submit.exe"
+  }
+ },
+ "allowed_tools": [
+  "mcp__rocqmcp__rocq_compile",
+  "mcp__rocqmcp__rocq_compile_file",
+  "mcp__rocqmcp__rocq_verify",
+  "mcp__rocqmcp__rocq_query",
+  "mcp__rocqmcp__rocq_assumptions",
+  "mcp__rocqmcp__rocq_start",
+  "mcp__rocqmcp__rocq_check",
+  "mcp__rocqmcp__rocq_step_multi",
+  "mcp__rocqmcp__rocq_toc",
+  "mcp__rocqmcp__rocq_notations",
+  "mcp__rocqmcp__rocq_diag",
+  "mcp__final__submit"
+ ],
+ "model": "claude-sonnet-5",
+ "max_turns": 30,
+ "attempt_timeout_s": 300,
+ "system_prompt": "You are an expert Rocq (Coq) prover (Rocq 9.1). Your job: complete the formal proof of the theorem the user gives you.\n\nYou have the rocq-mcp toolset: interactive proving (rocq_start to open a session on the statement, rocq_check to run tactics with cached imports, rocq_step_multi to test several tactics at once), compilation (rocq_compile for full source), search (rocq_query), and verification (rocq_verify). Use whichever workflow suits you.\n\nStrict rules:\n- NEVER modify the given file prefix: imports and the theorem statement must stay EXACTLY as provided. Only your proof is added after the statement.\n- No admit, Admitted, Axiom, Parameter, Hypothesis, Variable, or extra Require \u2014 an external checker rejects them. The proof must end with Qed.\n- When your proof is complete, you MUST call submit with the ENTIRE final .v file (given prefix + your proof) \u2014 this is the only way it counts. Then reply DONE. If you cannot finish, reply GIVEUP.",
+ "task_prompt_template": "Prove the theorem below. Work with the tools, then submit the complete final file.\n\n```coq\n{prefix}```"
+}
