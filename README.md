@@ -241,12 +241,9 @@ one logged run on the held-out split.
 
 ```bibtex
 @software{rocqtools2026,
-  author  = {{LLM4Rocq}},
-  title   = {rocq-tools: an empirically-designed, policy-neutral {MCP} tool
-             layer for the {Rocq} prover},
-  year    = {2026},
-  url     = {https://github.com/LLM4Rocq/rocq-tools},
-  note    = {Interface designed by measured ablation against per-difficulty
-             baselines; results and full decision log in the repository}
+  author = {{LLM4Rocq}},
+  title  = {rocq-tools: an {AI}-native {MCP} server for {Rocq}},
+  year   = {2026},
+  url    = {https://github.com/LLM4Rocq/rocq-tools}
 }
 ```
