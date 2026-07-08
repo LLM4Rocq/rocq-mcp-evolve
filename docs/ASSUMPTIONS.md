@@ -403,3 +403,17 @@ probe costs 2x on slow-but-convergent heavy compute; the team daemon's
 older driver copy is NOT probed (covered by the harness watchdog; not the
 product path); exotic uninterruptible plugin loops outside the matched
 tactics remain covered only by client-side timeouts.
+
+
+## A35 — memprof-limits as the primary hang guard (Jul 8, user pointer)
+User: "this may already work with memprof-limits". Confirmed empirically:
+token interruption (allocation-triggered, the coq-lsp mechanism; statmemprof
+restored in OCaml 5.3 = our compiler) stops BOTH vm_compute and
+native_compute divergence with structured TIMEOUTs at ~5s, at 1x cost and
+without the fork — strictly better than the A34 fork-probe as the primary.
+Wired into exec_sentence (token + watchdog thread wrapping Control.timeout;
+interp cache invalidated on interrupt; per-sentence unfreeze restores
+summary state — the same state-consistency posture coq-lsp ships). The A34
+fork-probe remains as an opt-in belt (ROCQ_FORK_PROBE=1) for
+zero-state-risk contexts. Suite green (57/35/10/7); small vm_compute
+success path verified.

@@ -18,5 +18,5 @@
   rocq-runtime.parsing
   rocq-runtime.gramlib
   rocq-runtime.coqargs
-  rocq-runtime.sysinit
+  rocq-runtime.sysinit memprof-limits threads.posix
   rocq-runtime.vernac))

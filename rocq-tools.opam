@@ -12,6 +12,7 @@ depends: [
   "ocaml" {>= "4.14"}
   "dune" {>= "3.23"}
   "rocq-runtime" {>= "9.1" & < "9.2"}
+  "memprof-limits"
   "rocq-stdlib" {with-test}
   "yojson"
   "odoc" {with-doc}

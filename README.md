@@ -95,10 +95,11 @@ Cross-cutting enrichments (zero extra turns, all default-on; disable with `=0`):
   into the first response. Measured neutral at the policies tested (weak
   policies can be distracted by it), so off by default; retrieval quality
   itself is verified and leak-proof.
-- **hang safety** — every sentence runs under a timeout; the uninterruptible
-  class (`vm_compute`/`native_compute`) is additionally fork-probed under a
-  hard kill deadline, so a divergent computation returns a structured
-  TIMEOUT instead of freezing the session.
+- **hang safety** — every sentence runs under a checkpoint timeout PLUS
+  allocation-triggered interruption (memprof-limits, the coq-lsp mechanism),
+  so even `vm_compute`/`native_compute` divergence returns a structured
+  TIMEOUT instead of freezing the session (`ROCQ_FORK_PROBE=1` adds a
+  fork-isolated belt for zero-state-risk contexts).
 - **tactic preloading** (`ROCQ_PRELOAD`) — loads Lia/Lra/Psatz after the
   statement so the standard closers always exist. In a **mathcomp** file,
   additionally preloads `zify`/`algebra-tactics` when installed

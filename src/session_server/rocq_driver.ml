@@ -320,23 +320,58 @@ let is_qed_like text =
       String.length t >= String.length p && String.sub t 0 (String.length p) = p)
     [ "Qed"; "Defined"; "Save" ]
 
+(* A35 (user pointer): memprof-limits token interruption as the PRIMARY
+   timeout — interruption triggers on ALLOCATION, so it reaches vm_compute /
+   native_compute workloads that never hit Control.timeout's checkpoints
+   (the same mechanism coq-lsp uses). Control.timeout stays as the inner
+   layer for non-allocating checkpointed code. A watchdog thread arms the
+   token at the deadline; after an interrupt the summary state is restored
+   by the caller's unfreeze, and the interp cache is invalidated. *)
+let () = Memprof_limits.start_memprof_limits ()
+
 let exec_sentence ~(timeout_s : float) (st : Vernacstate.t)
     (vc : Vernacexpr.vernac_control) : sentence_result =
   messages := [];
-  match
-    Control.timeout timeout_s
-      (fun () -> Vernacinterp.interp ~intern:Vernacinterp.fs_intern ~st vc)
+  let token = Memprof_limits.Token.create () in
+  let watchdog =
+    Thread.create
+      (fun () ->
+        let deadline = Unix.gettimeofday () +. timeout_s +. 0.5 in
+        while
+          (not (Memprof_limits.Token.is_set token))
+          && Unix.gettimeofday () < deadline
+        do
+          Thread.delay 0.05
+        done;
+        if Unix.gettimeofday () >= deadline then
+          Memprof_limits.Token.set token)
       ()
+  in
+  let finish r =
+    Memprof_limits.Token.set token;
+    Thread.join watchdog;
+    r
+  in
+  match
+    Memprof_limits.limit_with_token ~token (fun () ->
+        Control.timeout timeout_s
+          (fun () -> Vernacinterp.interp ~intern:Vernacinterp.fs_intern ~st vc)
+          ())
   with
-  | Some st' -> Ok_st (st', List.rev !messages)
-  | None ->
+  | Ok (Some st') -> finish (Ok_st (st', List.rev !messages))
+  | Ok None ->
       Vernacstate.Interp.invalidate_cache ();
-      Timeout timeout_s
+      finish (Timeout timeout_s)
+  | Error _ ->
+      (* interrupted by the token: allocation-point interrupt reached code
+         Control.timeout could not *)
+      Vernacstate.Interp.invalidate_cache ();
+      finish (Timeout timeout_s)
   | exception e when CErrors.noncritical e ->
       let e, info = Exninfo.capture e in
       let msg = Pp.string_of_ppcmds (CErrors.iprint (e, info)) in
       let loc = Option.map Loc.unloc (Loc.get_loc info) in
-      Err { msg; loc; messages = List.rev !messages }
+      finish (Err { msg; loc; messages = List.rev !messages })
 
 type exec_step = {
   text : string; (* sentence source text *)
@@ -498,11 +533,17 @@ let exec_text ?cache ~(timeout_s : float) ~(qed_timeout_s : float)
             let tmo = if is_qed_like text then qed_timeout_s else timeout_s in
             let t0 = Unix.gettimeofday () in
             let guarded () =
+              (* A35: memprof-limits token interruption (inside exec_sentence)
+                 is the primary guard and empirically stops vm_compute /
+                 native_compute divergence. The fork-probe remains available
+                 as an opt-in belt (ROCQ_FORK_PROBE=1) for zero-state-risk
+                 contexts. *)
               let needs_probe =
-                try
-                  ignore (Str.search_forward uninterruptible_re text 0);
-                  true
-                with Not_found -> false
+                Sys.getenv_opt "ROCQ_FORK_PROBE" = Some "1"
+                && (try
+                      ignore (Str.search_forward uninterruptible_re text 0);
+                      true
+                    with Not_found -> false)
               in
               if not needs_probe then exec_sentence ~timeout_s:tmo st vc
               else
