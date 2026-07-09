@@ -1798,15 +1798,96 @@ let build_tool =
         end);
   }
 
+
+let verify_tool =
+  {
+    M.name = "verify";
+    description =
+      "Verify the whole project BEFORE declaring it done: runs a clean \
+       `dune build` at the project root and scans every .v file for tokens \
+       that reviewers/graders reject even when the build passes (admit, \
+       Admitted, Axiom, Parameter, Hypothesis, Variable). Use Admitted \
+       freely as temporary scaffolding while working — then call verify and \
+       fix everything it reports before finishing. Root: ROCQ_PROJECT_ROOT, \
+       else the current directory.";
+    input_schema =
+      `Assoc [ ("type", `String "object"); ("properties", `Assoc []) ];
+    handler =
+      (fun _ ->
+        let root =
+          match Sys.getenv_opt "ROCQ_PROJECT_ROOT" with
+          | Some d when d <> "" -> d
+          | _ -> Sys.getcwd ()
+        in
+        let forb =
+          [ (Str.regexp "\\badmit\\b", "admit");
+            (Str.regexp "\\bAdmitted\\b", "Admitted");
+            (Str.regexp "\\bAxioms?\\b", "Axiom");
+            (Str.regexp "\\bParameters?\\b", "Parameter");
+            (Str.regexp "\\bHypothes[ei]s\\b", "Hypothesis");
+            (Str.regexp "\\bVariables?\\b", "Variable") ]
+        in
+        let issues = ref [] in
+        let rec scan dir depth =
+          if depth > 6 then ()
+          else
+            match Sys.readdir dir with
+            | entries ->
+                Array.iter
+                  (fun e ->
+                    let pth = Filename.concat dir e in
+                    if e = "_build" || (String.length e > 0 && e.[0] = '.')
+                    then ()
+                    else if Sys.is_directory pth then scan pth (depth + 1)
+                    else if Filename.check_suffix e ".v" then begin
+                      let ic = open_in_bin pth in
+                      let txt =
+                        really_input_string ic (in_channel_length ic)
+                      in
+                      close_in ic;
+                      let body = strip_comments txt in
+                      List.iter
+                        (fun (rx, label) ->
+                          try
+                            ignore (Str.search_forward rx body 0);
+                            issues :=
+                              Printf.sprintf "%s: `%s`" e label :: !issues
+                          with Not_found -> ())
+                        forb
+                    end)
+                  entries
+            | exception Sys_error _ -> ()
+        in
+        scan root 0;
+        let r =
+          Mcp_core.Proc.run ~timeout_s:240. ~cwd:root
+            [| "dune"; "build"; "--root"; "." |]
+        in
+        let build_ok = r.Mcp_core.Proc.exit_code = 0 in
+        if !issues = [] && build_ok then
+          M.text_result
+            "VERIFY OK: build clean, no forbidden placeholders. Safe to \
+             declare the project done."
+        else
+          M.text_result
+            (Printf.sprintf "VERIFY FAILED — fix before finishing:\n%s%s"
+               (String.concat "\n"
+                  (List.map (fun x -> "- " ^ x) (List.rev !issues)))
+               (if build_ok then ""
+                else
+                  "\n- dune build FAILS:\n"
+                  ^ truncate 2500 r.Mcp_core.Proc.output)));
+  }
+
 let () =
   let enabled =
     match Sys.getenv_opt "ROCQ_ENABLE_TOOLS" with
     | Some s when s <> "" -> String.split_on_char ',' s |> List.map String.trim
-    | _ -> [ "open"; "build"; "check"; "step"; "rollback"; "state"; "try"; "auto_close" ]
+    | _ -> [ "open"; "build"; "verify"; "check"; "step"; "rollback"; "state"; "try"; "auto_close" ]
   in
   let all =
-    [ open_tool; build_tool; step_tool; rollback_tool; state_tool; try_tool;
-      search_tool; auto_close_tool; check_tool ]
+    [ open_tool; build_tool; verify_tool; step_tool; rollback_tool;
+      state_tool; try_tool; search_tool; auto_close_tool; check_tool ]
   in
   M.run
     (List.map with_exemplars
