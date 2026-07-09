@@ -48,7 +48,7 @@ goal-delta rendering; a three-agent relay team).
   first comparison raced its server startup and was retracted — the fair
   rerun through an instant-handshake proxy is the record): near
   accuracy-parity at Sonnet, rocq-mcp edges the easy bucket at Haiku;
-  rocq-tools' robust advantages are weak-policy medium/hard (+.23/+.08) and
+  rocq-mcp-evolve' robust advantages are weak-policy medium/hard (+.23/+.08) and
   efficiency — about half the cost per solved proof at Sonnet, 20-35 % less
   wall everywhere.
 - Multi-agent proving (shared-proof daemon): infrastructure fully validated
@@ -363,7 +363,7 @@ Fair numbers (pass@1 / $-per-solve / wall, easy-med-hard):
 **Honest verdict.** Fairly integrated, rocq-mcp is a solid interactive
 server: at sonnet it reaches near accuracy-parity with `universal`
 (.95/.925/.80 vs .95/1.00/.85; ties naive on hard), and at haiku it EDGES
-every interface on easy (.675, cheapest per easy solve). rocq-tools' edge
+every interface on easy (.675, cheapest per easy solve). rocq-mcp-evolve' edge
 is concentrated where the design law predicts: weak-policy medium/hard
 (+.225/+.075) and EFFICIENCY everywhere — roughly half the cost per solved
 proof at sonnet ($.07/.09/.13 vs $.11/.19/.26) and 20-35 % less wall. The

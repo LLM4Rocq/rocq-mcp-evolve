@@ -1,7 +1,7 @@
-# rocq-tools — an AI-native tooling layer for the Rocq prover
+# rocq-mcp-evolve — an MCP server for Rocq, evolved by LLM-driven design search
 
-[![CI](https://img.shields.io/github/actions/workflow/status/LLM4Rocq/rocq-tools/ci.yml?branch=main&style=for-the-badge&label=CI)](https://github.com/LLM4Rocq/rocq-tools/actions/workflows/ci.yml)
-[![Dashboard](https://img.shields.io/badge/dashboard-results-2a78d6?style=for-the-badge)](https://llm4rocq.github.io/rocq-tools/)
+[![CI](https://img.shields.io/github/actions/workflow/status/LLM4Rocq/rocq-mcp-evolve/ci.yml?branch=main&style=for-the-badge&label=CI)](https://github.com/LLM4Rocq/rocq-tools/actions/workflows/ci.yml)
+[![Dashboard](https://img.shields.io/badge/dashboard-results-2a78d6?style=for-the-badge)](https://llm4rocq.github.io/rocq-mcp-evolve/)
 
 
 An **empirically-designed, policy-neutral MCP tool layer** that lets an LLM
@@ -45,7 +45,7 @@ in REPORT).
 Readings: `universal` is best-or-tied in every bucket at **all three policy
 tiers**; at sonnet it is simultaneously the most accurate *and* the cheapest
 per solved proof of anything measured; the fair SOTA comparison: near accuracy-parity
-at sonnet, rocq-mcp edges easy at haiku; rocq-tools leads weak-policy
+at sonnet, rocq-mcp edges easy at haiku; rocq-mcp-evolve leads weak-policy
 medium/hard and costs about half per solved proof at sonnet.
 
 **Ladder (weak policy):** baseline `.44/.25/.30` → winner `.70/.525/.425`
@@ -67,7 +67,7 @@ sonnet medium `1.00` is 2/2 reps; the held-out row is a single frozen-config run
 
 ## The tools — one policy-neutral MCP server (`rocq`)
 
-The agent talks MCP over stdio to `rocq-mcp`. The whole-proof and
+The agent talks MCP over stdio to `rocq-mcp-evolve`. The whole-proof and
 incremental styles are both first-class in **one** server. All tools and
 enrichments are ON by default (trim with `ROCQ_ENABLE_TOOLS`, disable
 features with `ROCQ_<FEATURE>=0`).
@@ -115,15 +115,15 @@ Cross-cutting enrichments (zero extra turns, all default-on; disable with `=0`):
 ## Install & try (2 minutes)
 
 ```sh
-opam pin add rocq-tools https://github.com/LLM4Rocq/rocq-tools.git
+opam pin add rocq-mcp-evolve https://github.com/LLM4Rocq/rocq-tools.git
 ```
 
-installs the `rocq-mcp` binary into your opam switch (`rocq-runtime` 9.1+
+installs the `rocq-mcp-evolve` binary into your opam switch (`rocq-runtime` 9.1+
 is pulled automatically). Then add ONE block to any MCP client config
 (Claude Code, `claude` CLI, or anything MCP-speaking):
 
 ```json
-{ "mcpServers": { "rocq": { "command": "rocq-mcp" } } }
+{ "mcpServers": { "rocq": { "command": "rocq-mcp-evolve" } } }
 ```
 
 That's it — no configuration at all. Then just ask your agent to finish a
@@ -161,10 +161,10 @@ printf '%s\n%s\n%s\n' \
   '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' \
   '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"open","arguments":{"file":"/path/to/your/File.v","theorem":"my_admitted_lemma"}}}' \
   '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"auto_close","arguments":{}}}' \
-  | rocq-mcp
+  | rocq-mcp-evolve
 ```
 
-For multi-agent work on one proof, `rocq-mcp-daemon` + `rocq-mcp-shim` are
+For multi-agent work on one proof, `rocq-mcp-evolve-daemon` + `rocq-mcp-evolve-shim` are
 installed alongside (see docs/DESIGN.md, intra-proof parallelism).
 
 *Developing / reproducing the experiment instead?* `repro/setup.sh` builds
@@ -240,9 +240,9 @@ one logged run on the held-out split.
 ## How to cite
 
 ```bibtex
-@software{rocqtools2026,
+@software{rocqmcpevolve2026,
   author = {{LLM4Rocq}},
-  title  = {rocq-tools: an {AI}-native {MCP} server for {Rocq}},
+  title  = {rocq-mcp-evolve: an {AI}-native {MCP} server for {Rocq}},
   year   = {2026},
   url    = {https://github.com/LLM4Rocq/rocq-tools}
 }

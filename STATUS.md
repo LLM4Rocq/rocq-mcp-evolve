@@ -76,7 +76,7 @@ overnight autonomous pipelines · every number's provenance in logs/ + git.
   (.github/workflows/ci.yml); test PATH resolution made portable.
 - **Merged to `main`**; **CI GREEN on both branches** (GitHub Actions:
   full build + 109-check suite on every push, ~12 min warm). Cold-path
-  install verified: `opam pin add rocq-tools <github-url>` builds and
+  install verified: `opam pin add rocq-mcp-evolve <github-url>` builds and
   installs a working `rocq-mcp` (the uncommitted-opam-file and
   rocq-runtime-9.2-API failures were found and fixed by exactly this test).
 - **A31 adversarial product review**: 24 confirmed findings; criticals
@@ -111,7 +111,7 @@ connecting at agent start in 97-98 % of attempts) — retracted publicly,
 fixed with an instant-handshake proxy, rerun 2x/dev60 both policies
 (120/120 connected, 0 poisoned). Fair verdict: near accuracy-parity at
 sonnet (.95/.925/.80 vs universal .95/1.00/.85), mixed at haiku (rocq-mcp
-edges easy; universal +.225 med / +.075 hard); rocq-tools' robust edge is
+edges easy; universal +.225 med / +.075 hard); rocq-mcp-evolve' robust edge is
 ~2x cost-per-solve at sonnet and 20-35 % less wall. "Dominated on all three
 axes" was wrong and is corrected everywhere. CI green on both branches.
 

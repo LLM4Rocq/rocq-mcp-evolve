@@ -620,7 +620,7 @@ def build():
                 + a24_chart(sgroups)
                 + f"<details open><summary>all three dimensions</summary>{sota_tbl}</details>")
 
-    # objective-delta grid: baseline -> rocq-tools per policy, mean over bins
+    # objective-delta grid: baseline -> rocq-mcp-evolve per policy, mean over bins
     fab_base = stats_for(runs, "baseline_fable_dev60")
     fab_uni = stats_for(runs, "universal_fable_dev60")
     def mean_metric(st, key, per_solve=False):
@@ -662,7 +662,7 @@ def build():
     updated = time.strftime("%Y-%m-%d %H:%M:%S")
     return f"""<!doctype html>
 <html><head><meta charset="utf-8">
-<title>rocq-tools — final results</title>
+<title>rocq-mcp-evolve — final results</title>
 <style>{CSS}</style></head>
 <body class="viz-root">
 <h1>AI-native Rocq tooling — final results</h1>
@@ -670,7 +670,7 @@ def build():
 full analysis: docs/REPORT.md · per-decision rationale: docs/DESIGN.md · repo README for install &amp; try</div>
 
 <h2>The three objectives, across three policies</h2>
-<p class="caption">Naive compiler baseline → rocq-tools, mean over the three
+<p class="caption">Naive compiler baseline → rocq-mcp-evolve, mean over the three
 difficulty bins (dev set). Accuracy should rise; cost per solved proof and
 time per attempt should drop. The interface helps most where the model is
 weakest, and still pays at the frontier tier.</p>
@@ -712,7 +712,7 @@ Numbers from the FAIR rerun (Jul 8): an audit found the original runs
 started with rocq-mcp's server still connecting in 97-98 % of attempts (our
 integration artifact — retracted); an instant-handshake proxy fixed it,
 120/120 connected. Fair verdict: near accuracy-parity at sonnet, rocq-mcp
-edges easy at haiku; rocq-tools leads weak-policy medium/hard and costs
+edges easy at haiku; rocq-mcp-evolve leads weak-policy medium/hard and costs
 about half per solved proof at sonnet. See REPORT for the full audit story.</p>
 <div class="card">{sota}</div>
 

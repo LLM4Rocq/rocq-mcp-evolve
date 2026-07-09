@@ -1,7 +1,7 @@
 (executable
  (name rocq_agent_session)
- (public_name rocq-mcp)
- (package rocq-tools)
+ (public_name rocq-mcp-evolve)
+ (package rocq-mcp-evolve)
  (libraries
   mcp_core
   yojson
