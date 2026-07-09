@@ -1,6 +1,6 @@
 # rocq-mcp-evolve — an MCP server for Rocq, evolved by LLM-driven design search
 
-[![CI](https://img.shields.io/github/actions/workflow/status/LLM4Rocq/rocq-mcp-evolve/ci.yml?branch=main&style=for-the-badge&label=CI)](https://github.com/LLM4Rocq/rocq-tools/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/LLM4Rocq/rocq-mcp-evolve/ci.yml?branch=main&style=for-the-badge&label=CI)](https://github.com/LLM4Rocq/rocq-mcp-evolve/actions/workflows/ci.yml)
 [![Dashboard](https://img.shields.io/badge/dashboard-results-2a78d6?style=for-the-badge)](https://llm4rocq.github.io/rocq-mcp-evolve/)
 
 
@@ -115,7 +115,7 @@ Cross-cutting enrichments (zero extra turns, all default-on; disable with `=0`):
 ## Install & try (2 minutes)
 
 ```sh
-opam pin add rocq-mcp-evolve https://github.com/LLM4Rocq/rocq-tools.git
+opam pin add rocq-mcp-evolve https://github.com/LLM4Rocq/rocq-mcp-evolve.git
 ```
 
 installs the `rocq-mcp-evolve` binary into your opam switch (`rocq-runtime` 9.1+
@@ -244,6 +244,6 @@ one logged run on the held-out split.
   author = {{LLM4Rocq}},
   title  = {rocq-mcp-evolve: an {AI}-native {MCP} server for {Rocq}},
   year   = {2026},
-  url    = {https://github.com/LLM4Rocq/rocq-tools}
+  url    = {https://github.com/LLM4Rocq/rocq-mcp-evolve}
 }
 ```
