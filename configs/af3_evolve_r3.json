@@ -1,0 +1,26 @@
+{
+ "config_id": "af3_evolve_r3",
+ "model": "claude-sonnet-5",
+ "system_prompt": "",
+ "task_prompt": "Build a complete Rocq (Rocq 9.1) dune project from the mathematical specification below, in the current working directory. Use the attached tools to create files and build.\n\nGrading is machine-checked on your delivered files only: (1) a fresh `dune build` must succeed; (2) the acceptance tests (probes.v, given below in full \u2014 it is the open-book test suite) must compile against your built project; (3) every probe must be free of extra axioms; (4) your .v files must not contain admit, Admitted, Axiom, Parameter, Hypothesis, Variable, or Section. Prove every lemma outright or leave it unwritten.\n\n{readme}## Specification\n\n{spec}\n\n## Acceptance tests (probes.v)\n\n{probes}\n\nWhen the project builds cleanly and you are confident the probes hold, reply DONE.",
+ "allowed_tools": [
+  "mcp__files__write_file",
+  "mcp__files__read_file",
+  "mcp__files__list_dir",
+  "mcp__files__dune_build",
+  "mcp__files__verify",
+  "mcp__rocq__open",
+  "mcp__rocq__build",
+  "mcp__rocq__check",
+  "mcp__rocq__step",
+  "mcp__rocq__try",
+  "mcp__rocq__auto_close",
+  "mcp__rocq__state",
+  "mcp__rocq__rollback",
+  "mcp__rocq__verify"
+ ],
+ "max_turns": 200,
+ "attempt_timeout_s": 900,
+ "with_rocq_server": true,
+ "readme_path": "src/session_server/README.md"
+}

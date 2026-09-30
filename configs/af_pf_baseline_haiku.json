@@ -1,0 +1,20 @@
+{
+ "config_id": "af_pf_baseline_haiku",
+ "description": "haiku-tier pf comparator (af_pf_baseline with model swapped; A118)",
+ "server": {
+  "command": "{repo}/_build/default/src/baseline_server/rocq_agent_baseline.exe",
+  "args": [],
+  "env": {
+   "ROCQ_COMPILE_TIMEOUT": "60"
+  }
+ },
+ "mcp_server_name": "rocq",
+ "allowed_tools": [
+  "mcp__rocq__check"
+ ],
+ "model": "claude-haiku-4-5",
+ "max_turns": 200,
+ "attempt_timeout_s": 300,
+ "system_prompt": "",
+ "task_prompt_template": "Prove the theorem below by appending a proof to this exact file, then verify it with the check tool.\n\nRules, enforced by an external checker on the delivered file: the given prefix (imports, definitions, theorem statement) must stay EXACTLY as provided, character for character; never use admit, Admitted, Axiom, Parameter, Hypothesis, Variable, or extra Require \u2014 submissions containing them are rejected. When you believe the proof is complete and verified, reply DONE.\n\n```coq\n{prefix}```"
+}

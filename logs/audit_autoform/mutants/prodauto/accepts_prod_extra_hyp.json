@@ -1,0 +1,10 @@
+{
+ "task": "prodauto",
+ "solved": false,
+ "layers": {
+  "forbidden": "clean",
+  "build": "ok",
+  "probes": "aracters 0-55:\nWarning: Notation \"_ %:R\" was already used in scope ring_scope.\n[notation-overridden,parsing,default]\nFile \"./probes.v\", line 2, characters 0-55:\nWarning: Notation \"_ - _\" was already used in scope distn_scope.\n[notation-overridden,parsing,default]\nFile \"./probes.v\", line 28, characters 13-30:\nError:\nThe term \"accepts_prod\" has type\n \"forall (SA SB : finType) (A : dfa SA) (B : dfa SB) (w : seq bool),\n  0 < size w -> accepts (dprod A B) w = accepts A w && accepts B w\"\nwhile it is expected to have type\n \"forall (SA SB : finType) (A : dfa SA) (B : dfa SB) (w : seq bool),\n  accepts (dprod A B) w = accepts A w && accepts B w\"\n(cannot unify \"0 < size w ->\n               accepts (dprod A B) w = accepts A w && accepts B w\"\nand \"accepts (dprod A B) w = accepts A w && accepts B w\").\n\n"
+ },
+ "reason": "probes_failed"
+}

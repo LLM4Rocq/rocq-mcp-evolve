@@ -1,0 +1,33 @@
+{
+ "config_id": "af_pf_session_opus",
+ "description": "A80 prompt-free held-out pair: audited frozen arm minus system prompt; wall-bound | A104: frontier-tier arm, config identical to the sonnet pf arm except the model",
+ "server": {
+  "command": "{repo}/_build/default/src/session_server/rocq_agent_session.exe",
+  "args": [],
+  "env": {
+   "ROCQ_STEP_TIMEOUT": "10",
+   "ROCQ_QED_TIMEOUT": "60",
+   "ROCQ_TRY_TIMEOUT": "5",
+   "ROCQ_ENABLE_TOOLS": "step,rollback,state,try,auto_close",
+   "ROCQ_HINTS": "1",
+   "ROCQ_SUGGEST": "1",
+   "ROCQ_ENV_V2": "1",
+   "ROCQ_AUTO2": "0",
+   "ROCQ_EXEMPLARS": "0",
+   "ROCQ_MC_TACTICS": "0"
+  }
+ },
+ "mcp_server_name": "rocq",
+ "allowed_tools": [
+  "mcp__rocq__step",
+  "mcp__rocq__rollback",
+  "mcp__rocq__state",
+  "mcp__rocq__try",
+  "mcp__rocq__auto_close"
+ ],
+ "model": "claude-opus-4-8",
+ "max_turns": 100,
+ "attempt_timeout_s": 300,
+ "system_prompt": "",
+ "task_prompt_template": "Prove this theorem (already loaded in the session; its goal is open):\n\nRules, enforced by an external checker on the delivered file: the given prefix (imports, definitions, theorem statement) must stay EXACTLY as provided, character for character; never use admit, Admitted, Axiom, Parameter, Hypothesis, Variable, or extra Require \u2014 submissions containing them are rejected. When you believe the proof is complete and verified, reply DONE.\n\n```coq\n{prefix}```\n\nUse try with several candidate tactics in one call; refine from what the results tell you."
+}

@@ -1,0 +1,7 @@
+; logs/ holds experiment artifacts (agent workspaces contain their own dune
+; projects and, after the SOTA arm, stray .vo files next to sources — see
+; A58b); data/ holds task datasets whose reference/ dirs are themselves dune
+; projects (graded from an isolated copy by harness/autoform_gate.py, and
+; compile-iterated in place while tasks are authored). Exclude both from the
+; workspace scan — nothing in the product build depends on them.
+(dirs :standard \ logs data)

@@ -1,0 +1,1794 @@
+{
+ "per_run": {
+  "FINAL_baseline_sonnet": {
+   "agree": 304,
+   "audited": 325,
+   "rejected_accept": 21,
+   "cat:gate_stricter": 21
+  },
+  "FINAL_frozen_wallonly": {
+   "agree": 237,
+   "audited": 237
+  },
+  "FINAL_minif2f_test": {
+   "agree": 161,
+   "audited": 161
+  },
+  "FINAL_pf_baseline_haiku": {
+   "agree": 67,
+   "audited": 76,
+   "rejected_accept": 9,
+   "cat:gate_stricter": 9
+  },
+  "FINAL_pf_baseline_opus": {
+   "agree": 282,
+   "audited": 282
+  },
+  "FINAL_pf_baseline_sonnet": {
+   "agree": 362,
+   "audited": 375,
+   "artifact_drift": 9,
+   "cat:artifact_drift": 9,
+   "rejected_accept": 4,
+   "cat:gate_stricter": 4
+  },
+  "FINAL_pf_rocqmcp_haiku": {
+   "agree": 98,
+   "audited": 101,
+   "rejected_accept": 3,
+   "cat:gate_stricter": 3
+  },
+  "FINAL_pf_rocqmcp_opus": {
+   "agree": 350,
+   "audited": 352,
+   "rejected_accept": 2,
+   "cat:gate_stricter": 2
+  },
+  "FINAL_pf_rocqmcp_sonnet": {
+   "agree": 351,
+   "audited": 383,
+   "rejected_accept": 32,
+   "cat:gate_stricter": 32
+  },
+  "FINAL_pf_session2_opus": {
+   "agree": 370,
+   "audited": 374,
+   "rejected_accept": 4,
+   "cat:gate_stricter": 4
+  },
+  "FINAL_pf_session2_sonnet": {
+   "agree": 400,
+   "audited": 401,
+   "rejected_accept": 1,
+   "cat:gate_stricter": 1
+  },
+  "FINAL_pf_session_sonnet": {
+   "agree": 393,
+   "audited": 393
+  },
+  "FINAL_rocqmcp_sonnet": {
+   "agree": 277,
+   "audited": 300,
+   "rejected_accept": 23,
+   "cat:gate_stricter": 23
+  },
+  "FINAL_session_sonnet": {
+   "agree": 386,
+   "audited": 386
+  },
+  "finisher_only_test": {
+   "agree": 52,
+   "audited": 52
+  },
+  "mstf_base_test": {
+   "agree": 50,
+   "audited": 57,
+   "rejected_accept": 7,
+   "cat:gate_stricter": 7
+  },
+  "mstf_evolve_test": {
+   "agree": 184,
+   "audited": 184
+  },
+  "mstf_sota_test": {
+   "agree": 434,
+   "audited": 447,
+   "rejected_accept": 13,
+   "cat:gate_stricter": 13
+  },
+  "orp_base_test": {
+   "agree": 451,
+   "audited": 451
+  },
+  "orp_evolve_test": {
+   "agree": 435,
+   "audited": 438,
+   "rejected_accept": 3,
+   "cat:gate_stricter": 3
+  },
+  "orp_sib_test": {
+   "agree": 434,
+   "audited": 434
+  },
+  "session_try_hints_minif2f_valid": {
+   "agree": 109,
+   "audited": 126,
+   "rejected_accept": 17,
+   "cat:gate_stricter": 17
+  },
+  "session_try_hints_v2_minif2f_valid": {
+   "agree": 198,
+   "audited": 200,
+   "solved_rejected": 2,
+   "cat:sibling_limitation": 2
+  }
+ },
+ "total": {
+  "agree": 6385,
+  "audited": 6535,
+  "rejected_accept": 139,
+  "cat:gate_stricter": 139,
+  "artifact_drift": 9,
+  "cat:artifact_drift": 9,
+  "solved_rejected": 2,
+  "cat:sibling_limitation": 2
+ },
+ "rows": {
+  "rejected_accept": [
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "algebra_9onxpypzleqsum2onxpy",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "algebra_sqineq_unitcircatbpabsamblt1",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.3,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "induction_11div10tonmn1ton",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_algebra_113",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_algebra_114",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_algebra_125",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -151.1,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_algebra_513",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_numbertheory_1124",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_numbertheory_185",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_numbertheory_341",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -3.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_numbertheory_765",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -4.2,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "aime_1983_p1",
+    "rep": 1,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "algebra_sqineq_at2malt1",
+    "rep": 1,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "imo_1981_p6",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_algebra_160",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_algebra_153",
+    "rep": 1,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.4,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_algebra_329",
+    "rep": 1,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_algebra_359",
+    "rep": 1,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -3.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_numbertheory_222",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_numbertheory_233",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_baseline_sonnet",
+    "problem_id": "mathd_numbertheory_559",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.1,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_baseline_haiku",
+    "problem_id": "mathd_algebra_246",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -20.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_baseline_haiku",
+    "problem_id": "mathd_algebra_329",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -5.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_baseline_haiku",
+    "problem_id": "mathd_algebra_354",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_baseline_haiku",
+    "problem_id": "mathd_algebra_398",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -13.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_baseline_haiku",
+    "problem_id": "mathd_algebra_400",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -18.2,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_baseline_haiku",
+    "problem_id": "mathd_algebra_441",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.4,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_baseline_haiku",
+    "problem_id": "mathd_numbertheory_765",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_baseline_haiku",
+    "problem_id": "aime_1989_p8",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -5.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_baseline_haiku",
+    "problem_id": "algebra_sqineq_at2malt1",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.2,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_baseline_sonnet",
+    "problem_id": "mathd_numbertheory_765",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -252.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_baseline_sonnet",
+    "problem_id": "induction_nfactltnexpnm1ngt3",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_baseline_sonnet",
+    "problem_id": "mathd_algebra_125",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -286.1,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_baseline_sonnet",
+    "problem_id": "numbertheory_2pownm1prime_nprime",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_haiku",
+    "problem_id": "mathd_algebra_113",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_haiku",
+    "problem_id": "mathd_algebra_153",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_haiku",
+    "problem_id": "mathd_algebra_452",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -3.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_opus",
+    "problem_id": "amc12a_2021_p9",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -3.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_opus",
+    "problem_id": "induction_sumkexp3eqsumksq",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "algebra_amgm_sumasqdivbgeqsuma",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.2,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "algebra_apbon2pownleqapownpbpowon2",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.1,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "algebra_sum1onsqrt2to1onsqrt10000lt198",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "amc12a_2002_p13",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "amc12a_2021_p18",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -3.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "amc12a_2021_p9",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "induction_sumkexp3eqsumksq",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_150",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "shared_defs",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_328",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_541",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_457",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "numbertheory_3pow2pownm1mod2pownp3eq2pownp2",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -3.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "numbertheory_fxeq4powxp6powxp9powx_f2powmdvdf2pown",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "numbertheory_2pownm1prime_nprime",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.3,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "aime_1984_p1",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "algebra_apbon2pownleqapownpbpowon2",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "amc12a_2002_p13",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.3,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "amc12a_2021_p18",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "amc12a_2021_p14",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -3.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "amc12a_2021_p9",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "imo_1964_p2",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "imo_1965_p2",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "induction_sumkexp3eqsumksq",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "mathd_algebra_215",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "mathd_algebra_362",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_150",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "shared_defs",
+    "late_s": -3.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_127",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -3.1,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_328",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_541",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -3.4,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "numbertheory_fxeq4powxp6powxp9powx_f2powmdvdf2pown",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "numbertheory_3pow2pownm1mod2pownp3eq2pownp2",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.2,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_rocqmcp_sonnet",
+    "problem_id": "numbertheory_x5neqy2p4",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_session2_opus",
+    "problem_id": "amc12a_2003_p5",
+    "rep": 0,
+    "gate": "forbidden_token:Unset",
+    "gate_today": "forbidden_token:Unset",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -15.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_session2_opus",
+    "problem_id": "mathd_algebra_313",
+    "rep": 0,
+    "gate": "forbidden_token:Unset",
+    "gate_today": "forbidden_token:Unset",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -26.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_session2_opus",
+    "problem_id": "mathd_algebra_170",
+    "rep": 1,
+    "gate": "forbidden_token:Unset",
+    "gate_today": "forbidden_token:Unset",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -9.2,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_session2_opus",
+    "problem_id": "mathd_algebra_313",
+    "rep": 1,
+    "gate": "forbidden_token:Unset",
+    "gate_today": "forbidden_token:Unset",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -14.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_pf_session2_sonnet",
+    "problem_id": "mathd_algebra_293",
+    "rep": 1,
+    "gate": "forbidden_token:Unset",
+    "gate_today": "forbidden_token:Unset",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -6.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "algebra_amgm_sum1toneqn_prod1tonleq1",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "algebra_apbon2pownleqapownpbpowon2",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "amc12_2000_p12",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "amc12a_2021_p14",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "imo_1964_p2",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "induction_nfactltnexpnm1ngt3",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "induction_sumkexp3eqsumksq",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "mathd_algebra_114",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_277",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_341",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_711",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "algebra_amgm_sum1toneqn_prod1tonleq1",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "algebra_amgm_sumasqdivbgeqsuma",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "amc12a_2020_p7",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "amc12b_2002_p7",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.3,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "induction_12dvd4expnp1p20",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "induction_sumkexp3eqsumksq",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_127",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_229",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_328",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.2,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_353",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_521",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.2,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "FINAL_rocqmcp_sonnet",
+    "problem_id": "mathd_numbertheory_711",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.3,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_base_test",
+    "problem_id": "mathd_numbertheory_237",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -49.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_base_test",
+    "problem_id": "mathd_numbertheory_239",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -41.2,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_base_test",
+    "problem_id": "mathd_numbertheory_254",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -26.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_base_test",
+    "problem_id": "mathd_numbertheory_447",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -240.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_base_test",
+    "problem_id": "mathd_algebra_143",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -39.4,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_base_test",
+    "problem_id": "mathd_numbertheory_175",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -155.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_base_test",
+    "problem_id": "mathd_numbertheory_66",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -14.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_sota_test",
+    "problem_id": "mathd_algebra_33",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -92.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_sota_test",
+    "problem_id": "mathd_numbertheory_12",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -84.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_sota_test",
+    "problem_id": "mathd_algebra_209",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -51.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_sota_test",
+    "problem_id": "mathd_algebra_314",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -20.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_sota_test",
+    "problem_id": "mathd_algebra_33",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -134.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_sota_test",
+    "problem_id": "mathd_algebra_346",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -55.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_sota_test",
+    "problem_id": "mathd_algebra_359",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -58.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_sota_test",
+    "problem_id": "mathd_algebra_388",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -83.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_sota_test",
+    "problem_id": "mathd_algebra_44",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -85.6,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_sota_test",
+    "problem_id": "mathd_algebra_513",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -38.7,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_sota_test",
+    "problem_id": "mathd_algebra_76",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -60.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_sota_test",
+    "problem_id": "mathd_numbertheory_12",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -56.3,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "mstf_sota_test",
+    "problem_id": "mathd_numbertheory_299",
+    "rep": 1,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -74.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "orp_evolve_test",
+    "problem_id": "imo_1983_p6",
+    "rep": 0,
+    "gate": "forbidden_token:Unset",
+    "gate_today": "forbidden_token:Unset",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -161.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "orp_evolve_test",
+    "problem_id": "algebra_2varlineareq_fp3zeq11_3tfm1m5zeqn68_feqn10_zeq7",
+    "rep": 1,
+    "gate": "forbidden_token:Unset",
+    "gate_today": "forbidden_token:Unset",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -100.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "orp_evolve_test",
+    "problem_id": "algebra_sqineq_unitcircatbpamblt1",
+    "rep": 1,
+    "gate": "forbidden_token:Unset",
+    "gate_today": "forbidden_token:Unset",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -56.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "algebra_sqineq_36azm9asqle36zsq",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.0,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "amc12_2000_p5",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.3,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "amc12a_2009_p9",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.4,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "amc12a_2021_p7",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.4,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "amc12b_2020_p5",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "mathd_algebra_10",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.9,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "mathd_algebra_104",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -5.1,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "mathd_algebra_119",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "mathd_algebra_132",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "mathd_algebra_234",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.3,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "mathd_algebra_43",
+    "rep": 0,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "algebra_sqineq_36azm9asqle36zsq",
+    "rep": 1,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -2.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "amc12a_2008_p2",
+    "rep": 1,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.8,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "mathd_algebra_126",
+    "rep": 1,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.5,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "mathd_algebra_28",
+    "rep": 1,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.3,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "mathd_algebra_43",
+    "rep": 1,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -4.2,
+    "category": "gate_stricter"
+   },
+   {
+    "run": "session_try_hints_minif2f_valid",
+    "problem_id": "mathd_numbertheory_109",
+    "rep": 1,
+    "gate": "forbidden_token:Require",
+    "gate_today": "forbidden_token:Require",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": -1.6,
+    "category": "gate_stricter"
+   }
+  ],
+  "artifact_drift": [
+   {
+    "run": "FINAL_pf_baseline_sonnet",
+    "problem_id": "algebra_bleqa_apbon2msqrtableqambsqon8b",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "solved",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": 29.8,
+    "category": "artifact_drift"
+   },
+   {
+    "run": "FINAL_pf_baseline_sonnet",
+    "problem_id": "algebra_ineq_nto1onlt2m1on",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "solved",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": 34.1,
+    "category": "artifact_drift"
+   },
+   {
+    "run": "FINAL_pf_baseline_sonnet",
+    "problem_id": "algebra_others_exirrpowirrrat",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "solved",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": 21.7,
+    "category": "artifact_drift"
+   },
+   {
+    "run": "FINAL_pf_baseline_sonnet",
+    "problem_id": "algebra_sum1onsqrt2to1onsqrt10000lt198",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "solved",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": 418.1,
+    "category": "artifact_drift"
+   },
+   {
+    "run": "FINAL_pf_baseline_sonnet",
+    "problem_id": "amc12_2000_p1",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "solved",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": 1530.4,
+    "category": "artifact_drift"
+   },
+   {
+    "run": "FINAL_pf_baseline_sonnet",
+    "problem_id": "algebra_amgm_sumasqdivbgeqsuma",
+    "rep": 0,
+    "gate": "solved",
+    "gate_today": "solved",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": 175959.5,
+    "category": "artifact_drift"
+   },
+   {
+    "run": "FINAL_pf_baseline_sonnet",
+    "problem_id": "algebra_apbmpcneq0_aeq0anbeq0anceq0",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "compile_error",
+    "method": null,
+    "late_s": 177451.4,
+    "category": "artifact_drift"
+   },
+   {
+    "run": "FINAL_pf_baseline_sonnet",
+    "problem_id": "algebra_apbon2pownleqapownpbpowon2",
+    "rep": 0,
+    "gate": "prefix_modified",
+    "gate_today": "prefix_modified",
+    "sibling": "compile_error",
+    "method": null,
+    "late_s": 175912.7,
+    "category": "artifact_drift"
+   },
+   {
+    "run": "FINAL_pf_baseline_sonnet",
+    "problem_id": "algebra_sqineq_at2malt1",
+    "rep": 0,
+    "gate": "solved",
+    "gate_today": "solved",
+    "sibling": "accept",
+    "method": "module_m",
+    "late_s": 473.2,
+    "category": "artifact_drift"
+   }
+  ],
+  "solved_rejected": [
+   {
+    "run": "session_try_hints_v2_minif2f_valid",
+    "problem_id": "mathd_algebra_144",
+    "rep": 0,
+    "gate": "solved",
+    "gate_today": "solved",
+    "sibling": "compile_error",
+    "method": null,
+    "late_s": -1.5,
+    "category": "sibling_limitation"
+   },
+   {
+    "run": "session_try_hints_v2_minif2f_valid",
+    "problem_id": "mathd_algebra_144",
+    "rep": 1,
+    "gate": "solved",
+    "gate_today": "solved",
+    "sibling": "compile_error",
+    "method": null,
+    "late_s": -1.9,
+    "category": "sibling_limitation"
+   }
+  ]
+ }
+}

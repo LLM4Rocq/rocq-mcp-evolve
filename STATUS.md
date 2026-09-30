@@ -1,8 +1,25 @@
-# STATUS — AI-native Rocq tooling experiment · RUN COMPLETE
+# STATUS — AI-native Rocq tooling experiment · PHASES 1 & 2 COMPLETE
 
-_Final update: 2026-07-08 · run complete; product hardened (multi-error build, hang safety, repair loop)_
+_Final update: 2026-07-15 · phase 2 (autoformalization + held-out matrix) complete; held-out table archived (REPORT §16)_
 
-## The run in one paragraph
+## Phase 2 in one paragraph (Jul 9–15)
+A self-contained side evaluation asked whether the shipped tools survive
+the realistic task (NL spec → multi-file verified dune project) and a
+locked held-out split. Autoformalization, strict fair protocol: baseline
+10/20 → **evolve 14/20** (pre-registered criterion met; 4-arm replication,
+task-clustered p=0.006), sibling rocq-mcp 12/20; at the frontier tier the
+unassisted baseline collapses (3/10) while both prover servers double it.
+Held-out miniF2F-test, single registered look (six arms, 488 rows each,
+integrity-gated): control .66/.28/.23 → rocq-mcp fair .73/.43/.20 →
+**evolve .90/.65/.63** pass@1 e/m/h, disjoint 95% CIs vs control in every
+bucket, at ~half the cost and latency per solve; a pre-registered
+prompt-free pair replicates the gap (.67/.34/.20 vs .93/.61/.69) — the
+advantage is the interface, not the prompt. Three verdict-reversing
+evaluation artifacts (turn-cap tax, arena censoring, integration racing)
+were found, fixed, and documented (REPORT Part II, docs/AUTOFORM.md,
+docs/FAILURE_ATLAS_AUTOFORM.md; decision trail A38–A96).
+
+## Phase 1: the run in one paragraph
 Starting from a deliberately-naive control, ten measured interface changes
 (six kept, four honestly reverted) turned a weak policy's .44/.25/.30 into
 .65/.575/.475 (winner_auto2; dev60 pass@1 e/m/h) at −45 % cost — and after two
@@ -12,7 +29,9 @@ interfaces look policy-dependent, ONE policy-neutral configuration
 (`universal`) is best-or-tied everywhere measured, including **beating the
 naive interface in every bucket at the strong policy** (.95/1.00/.85 vs
 .925/.95/.80, 2 reps). The held-out protocol number (frozen config, single
-mechanically-logged unlock): pass@1 .519/.127/.043 on miniF2F test.
+mechanically-logged unlock): pass@1 .519/.127/.043 on miniF2F test
+(phase-1 mean-over-reps convention; the final six-arm held-out table with
+the A78 conventions is in REPORT §16).
 
 ## Final deliverables (all in this repo, all pushed)
 - **README.md** — describe / install / try-in-2-minutes (verified commands),
@@ -26,12 +45,15 @@ mechanically-logged unlock): pass@1 .519/.127/.043 on miniF2F test.
   merge-renumbering; scalability bounds; gate soundness incl. the
   comment-desync exploit)
 - **docs/DESIGN.md** (per-decision rationale) · **docs/FAILURE_ATLAS.md** ·
-  **docs/ASSUMPTIONS.md** (A1–A37) · **docs/TASK.md** (original brief)
+  **docs/ASSUMPTIONS.md** (A1–A96) · **docs/TASK.md** (original brief)
 - **The tool layer**: src/mcp_core, src/session_server (the universal
-  surface), src/psession (multi-agent daemon + shim), src/baseline_server,
-  src/submit_server; configs/ for every measured condition; configs/FROZEN.md
-- **Harness**: runner, anti-gaming gate, team orchestrator, report/profile/
+  surface), src/baseline_server, src/submit_server, src/files_server
+  (the multi-agent daemon src/psession was removed in A127; its record
+  stays in docs/DESIGN.md); configs/ for every measured condition;
+  configs/FROZEN.md
+- **Harness**: runner, anti-gaming gate, report/profile/
   monitor/dashboard/plots/sweep, manifests, project_args, repro/setup.sh
+  (the team orchestrator harness/run_team.py went with A127)
 
 ## Reproduce anything
 `./repro/setup.sh <dir>` recreates the pinned environment (Rocq 9.1.1);
@@ -41,7 +63,7 @@ the shipped binaries honor every measured contract.
 
 ## Honest boundaries (details in REPORT §8)
 Hard competition problems remain policy-bound (~4-6 % under every design);
-universal trails the haiku-tuned config on haiku-hard (.40 vs .475, 4 reps); the team
+universal trails the haiku-tuned config on haiku-hard (.463 vs .475, 4 reps, post-repair A94); the team
 pattern is decisively negative at this scale; ssreflect-idiom proving needs
 per-project knowledge distillation (roadmap in DESIGN); two measurement
 claims were publicly retracted after contamination was found (§5).

@@ -43,13 +43,18 @@ def resolve(svg: str) -> str:
 def main():
     FIGDIR.mkdir(parents=True, exist_ok=True)
     runs = db.load_runs()
-    ladder = db.ladder_runs(runs)
+    # same run selection as dashboard.build(): one dev60 run per ladder config
     stats_by_cfg = {}
-    for rid, meta, rows in ladder:
-        cfg = rows[0].get("config_id", rid)
-        stats_by_cfg[cfg] = bucket_stats(rows)
+    for rid, meta, rows in runs:
+        if rid.endswith(db.LADDER_SUFFIX) and rows:
+            cfg = rows[0].get("config_id", rid)
+            if cfg in db.LADDER_INFO:
+                stats_by_cfg[cfg] = bucket_stats(rows)
+    for rid, meta, rows in runs:
+        if rid == "universal_c30_dev60" and rows:
+            stats_by_cfg["universal"] = bucket_stats(rows)
 
-    (FIGDIR / "ladder_pass1.svg").write_text(resolve(db.ladder_chart(stats_by_cfg)))
+    (FIGDIR / "ladder_pass1.svg").write_text(resolve(db.ladder_slope(stats_by_cfg)))
 
     minis = {
         "efficiency_tokens_out.svg": ("output tokens / attempt", "tokens_out_mean", lambda v: f"{v/1000:.1f}k"),
@@ -57,7 +62,7 @@ def main():
         "efficiency_wall.svg": ("wall s / attempt", "wall_s_mean", lambda v: f"{v:.0f}"),
     }
     for fname, (title, key, fmt) in minis.items():
-        svg = db.mini_line(title, stats_by_cfg, key, fmt)
+        svg = db.metric_slope(stats_by_cfg, key, title, fmt, per_solve=False)
         if svg:
             (FIGDIR / fname).write_text(resolve(svg))
 
@@ -68,7 +73,7 @@ def main():
             "sweep_wall.svg": ("wall s / attempt", "wall_s_mean", lambda v: f"{v:.0f}"),
             "sweep_rss.svg": ("peak RSS (MB)", "peak_rss_mb", lambda v: f"{v:.0f}"),
         }.items():
-            (FIGDIR / fname).write_text(resolve(db.sweep_mini(title, sweeps, key, fmt)))
+            (FIGDIR / fname).write_text(resolve(db.sweep_chart(sweeps, key, title, fmt)))
     print(f"wrote {len(list(FIGDIR.glob('*.svg')))} figures to {FIGDIR}")
 
 

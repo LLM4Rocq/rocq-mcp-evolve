@@ -1,0 +1,1825 @@
+resume: 0 rows already present, 462 to do
+462 attempts over 29 runs; jobs=4; out=/Users/gbaudart/Project/llm4rocq/rocq-tools/rocq-tools/logs/audit_autoform
+[af2_base/frugal__rep1] build
+[af2_base/frugal__rep2] build
+[af2_base/frugal__rep0] build
+[af2_base/frugal__rep3] build
+[af2_base/frugal__rep1] probes (18 names)
+[af2_base/frugal__rep2] probes (18 names)
+[af2_base/frugal__rep3] probes (18 names)
+[af2_base/frugal__rep1] assumptions
+[af2_base/frugal__rep2] assumptions
+[af2_base/frugal__rep3] assumptions
+[af2_base/frugal__rep0] probes (18 names)
+[af2_base/frugal__rep0] assumptions
+[af2_base/frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.27, 'probes': 5.63, 'assumptions': 2.37, 'ext': 20.74, 'total': 46.03}
+--- 1/462 done (46s)
+[af2_base/gauges__rep0] build
+[af2_base/frugal__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.44, 'probes': 5.64, 'assumptions': 2.34, 'ext': 20.73, 'total': 46.15}
+--- 2/462 done (46s)
+[af2_base/gauges__rep1] build
+[af2_base/frugal__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 19.58, 'probes': 5.7, 'assumptions': 2.31, 'ext': 20.78, 'total': 48.38}
+--- 3/462 done (48s)
+[af2_base/gauges__rep2] build
+[af2_base/gauges__rep1] build FAILED in 4.18s
+--- 4/462 done (50s)
+[af2_base/gauges__rep3] build
+[af2_base/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.15, 'probes': 5.68, 'assumptions': 2.42, 'ext': 20.71, 'total': 56.97}
+--- 5/462 done (57s)
+[af2_base/ledger__rep0] build
+[af2_base/gauges__rep2] probes (9 names)
+[af2_base/gauges__rep0] probes (9 names)
+[af2_base/gauges__rep3] probes (9 names)
+[af2_base/gauges__rep2] assumptions
+[af2_base/gauges__rep0] assumptions
+[af2_base/ledger__rep0] probes (9 names)
+[af2_base/gauges__rep3] assumptions
+[af2_base/gauges__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 11.79, 'probes': 6.04, 'assumptions': 2.88, 'ext': 6.82, 'total': 27.54}
+--- 6/462 done (76s)
+[af2_base/ledger__rep1] build
+[af2_base/ledger__rep0] assumptions
+[af2_base/gauges__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 15.75, 'probes': 6.06, 'assumptions': 2.89, 'ext': 6.83, 'total': 31.54}
+--- 7/462 done (78s)
+[af2_base/ledger__rep2] build
+[af2_base/gauges__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 15.68, 'probes': 6.0, 'assumptions': 2.9, 'ext': 6.84, 'total': 31.43}
+--- 8/462 done (82s)
+[af2_base/ledger__rep3] build
+[af2_base/ledger__rep2] build FAILED in 10.86s
+--- 9/462 done (88s)
+[af2_base/prodauto__rep0] build
+--- 10/462 done (88s)
+[af2_base/prodauto__rep1] build
+[af2_base/ledger__rep1] probes (9 names)
+[af2_base/ledger__rep3] probes (9 names)
+[af2_base/ledger__rep1] assumptions
+[af2_base/ledger__rep3] assumptions
+[af2_base/prodauto__rep1] build FAILED in 17.09s
+--- 11/462 done (106s)
+[af2_base/prodauto__rep2] build
+--- 12/462 done (106s)
+[af2_base/prodauto__rep3] build
+[af2_base/prodauto__rep3] probes (11 names)
+[af2_base/prodauto__rep3] assumptions
+[af2_base/prodauto__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 13.83, 'probes': 5.37, 'assumptions': 2.28, 'ext': 10.42, 'total': 31.91}
+--- 13/462 done (138s)
+[af2_base/triadic__rep0] build
+--- 14/462 done (138s)
+[af2_base/triadic__rep1] build
+--- 15/462 done (138s)
+[af2_base/triadic__rep2] build
+[af2_base/triadic__rep2] probes (14 names)
+[af2_base/triadic__rep2] probes FAILED in 0.04s
+--- 16/462 done (144s)
+[af2_base/triadic__rep3] build
+[af2_base/triadic__rep3] probes (14 names)
+[af2_base/triadic__rep3] probes FAILED in 0.04s
+--- 17/462 done (155s)
+[af2_evolve/frugal__rep0] build
+[af2_evolve/frugal__rep0] probes (18 names)
+[af2_evolve/frugal__rep0] assumptions
+[af2_evolve/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 21.82, 'probes': 5.61, 'assumptions': 2.84, 'ext': 19.55, 'total': 49.82}
+--- 18/462 done (205s)
+[af2_evolve/frugal__rep1] build
+[af2_evolve/frugal__rep1] build FAILED in 0.03s
+--- 19/462 done (205s)
+[af2_evolve/frugal__rep2] build
+[af2_base/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 14.16, 'probes': 5.65, 'assumptions': 2.48, 'ext': 151.35, 'total': 173.65}
+--- 20/462 done (231s)
+[af2_evolve/frugal__rep3] build
+[af2_evolve/frugal__rep2] probes (18 names)
+[af2_evolve/frugal__rep2] assumptions
+[af2_base/ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 14.39, 'probes': 5.59, 'assumptions': 2.67, 'ext': 150.41, 'total': 173.07}
+--- 21/462 done (249s)
+[af2_evolve/gauges__rep0] build
+[af2_base/ledger__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 14.1, 'probes': 5.68, 'assumptions': 2.47, 'ext': 149.83, 'total': 172.08}
+--- 22/462 done (254s)
+[af2_evolve/gauges__rep1] build
+[af2_evolve/frugal__rep3] probes (18 names)
+[af2_evolve/frugal__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 27.1, 'probes': 5.54, 'assumptions': 2.79, 'ext': 19.81, 'total': 55.24}
+--- 23/462 done (260s)
+[af2_evolve/gauges__rep2] build
+[af2_evolve/frugal__rep3] assumptions
+[af2_evolve/gauges__rep0] build FAILED in 19.64s
+--- 24/462 done (269s)
+[af2_evolve/gauges__rep3] build
+[af2_evolve/gauges__rep1] probes (9 names)
+[af2_evolve/gauges__rep2] build FAILED in 19.88s
+--- 25/462 done (280s)
+[af2_evolve/ledger__rep0] build
+[af2_evolve/gauges__rep1] assumptions
+[af2_evolve/frugal__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 27.11, 'probes': 5.73, 'assumptions': 2.5, 'ext': 21.77, 'total': 57.11}
+--- 26/462 done (288s)
+[af2_evolve/ledger__rep1] build
+[af2_evolve/gauges__rep3] probes (9 names)
+[af2_evolve/gauges__rep1] strict=False (non_allowlisted: p_gneg_sound: axiom TaskLib.Sound.gneg_soun) orig=False cat=agree {'copy': 0.0, 'build': 20.23, 'probes': 6.91, 'assumptions': 3.79, 'ext': 7.9, 'total': 38.83}
+--- 27/462 done (293s)
+[af2_evolve/ledger__rep2] build
+[af2_evolve/gauges__rep3] assumptions
+[af2_evolve/ledger__rep1] probes (9 names)
+[af2_evolve/ledger__rep0] probes (9 names)
+[af2_evolve/ledger__rep1] assumptions
+[af2_evolve/gauges__rep3] strict=False (non_allowlisted: p_width_gneg: axiom TaskLib.Width.Width.wid) orig=False cat=agree {'copy': 0.0, 'build': 21.08, 'probes': 6.81, 'assumptions': 4.34, 'ext': 7.17, 'total': 39.41}
+--- 28/462 done (308s)
+[af2_evolve/ledger__rep3] build
+[af2_evolve/ledger__rep0] assumptions
+[af2_evolve/ledger__rep2] probes (9 names)
+[af2_evolve/ledger__rep2] assumptions
+[af2_evolve/ledger__rep3] probes (9 names)
+[af2_evolve/ledger__rep3] assumptions
+[af2_evolve/ledger__rep1] strict=True (ok) orig=False cat=gate_stricter {'copy': 0.0, 'build': 11.36, 'probes': 5.69, 'assumptions': 2.46, 'ext': 150.08, 'total': 169.6}
+--- 29/462 done (457s)
+[af2_evolve/prodauto__rep0] build
+[af2_evolve/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.77, 'probes': 5.6, 'assumptions': 2.45, 'ext': 150.09, 'total': 181.92}
+--- 30/462 done (462s)
+[af2_evolve/prodauto__rep1] build
+[af2_evolve/ledger__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.26, 'probes': 6.08, 'assumptions': 2.84, 'ext': 151.18, 'total': 183.38}
+--- 31/462 done (476s)
+[af2_evolve/prodauto__rep2] build
+[af2_evolve/prodauto__rep1] build FAILED in 17.55s
+--- 32/462 done (480s)
+[af2_evolve/prodauto__rep3] build
+[af2_evolve/prodauto__rep0] probes (11 names)
+[af2_evolve/prodauto__rep2] probes (11 names)
+[af2_evolve/prodauto__rep2] probes FAILED in 0.04s
+--- 33/462 done (487s)
+[af2_evolve/triadic__rep0] build
+[af2_evolve/ledger__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.74, 'probes': 5.41, 'assumptions': 2.35, 'ext': 150.48, 'total': 180.98}
+--- 34/462 done (489s)
+[af2_evolve/triadic__rep1] build
+[af2_evolve/prodauto__rep0] assumptions
+[af2_evolve/prodauto__rep3] probes (11 names)
+[af2_evolve/prodauto__rep3] probes FAILED in 0.05s
+--- 35/462 done (497s)
+[af2_evolve/triadic__rep2] build
+[af2_evolve/triadic__rep1] probes (14 names)
+[af2_evolve/triadic__rep1] probes FAILED in 0.05s
+--- 36/462 done (501s)
+[af2_evolve/triadic__rep3] build
+[af2_evolve/triadic__rep0] build FAILED in 17.19s
+--- 37/462 done (504s)
+[af2_sota/frugal__rep0] build
+[af2_evolve/prodauto__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.54, 'probes': 5.5, 'assumptions': 2.57, 'ext': 12.32, 'total': 48.94}
+--- 38/462 done (506s)
+[af2_sota/frugal__rep1] build
+[af2_evolve/triadic__rep2] probes (14 names)
+[af2_evolve/triadic__rep2] probes FAILED in 0.05s
+--- 39/462 done (508s)
+[af2_sota/frugal__rep2] build
+[af2_evolve/triadic__rep3] probes (14 names)
+[af2_sota/frugal__rep2] probes (18 names)
+[af2_sota/frugal__rep2] probes FAILED in 0.04s
+--- 40/462 done (520s)
+[af2_sota/frugal__rep3] build
+[af2_sota/frugal__rep1] build FAILED in 17.13s
+--- 41/462 done (523s)
+[af2_sota/gauges__rep0] build
+[af2_evolve/triadic__rep3] assumptions
+[af2_sota/frugal__rep0] probes (18 names)
+[af2_sota/frugal__rep3] probes (18 names)
+[af2_sota/frugal__rep3] probes FAILED in 0.05s
+--- 42/462 done (531s)
+[af2_sota/gauges__rep1] build
+[af2_sota/frugal__rep0] probes FAILED in 5.55s
+--- 43/462 done (532s)
+[af2_sota/gauges__rep2] build
+[af2_sota/gauges__rep0] probes (9 names)
+[af2_sota/gauges__rep1] probes (9 names)
+[af2_sota/gauges__rep1] probes FAILED in 0.04s
+--- 44/462 done (543s)
+[af2_sota/gauges__rep3] build
+[af2_sota/gauges__rep2] probes (9 names)
+[af2_sota/gauges__rep2] probes FAILED in 0.04s
+--- 45/462 done (544s)
+[af2_sota/ledger__rep0] build
+[af2_sota/gauges__rep0] probes FAILED in 5.85s
+--- 46/462 done (547s)
+[af2_sota/ledger__rep1] build
+[af2_sota/ledger__rep1] probes (9 names)
+[af2_sota/ledger__rep1] probes FAILED in 0.04s
+--- 47/462 done (554s)
+[af2_sota/ledger__rep2] build
+[af2_sota/ledger__rep0] probes (9 names)
+[af2_sota/ledger__rep0] probes FAILED in 0.04s
+--- 48/462 done (555s)
+[af2_sota/ledger__rep3] build
+[af2_sota/gauges__rep3] probes (9 names)
+[af2_sota/gauges__rep3] assumptions
+[af2_sota/ledger__rep2] build FAILED in 10.59s
+--- 49/462 done (565s)
+[af2_sota/prodauto__rep0] build
+[af2_sota/gauges__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 15.21, 'probes': 6.0, 'assumptions': 2.95, 'ext': 6.82, 'total': 30.99}
+--- 50/462 done (574s)
+[af2_sota/prodauto__rep1] build
+[af2_sota/ledger__rep3] probes (9 names)
+[af2_sota/prodauto__rep0] build FAILED in 16.98s
+--- 51/462 done (582s)
+[af2_sota/prodauto__rep2] build
+[af2_sota/prodauto__rep2] build FAILED in 0.03s
+--- 52/462 done (582s)
+[af2_sota/prodauto__rep3] build
+[af2_sota/ledger__rep3] assumptions
+[af2_sota/prodauto__rep1] probes (11 names)
+[af2_sota/prodauto__rep1] probes FAILED in 0.04s
+--- 53/462 done (585s)
+[af2_sota/triadic__rep0] build
+[af2_sota/prodauto__rep3] probes (11 names)
+[af2_sota/prodauto__rep3] probes FAILED in 0.04s
+--- 54/462 done (592s)
+[af2_sota/triadic__rep1] build
+[af2_sota/triadic__rep0] probes (14 names)
+[af2_sota/triadic__rep0] probes FAILED in 0.04s
+--- 55/462 done (596s)
+[af2_sota/triadic__rep2] build
+[af2_sota/triadic__rep1] probes (14 names)
+[af2_sota/triadic__rep1] probes FAILED in 0.04s
+--- 56/462 done (603s)
+[af2_sota/triadic__rep3] build
+[af2_sota/triadic__rep2] probes (14 names)
+[af2_sota/triadic__rep2] probes FAILED in 0.04s
+--- 57/462 done (607s)
+[af3_base/frugal__rep0] build
+[af2_sota/triadic__rep3] probes (14 names)
+[af2_sota/triadic__rep3] probes FAILED in 0.04s
+--- 58/462 done (609s)
+[af3_base/frugal__rep1] build
+[af3_base/frugal__rep0] probes (18 names)
+[af3_base/frugal__rep0] assumptions
+[af3_base/frugal__rep1] probes (18 names)
+[af3_base/frugal__rep1] assumptions
+[af3_base/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 16.6, 'probes': 5.29, 'assumptions': 2.22, 'ext': 19.69, 'total': 43.81}
+--- 59/462 done (651s)
+[af3_base/frugal__rep2] build
+[af3_base/frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 26.84, 'probes': 5.38, 'assumptions': 2.22, 'ext': 19.58, 'total': 54.03}
+--- 60/462 done (663s)
+[af3_base/frugal__rep3] build
+[af3_base/frugal__rep2] probes (18 names)
+[af3_base/frugal__rep2] assumptions
+[af3_base/frugal__rep3] probes (18 names)
+[af3_base/frugal__rep3] assumptions
+[af3_base/frugal__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 16.59, 'probes': 5.33, 'assumptions': 2.21, 'ext': 19.79, 'total': 43.93}
+--- 61/462 done (695s)
+[af3_base/gauges__rep0] build
+[af2_evolve/triadic__rep3] strict=False (non_allowlisted: p_tstep_fixed: axiom TaskLib.Fixed.tstep_fi) orig=False cat=agree {'copy': 0.0, 'build': 17.18, 'probes': 5.51, 'assumptions': 2.31, 'ext': 176.58, 'total': 201.59}
+--- 62/462 done (702s)
+[af3_base/gauges__rep1] build
+[af3_base/gauges__rep0] probes (9 names)
+[af3_base/frugal__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 16.58, 'probes': 5.38, 'assumptions': 2.24, 'ext': 19.82, 'total': 44.03}
+--- 63/462 done (707s)
+[af3_base/gauges__rep2] build
+[af3_base/gauges__rep0] assumptions
+[af3_base/gauges__rep1] probes (9 names)
+[af3_base/gauges__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 11.42, 'probes': 5.85, 'assumptions': 2.81, 'ext': 6.71, 'total': 26.8}
+--- 64/462 done (722s)
+[af3_base/gauges__rep3] build
+[af3_base/gauges__rep2] probes (9 names)
+[af3_base/gauges__rep1] assumptions
+[af3_base/gauges__rep2] assumptions
+[af3_base/gauges__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 15.46, 'probes': 5.83, 'assumptions': 2.76, 'ext': 6.59, 'total': 30.65}
+--- 65/462 done (733s)
+[af3_base/ledger__rep0] build
+[af3_base/gauges__rep3] build FAILED in 11.57s
+--- 66/462 done (733s)
+[af3_base/ledger__rep1] build
+[af2_sota/ledger__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.72, 'probes': 5.43, 'assumptions': 2.42, 'ext': 149.69, 'total': 180.26}
+--- 67/462 done (736s)
+[af3_base/ledger__rep2] build
+[af3_base/gauges__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 15.28, 'probes': 5.8, 'assumptions': 2.87, 'ext': 6.65, 'total': 30.61}
+--- 68/462 done (738s)
+[af3_base/ledger__rep3] build
+[af3_base/ledger__rep0] probes (9 names)
+[af3_base/ledger__rep2] probes (9 names)
+[af3_base/ledger__rep3] probes (9 names)
+[af3_base/ledger__rep0] assumptions
+[af3_base/ledger__rep2] assumptions
+[af3_base/ledger__rep3] assumptions
+[af3_base/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 14.11, 'probes': 5.53, 'assumptions': 2.47, 'ext': 150.37, 'total': 172.48}
+--- 69/462 done (906s)
+[af3_base/prodauto__rep0] build
+--- 70/462 done (906s)
+[af3_base/prodauto__rep1] build
+[af3_base/ledger__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 14.34, 'probes': 5.57, 'assumptions': 2.52, 'ext': 150.2, 'total': 172.63}
+--- 71/462 done (908s)
+[af3_base/prodauto__rep2] build
+[af3_base/ledger__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 14.11, 'probes': 5.52, 'assumptions': 2.49, 'ext': 149.81, 'total': 171.95}
+--- 72/462 done (910s)
+[af3_base/prodauto__rep3] build
+[af3_base/prodauto__rep2] build FAILED in 10.96s
+--- 73/462 done (919s)
+[af3_base/triadic__rep0] build
+[af3_base/prodauto__rep1] build FAILED in 14.6s
+--- 74/462 done (920s)
+[af3_base/triadic__rep1] build
+[af3_base/prodauto__rep3] build FAILED in 17.26s
+--- 75/462 done (927s)
+[af3_base/triadic__rep2] build
+--- 76/462 done (927s)
+[af3_base/triadic__rep3] build
+[af3_base/triadic__rep1] probes (14 names)
+[af3_base/triadic__rep1] probes FAILED in 0.05s
+--- 77/462 done (928s)
+[af3_base2/frugal__rep0] build
+[af3_base/triadic__rep0] probes (14 names)
+[af3_base/triadic__rep0] probes FAILED in 0.05s
+--- 78/462 done (930s)
+[af3_base2/frugal__rep1] build
+[af3_base/triadic__rep3] probes (14 names)
+[af3_base/triadic__rep3] probes FAILED in 0.04s
+--- 79/462 done (939s)
+[af3_base2/frugal__rep2] build
+[af3_base2/frugal__rep0] probes (18 names)
+[af3_base2/frugal__rep0] assumptions
+[af3_base2/frugal__rep2] probes (18 names)
+[af3_base2/frugal__rep1] probes (18 names)
+[af3_base2/frugal__rep2] assumptions
+[af3_base2/frugal__rep1] assumptions
+[af3_base2/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.72, 'probes': 5.52, 'assumptions': 2.3, 'ext': 20.39, 'total': 45.95}
+--- 80/462 done (974s)
+[af3_base2/frugal__rep3] build
+[af3_base2/frugal__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.55, 'probes': 5.6, 'assumptions': 2.38, 'ext': 20.48, 'total': 46.03}
+--- 81/462 done (985s)
+[af3_base2/gauges__rep0] build
+[af3_base2/frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.13, 'probes': 5.6, 'assumptions': 2.37, 'ext': 20.38, 'total': 56.49}
+--- 82/462 done (987s)
+[af3_base2/gauges__rep1] build
+[af3_base2/frugal__rep3] probes (18 names)
+[af3_base2/frugal__rep3] assumptions
+[af3_base2/gauges__rep0] probes (9 names)
+[af3_base2/gauges__rep1] probes (9 names)
+[af3_base2/gauges__rep0] assumptions
+[af3_base2/gauges__rep1] assumptions
+[af3_base2/gauges__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 11.94, 'probes': 6.08, 'assumptions': 2.96, 'ext': 6.85, 'total': 27.84}
+--- 83/462 done (1012s)
+[af3_base2/gauges__rep2] build
+[af3_base2/frugal__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 14.31, 'probes': 5.56, 'assumptions': 2.47, 'ext': 20.62, 'total': 42.97}
+--- 84/462 done (1017s)
+[af3_base2/gauges__rep3] build
+[af3_base2/gauges__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 15.81, 'probes': 6.12, 'assumptions': 2.87, 'ext': 6.95, 'total': 31.75}
+--- 85/462 done (1019s)
+[af3_base2/ledger__rep0] build
+[af3_base2/ledger__rep0] build FAILED in 7.4s
+--- 86/462 done (1026s)
+[af3_base2/ledger__rep1] build
+[af3_base2/gauges__rep3] probes (9 names)
+[af3_base2/gauges__rep2] probes (9 names)
+[af3_base2/gauges__rep3] assumptions
+[af3_base2/ledger__rep1] probes (9 names)
+[af3_base2/gauges__rep2] assumptions
+[af3_base2/ledger__rep1] assumptions
+[af3_base2/gauges__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 16.09, 'probes': 5.99, 'assumptions': 2.87, 'ext': 6.71, 'total': 31.67}
+--- 87/462 done (1048s)
+[af3_base2/ledger__rep2] build
+[af3_base2/gauges__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 24.66, 'probes': 6.02, 'assumptions': 2.88, 'ext': 6.88, 'total': 40.45}
+--- 88/462 done (1053s)
+[af3_base2/ledger__rep3] build
+[af3_base2/ledger__rep2] probes (9 names)
+[af3_base2/ledger__rep3] probes (9 names)
+[af3_base2/ledger__rep2] assumptions
+[af3_base2/ledger__rep3] assumptions
+[af3_base2/ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 14.3, 'probes': 5.57, 'assumptions': 2.51, 'ext': 150.05, 'total': 172.44}
+--- 89/462 done (1198s)
+[af3_base2/prodauto__rep0] build
+--- 90/462 done (1199s)
+[af3_base2/prodauto__rep1] build
+[af3_base2/prodauto__rep1] build FAILED in 10.24s
+--- 91/462 done (1209s)
+[af3_base2/prodauto__rep2] build
+[af3_base2/ledger__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 14.57, 'probes': 5.44, 'assumptions': 2.4, 'ext': 149.58, 'total': 171.99}
+--- 92/462 done (1220s)
+[af3_base2/prodauto__rep3] build
+[af3_base2/prodauto__rep2] build FAILED in 13.83s
+--- 93/462 done (1223s)
+[af3_base2/triadic__rep0] build
+--- 94/462 done (1223s)
+[af3_base2/triadic__rep1] build
+--- 95/462 done (1223s)
+[af3_base2/triadic__rep2] build
+--- 96/462 done (1223s)
+[af3_base2/triadic__rep3] build
+--- 97/462 done (1223s)
+[af3_evolve/frugal__rep0] build
+[af3_base2/ledger__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 14.09, 'probes': 5.46, 'assumptions': 2.41, 'ext': 148.9, 'total': 170.87}
+--- 98/462 done (1224s)
+[af3_evolve/frugal__rep1] build
+[af3_base2/prodauto__rep3] probes (11 names)
+[af3_base2/prodauto__rep3] assumptions
+[af3_evolve/frugal__rep1] probes (18 names)
+[af3_evolve/frugal__rep0] probes (18 names)
+[af3_evolve/frugal__rep1] assumptions
+[af3_evolve/frugal__rep0] assumptions
+[af3_base2/prodauto__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.55, 'probes': 5.51, 'assumptions': 2.5, 'ext': 12.21, 'total': 37.78}
+--- 99/462 done (1258s)
+[af3_evolve/frugal__rep2] build
+[af3_evolve/frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.39, 'probes': 5.41, 'assumptions': 2.29, 'ext': 20.58, 'total': 56.67}
+--- 100/462 done (1280s)
+[af3_evolve/frugal__rep3] build
+[af3_evolve/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 29.07, 'probes': 5.7, 'assumptions': 2.92, 'ext': 20.52, 'total': 58.23}
+--- 101/462 done (1281s)
+[af3_evolve/gauges__rep0] build
+[af3_evolve/frugal__rep2] probes (18 names)
+[af3_evolve/frugal__rep2] assumptions
+[af3_evolve/gauges__rep0] probes (9 names)
+[af3_evolve/frugal__rep3] probes (18 names)
+[af3_evolve/gauges__rep0] assumptions
+[af3_evolve/frugal__rep3] assumptions
+[af3_evolve/frugal__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.45, 'probes': 5.71, 'assumptions': 2.4, 'ext': 20.94, 'total': 57.51}
+--- 102/462 done (1316s)
+[af3_evolve/gauges__rep1] build
+[af3_evolve/gauges__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 19.91, 'probes': 6.62, 'assumptions': 5.23, 'ext': 7.39, 'total': 39.16}
+--- 103/462 done (1321s)
+[af3_evolve/gauges__rep2] build
+[af3_evolve/frugal__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.46, 'probes': 5.77, 'assumptions': 2.42, 'ext': 20.8, 'total': 52.46}
+--- 104/462 done (1333s)
+[af3_evolve/gauges__rep3] build
+[af3_evolve/gauges__rep1] probes (9 names)
+[af3_evolve/gauges__rep2] probes (9 names)
+[af3_evolve/gauges__rep1] assumptions
+[af3_evolve/gauges__rep2] assumptions
+[af3_evolve/gauges__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 26.56, 'probes': 6.45, 'assumptions': 3.72, 'ext': 7.15, 'total': 43.89}
+--- 105/462 done (1360s)
+[af3_evolve/ledger__rep0] build
+[af3_evolve/gauges__rep3] probes (9 names)
+[af3_evolve/gauges__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 26.45, 'probes': 6.6, 'assumptions': 5.04, 'ext': 7.43, 'total': 45.53}
+--- 106/462 done (1366s)
+[af3_evolve/ledger__rep1] build
+[af3_evolve/gauges__rep3] assumptions
+[af3_evolve/gauges__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 26.7, 'probes': 6.66, 'assumptions': 5.05, 'ext': 7.27, 'total': 45.69}
+--- 107/462 done (1379s)
+[af3_evolve/ledger__rep2] build
+[af3_evolve/ledger__rep0] probes (9 names)
+[af3_evolve/ledger__rep0] assumptions
+[af3_evolve/ledger__rep1] probes (9 names)
+[af3_evolve/ledger__rep1] assumptions
+[af3_evolve/ledger__rep2] probes (9 names)
+[af3_evolve/ledger__rep2] assumptions
+[af3_evolve/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 24.03, 'probes': 5.67, 'assumptions': 2.61, 'ext': 150.81, 'total': 183.13}
+--- 108/462 done (1543s)
+[af3_evolve/ledger__rep3] build
+[af3_evolve/ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 24.33, 'probes': 5.86, 'assumptions': 2.82, 'ext': 150.75, 'total': 183.77}
+--- 109/462 done (1550s)
+[af3_evolve/prodauto__rep0] build
+[af3_evolve/ledger__rep3] probes (9 names)
+[af3_evolve/prodauto__rep0] build FAILED in 11.79s
+--- 110/462 done (1562s)
+[af3_evolve/prodauto__rep1] build
+[af3_evolve/ledger__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.25, 'probes': 5.82, 'assumptions': 3.03, 'ext': 151.23, 'total': 183.33}
+--- 111/462 done (1562s)
+[af3_evolve/prodauto__rep2] build
+[af3_evolve/ledger__rep3] assumptions
+[af3_evolve/prodauto__rep2] probes (11 names)
+[af3_evolve/prodauto__rep1] probes (11 names)
+[af3_evolve/prodauto__rep2] assumptions
+[af3_evolve/prodauto__rep1] assumptions
+[af3_evolve/prodauto__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.11, 'probes': 5.68, 'assumptions': 2.52, 'ext': 10.53, 'total': 41.84}
+--- 112/462 done (1604s)
+[af3_evolve/prodauto__rep3] build
+[af3_evolve/prodauto__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.98, 'probes': 5.82, 'assumptions': 2.79, 'ext': 12.26, 'total': 49.85}
+--- 113/462 done (1612s)
+[af3_evolve/triadic__rep0] build
+[af3_evolve/prodauto__rep3] probes (11 names)
+[af3_evolve/prodauto__rep3] assumptions
+[af3_evolve/triadic__rep0] probes (14 names)
+[af3_evolve/prodauto__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.41, 'probes': 5.61, 'assumptions': 2.44, 'ext': 10.9, 'total': 47.36}
+--- 114/462 done (1651s)
+[af3_evolve/triadic__rep1] build
+[af3_evolve/triadic__rep0] assumptions
+[af3_evolve/triadic__rep1] probes (14 names)
+[af3_evolve/triadic__rep1] assumptions
+[af3_evolve/ledger__rep3] strict=True (ok) orig=False cat=gate_stricter {'copy': 0.0, 'build': 17.61, 'probes': 5.54, 'assumptions': 2.59, 'ext': 151.15, 'total': 176.9}
+--- 115/462 done (1720s)
+[af3_evolve/triadic__rep2] build
+[af3_evolve/triadic__rep2] probes (14 names)
+[af3_evolve/triadic__rep2] assumptions
+[af3_evolve/triadic__rep0] strict=False (non_allowlisted: p_tstep_shrink_odd: axiom TaskLib.Shrink.ts) orig=False cat=agree {'copy': 0.02, 'build': 36.03, 'probes': 5.82, 'assumptions': 2.79, 'ext': 176.75, 'total': 221.42}
+--- 116/462 done (1833s)
+[af3_evolve/triadic__rep3] build
+[af3_evolve/triadic__rep3] probes (14 names)
+[af3_evolve/triadic__rep3] assumptions
+[af3_evolve/triadic__rep1] strict=False (non_allowlisted: p_tstep_shrink_odd: axiom TaskLib.Shrink.Sh) orig=False cat=agree {'copy': 0.01, 'build': 27.94, 'probes': 5.86, 'assumptions': 2.85, 'ext': 177.3, 'total': 213.97}
+--- 117/462 done (1865s)
+[af3_evolve_c3/frugal__rep0] build
+[af3_evolve_c3/frugal__rep0] probes (18 names)
+[af3_evolve_c3/frugal__rep0] assumptions
+[af3_evolve_c3/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 27.38, 'probes': 5.39, 'assumptions': 2.29, 'ext': 19.99, 'total': 55.06}
+--- 118/462 done (1920s)
+[af3_evolve_c3/frugal__rep1] build
+[af3_evolve/triadic__rep2] strict=False (non_allowlisted: p_tstep_shrink_odd: axiom TaskLib.Shrink.Sh) orig=False cat=agree {'copy': 0.0, 'build': 17.96, 'probes': 5.66, 'assumptions': 2.75, 'ext': 176.67, 'total': 203.05}
+--- 119/462 done (1923s)
+[af3_evolve_c3/frugal__rep2] build
+[af3_evolve_c3/frugal__rep2] probes (18 names)
+[af3_evolve_c3/frugal__rep1] probes (18 names)
+[af3_evolve_c3/frugal__rep2] assumptions
+[af3_evolve_c3/frugal__rep1] assumptions
+[af3_evolve_c3/frugal__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.63, 'probes': 5.82, 'assumptions': 3.02, 'ext': 20.32, 'total': 52.81}
+--- 120/462 done (1975s)
+[af3_evolve_c3/frugal__rep3] build
+[af3_evolve_c3/frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.15, 'probes': 5.54, 'assumptions': 2.34, 'ext': 20.33, 'total': 56.36}
+--- 121/462 done (1977s)
+[af3_evolve_c3/gauges__rep0] build
+[af3_evolve_c3/gauges__rep0] probes (9 names)
+[af3_evolve_c3/frugal__rep3] probes (18 names)
+[af3_evolve_c3/gauges__rep0] assumptions
+[af3_evolve_c3/frugal__rep3] assumptions
+[af3_evolve_c3/gauges__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 25.01, 'probes': 6.14, 'assumptions': 4.56, 'ext': 7.11, 'total': 42.84}
+--- 122/462 done (2019s)
+[af3_evolve_c3/gauges__rep1] build
+[af3_evolve_c3/frugal__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.05, 'probes': 5.44, 'assumptions': 2.27, 'ext': 20.31, 'total': 56.08}
+--- 123/462 done (2032s)
+[af3_evolve_c3/gauges__rep2] build
+[af3_evolve/triadic__rep3] strict=False (non_allowlisted: p_tstep_fixed: axiom TaskLib.Fixed.Fixed.ts) orig=False cat=agree {'copy': 0.0, 'build': 18.86, 'probes': 5.62, 'assumptions': 2.76, 'ext': 178.04, 'total': 205.29}
+--- 124/462 done (2038s)
+[af3_evolve_c3/gauges__rep3] build
+[af3_evolve_c3/gauges__rep1] probes (9 names)
+[af3_evolve_c3/gauges__rep1] assumptions
+[af3_evolve_c3/gauges__rep2] probes (9 names)
+[af3_evolve_c3/gauges__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 19.68, 'probes': 6.42, 'assumptions': 4.85, 'ext': 7.28, 'total': 38.25}
+--- 125/462 done (2058s)
+[af3_evolve_c3/ledger__rep0] build
+[af3_evolve_c3/gauges__rep2] assumptions
+[af3_evolve_c3/gauges__rep3] probes (9 names)
+[af3_evolve_c3/gauges__rep3] assumptions
+[af3_evolve_c3/gauges__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 24.79, 'probes': 6.12, 'assumptions': 3.01, 'ext': 6.95, 'total': 40.88}
+--- 126/462 done (2072s)
+[af3_evolve_c3/ledger__rep1] build
+[af3_evolve_c3/ledger__rep0] probes (9 names)
+[af3_evolve_c3/gauges__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 26.45, 'probes': 6.49, 'assumptions': 5.17, 'ext': 7.23, 'total': 45.35}
+--- 127/462 done (2084s)
+[af3_evolve_c3/ledger__rep2] build
+[af3_evolve_c3/ledger__rep0] assumptions
+[af3_evolve_c3/ledger__rep1] probes (9 names)
+[af3_evolve_c3/ledger__rep2] probes (9 names)
+[af3_evolve_c3/ledger__rep1] assumptions
+[af3_evolve_c3/ledger__rep2] assumptions
+[af3_evolve_c3/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.39, 'probes': 5.77, 'assumptions': 2.58, 'ext': 151.27, 'total': 183.02}
+--- 128/462 done (2241s)
+[af3_evolve_c3/ledger__rep3] build
+[af3_evolve_c3/ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.44, 'probes': 5.54, 'assumptions': 2.54, 'ext': 151.2, 'total': 182.73}
+--- 129/462 done (2255s)
+[af3_evolve_c3/prodauto__rep0] build
+[af3_evolve_c3/ledger__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 14.59, 'probes': 5.6, 'assumptions': 2.47, 'ext': 151.1, 'total': 173.77}
+--- 130/462 done (2257s)
+[af3_evolve_c3/prodauto__rep1] build
+[af3_evolve_c3/ledger__rep3] probes (9 names)
+[af3_evolve_c3/ledger__rep3] assumptions
+[af3_evolve_c3/prodauto__rep0] probes (11 names)
+[af3_evolve_c3/prodauto__rep0] assumptions
+[af3_evolve_c3/prodauto__rep1] probes (11 names)
+[af3_evolve_c3/prodauto__rep1] assumptions
+[af3_evolve_c3/prodauto__rep0] strict=False (non_allowlisted: p_nonempty23: axiom TaskLib.Main.prod23_non) orig=False cat=agree {'copy': 0.0, 'build': 23.52, 'probes': 5.48, 'assumptions': 2.36, 'ext': 14.06, 'total': 45.43}
+--- 131/462 done (2301s)
+[af3_evolve_c3/prodauto__rep2] build
+[af3_evolve_c3/prodauto__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 29.26, 'probes': 6.52, 'assumptions': 2.74, 'ext': 11.62, 'total': 50.15}
+--- 132/462 done (2308s)
+[af3_evolve_c3/prodauto__rep3] build
+[af3_evolve_c3/prodauto__rep3] build FAILED in 12.02s
+--- 133/462 done (2320s)
+[af3_evolve_c3/triadic__rep0] build
+[af3_evolve_c3/prodauto__rep2] probes (11 names)
+[af3_evolve_c3/prodauto__rep2] assumptions
+[af3_evolve_c3/triadic__rep0] build FAILED in 17.28s
+--- 134/462 done (2337s)
+[af3_evolve_c3/triadic__rep1] build
+[af3_evolve_c3/prodauto__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 29.44, 'probes': 5.59, 'assumptions': 2.43, 'ext': 10.92, 'total': 48.4}
+--- 135/462 done (2349s)
+[af3_evolve_c3/triadic__rep2] build
+[af3_evolve_c3/triadic__rep1] probes (14 names)
+[af3_evolve_c3/triadic__rep2] probes (14 names)
+[af3_evolve_c3/triadic__rep2] probes FAILED in 0.05s
+--- 136/462 done (2361s)
+[af3_evolve_c3/triadic__rep3] build
+[af3_evolve_c3/triadic__rep1] assumptions
+[af3_evolve_c3/triadic__rep3] probes (14 names)
+[af3_evolve_c3/triadic__rep3] assumptions
+[af3_evolve_c3/ledger__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.2, 'probes': 6.29, 'assumptions': 2.99, 'ext': 152.93, 'total': 185.45}
+--- 137/462 done (2426s)
+[af3_evolve_r1/frugal__rep0] build
+[af3_evolve_r1/frugal__rep0] probes (18 names)
+[af3_evolve_r1/frugal__rep0] assumptions
+[af3_evolve_r1/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.96, 'probes': 5.72, 'assumptions': 2.91, 'ext': 19.78, 'total': 57.38}
+--- 138/462 done (2484s)
+[af3_evolve_r1/frugal__rep1] build
+[af3_evolve_r1/frugal__rep1] probes (18 names)
+[af3_evolve_r1/frugal__rep1] assumptions
+[af3_evolve_r1/frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.11, 'probes': 5.34, 'assumptions': 2.28, 'ext': 19.82, 'total': 49.56}
+--- 139/462 done (2533s)
+[af3_evolve_r1/frugal__rep2] build
+[af3_base/ledger__rep1] build FAILED in 1800.4s
+--- 140/462 done (2533s)
+[af3_evolve_r1/frugal__rep3] build
+[af3_evolve_c3/triadic__rep1] strict=False (non_allowlisted: p_tstep_shrink_odd: axiom TaskLib.Shrink.Sh) orig=False cat=agree {'copy': 0.0, 'build': 18.82, 'probes': 5.77, 'assumptions': 2.81, 'ext': 177.64, 'total': 205.04}
+--- 141/462 done (2542s)
+[af3_evolve_r1/gauges__rep0] build
+[af3_evolve_r1/frugal__rep2] probes (18 names)
+[af3_evolve_r1/frugal__rep3] probes (18 names)
+[af3_evolve_r1/frugal__rep2] assumptions
+[af3_evolve_r1/frugal__rep3] assumptions
+[af3_evolve_r1/gauges__rep0] probes (9 names)
+[af3_evolve_c3/triadic__rep3] strict=False (non_allowlisted: p_tstep_fixed: axiom TaskLib.Fixed.tstep_fi) orig=False cat=agree {'copy': 0.0, 'build': 19.51, 'probes': 5.66, 'assumptions': 2.76, 'ext': 178.23, 'total': 206.17}
+--- 142/462 done (2568s)
+[af3_evolve_r1/gauges__rep1] build
+[af3_evolve_r1/gauges__rep0] assumptions
+[af3_evolve_r1/gauges__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 25.13, 'probes': 6.26, 'assumptions': 5.06, 'ext': 7.32, 'total': 43.77}
+--- 143/462 done (2586s)
+[af3_evolve_r1/gauges__rep2] build
+[af3_evolve_r1/frugal__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 27.72, 'probes': 5.43, 'assumptions': 2.3, 'ext': 20.49, 'total': 55.95}
+--- 144/462 done (2589s)
+[af3_evolve_r1/gauges__rep3] build
+[af3_evolve_r1/frugal__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 27.86, 'probes': 5.43, 'assumptions': 2.33, 'ext': 20.5, 'total': 56.14}
+--- 145/462 done (2589s)
+[af3_evolve_r1/ledger__rep0] build
+[af3_evolve_r1/gauges__rep1] probes (9 names)
+[af3_evolve_r1/gauges__rep1] assumptions
+[af3_evolve_r1/gauges__rep3] probes (9 names)
+[af3_evolve_r1/gauges__rep2] probes (9 names)
+[af3_evolve_r1/gauges__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 25.99, 'probes': 6.45, 'assumptions': 5.09, 'ext': 7.25, 'total': 44.79}
+--- 146/462 done (2612s)
+[af3_evolve_r1/ledger__rep1] build
+[af3_evolve_r1/ledger__rep0] probes (9 names)
+[af3_evolve_r1/gauges__rep3] assumptions
+[af3_evolve_r1/ledger__rep0] assumptions
+[af3_evolve_r1/gauges__rep2] assumptions
+[af3_evolve_r1/gauges__rep3] strict=False (non_allowlisted: p_gneg_sound: axiom TaskLib.Sound.Sound.gne) orig=False cat=agree {'copy': 0.0, 'build': 19.53, 'probes': 6.27, 'assumptions': 3.56, 'ext': 7.03, 'total': 36.4}
+--- 147/462 done (2626s)
+[af3_evolve_r1/ledger__rep2] build
+[af3_evolve_r1/ledger__rep1] probes (9 names)
+[af3_evolve_r1/gauges__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 26.2, 'probes': 6.38, 'assumptions': 5.01, 'ext': 7.02, 'total': 44.62}
+--- 148/462 done (2630s)
+[af3_evolve_r1/ledger__rep3] build
+[af3_evolve_r1/ledger__rep1] assumptions
+[af3_evolve_r1/ledger__rep2] probes (9 names)
+[af3_evolve_r1/ledger__rep3] probes (9 names)
+[af3_evolve_r1/ledger__rep2] assumptions
+[af3_evolve_r1/ledger__rep3] assumptions
+[af3_evolve_r1/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.94, 'probes': 5.67, 'assumptions': 2.49, 'ext': 150.45, 'total': 181.56}
+--- 149/462 done (2771s)
+[af3_evolve_r1/prodauto__rep0] build
+[af3_evolve_r1/ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 14.84, 'probes': 5.84, 'assumptions': 3.05, 'ext': 151.93, 'total': 175.66}
+--- 150/462 done (2788s)
+[af3_evolve_r1/prodauto__rep1] build
+[af3_evolve_r1/prodauto__rep0] probes (11 names)
+[af3_evolve_r1/prodauto__rep0] assumptions
+[af3_evolve_r1/ledger__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.23, 'probes': 5.28, 'assumptions': 2.29, 'ext': 149.28, 'total': 179.08}
+--- 151/462 done (2805s)
+[af3_evolve_r1/prodauto__rep2] build
+[af3_evolve_r1/ledger__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 21.92, 'probes': 5.21, 'assumptions': 2.37, 'ext': 149.65, 'total': 179.16}
+--- 152/462 done (2810s)
+[af3_evolve_r1/prodauto__rep3] build
+[af3_evolve_r1/prodauto__rep1] probes (11 names)
+[af3_evolve_r1/prodauto__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 27.14, 'probes': 5.3, 'assumptions': 2.29, 'ext': 14.05, 'total': 48.8}
+--- 153/462 done (2820s)
+[af3_evolve_r1/triadic__rep0] build
+[af3_evolve_r1/prodauto__rep1] assumptions
+[af3_evolve_r1/prodauto__rep2] probes (11 names)
+[af3_evolve_r1/prodauto__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 27.55, 'probes': 5.67, 'assumptions': 2.4, 'ext': 12.24, 'total': 47.86}
+--- 154/462 done (2836s)
+[af3_evolve_r1/triadic__rep1] build
+[af3_evolve_r1/triadic__rep0] probes (14 names)
+[af3_evolve_r1/prodauto__rep3] probes (11 names)
+[af3_evolve_r1/prodauto__rep2] assumptions
+[af3_evolve_r1/triadic__rep0] assumptions
+[af3_evolve_r1/prodauto__rep3] assumptions
+[af3_evolve_r1/prodauto__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.08, 'probes': 5.6, 'assumptions': 2.4, 'ext': 10.06, 'total': 46.16}
+--- 155/462 done (2851s)
+[af3_evolve_r1/triadic__rep2] build
+[af3_evolve_r1/triadic__rep2] build FAILED in 0.26s
+--- 156/462 done (2851s)
+[af3_evolve_r1/triadic__rep3] build
+[af3_evolve_r1/prodauto__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.27, 'probes': 5.48, 'assumptions': 2.39, 'ext': 12.12, 'total': 48.27}
+--- 157/462 done (2858s)
+[af3_evolve_r3/frugal__rep0] build
+[af3_evolve_r1/triadic__rep3] build FAILED in 16.55s
+--- 158/462 done (2868s)
+[af3_evolve_r3/frugal__rep1] build
+[af3_evolve_r1/triadic__rep1] probes (14 names)
+[af3_evolve_r1/triadic__rep1] assumptions
+[af3_evolve_r3/frugal__rep0] probes (18 names)
+[af3_evolve_r3/frugal__rep0] assumptions
+[af3_evolve_r3/frugal__rep1] probes (18 names)
+[af3_evolve_r3/frugal__rep1] assumptions
+[af3_evolve_r3/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 27.16, 'probes': 5.36, 'assumptions': 2.29, 'ext': 19.6, 'total': 54.41}
+--- 159/462 done (2912s)
+[af3_evolve_r3/frugal__rep2] build
+[af3_evolve_r3/frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 27.13, 'probes': 5.26, 'assumptions': 2.24, 'ext': 19.48, 'total': 54.12}
+--- 160/462 done (2922s)
+[af3_evolve_r3/frugal__rep3] build
+[af3_evolve_r3/frugal__rep2] probes (18 names)
+[af3_evolve_r3/frugal__rep2] assumptions
+[af3_evolve_r3/frugal__rep3] probes (18 names)
+[af3_evolve_r3/frugal__rep3] assumptions
+[af3_evolve_r3/frugal__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 26.71, 'probes': 5.23, 'assumptions': 2.15, 'ext': 19.52, 'total': 53.62}
+--- 161/462 done (2966s)
+[af3_evolve_r3/gauges__rep0] build
+[af3_evolve_r3/frugal__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 26.66, 'probes': 5.26, 'assumptions': 2.2, 'ext': 19.61, 'total': 53.75}
+--- 162/462 done (2976s)
+[af3_evolve_r3/gauges__rep1] build
+[af3_evolve_r3/gauges__rep0] probes (9 names)
+[af3_evolve_r3/gauges__rep1] probes (9 names)
+[af3_evolve_r3/gauges__rep0] assumptions
+[af3_evolve_r3/gauges__rep1] assumptions
+[af3_evolve_r3/gauges__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 24.43, 'probes': 6.01, 'assumptions': 4.73, 'ext': 6.65, 'total': 41.84}
+--- 163/462 done (3008s)
+[af3_evolve_r3/gauges__rep2] build
+[af3_evolve_r3/gauges__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 16.07, 'probes': 5.98, 'assumptions': 4.33, 'ext': 6.62, 'total': 33.0}
+--- 164/462 done (3009s)
+[af3_evolve_r3/gauges__rep3] build
+[af3_evolve_r1/triadic__rep0] strict=False (non_allowlisted: p_tstep_fixed: axiom TaskLib.Fixed.Fixed.ts) orig=False cat=agree {'copy': 0.0, 'build': 17.33, 'probes': 5.77, 'assumptions': 2.73, 'ext': 176.72, 'total': 202.57}
+--- 165/462 done (3022s)
+[af3_evolve_r3/ledger__rep0] build
+[af3_evolve_r3/gauges__rep2] probes (9 names)
+[af3_evolve_r3/gauges__rep2] assumptions
+[af3_evolve_r3/gauges__rep3] probes (9 names)
+[af3_evolve_r3/gauges__rep3] assumptions
+[af3_evolve_r3/gauges__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 16.09, 'probes': 6.32, 'assumptions': 4.78, 'ext': 6.95, 'total': 34.15}
+--- 166/462 done (3042s)
+[af3_evolve_r3/ledger__rep1] build
+[af3_evolve_r3/ledger__rep0] probes (9 names)
+[af3_evolve_r3/ledger__rep0] assumptions
+[af3_evolve_r3/gauges__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 25.03, 'probes': 6.22, 'assumptions': 4.46, 'ext': 6.98, 'total': 42.71}
+--- 167/462 done (3052s)
+[af3_evolve_r3/ledger__rep2] build
+[af3_evolve_r1/triadic__rep1] strict=False (non_allowlisted: p_tstep_shrink_odd: axiom TaskLib.Shrink.Sh) orig=False cat=agree {'copy': 0.01, 'build': 38.96, 'probes': 5.7, 'assumptions': 2.72, 'ext': 176.2, 'total': 223.59}
+--- 168/462 done (3060s)
+[af3_evolve_r3/ledger__rep3] build
+[af3_evolve_r3/ledger__rep1] probes (9 names)
+[af3_evolve_r3/ledger__rep1] assumptions
+[af3_evolve_r3/ledger__rep2] probes (9 names)
+[af3_evolve_r3/ledger__rep2] assumptions
+[af3_evolve_r3/ledger__rep3] probes (9 names)
+[af3_evolve_r3/ledger__rep3] assumptions
+[af3_evolve_r3/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.28, 'probes': 5.47, 'assumptions': 2.46, 'ext': 149.99, 'total': 180.2}
+--- 169/462 done (3203s)
+[af3_evolve_r3/prodauto__rep0] build
+[af3_evolve_r3/ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.23, 'probes': 5.53, 'assumptions': 2.43, 'ext': 150.34, 'total': 180.54}
+--- 170/462 done (3222s)
+[af3_evolve_r3/prodauto__rep1] build
+[af3_evolve_r3/prodauto__rep0] probes (11 names)
+[af3_evolve_r3/prodauto__rep0] assumptions
+[af3_evolve_r3/ledger__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.34, 'probes': 5.45, 'assumptions': 2.36, 'ext': 150.58, 'total': 180.73}
+--- 171/462 done (3232s)
+[af3_evolve_r3/prodauto__rep2] build
+[af3_evolve_r3/ledger__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.28, 'probes': 5.31, 'assumptions': 2.31, 'ext': 150.79, 'total': 180.69}
+--- 172/462 done (3240s)
+[af3_evolve_r3/prodauto__rep3] build
+[af3_evolve_r3/prodauto__rep1] probes (11 names)
+[af3_evolve_r3/prodauto__rep0] strict=False (non_allowlisted: p_empty: axiom TaskLib.Empty.Empty.nonempty) orig=False cat=agree {'copy': 0.0, 'build': 22.64, 'probes': 5.9, 'assumptions': 2.39, 'ext': 12.44, 'total': 43.41}
+--- 173/462 done (3246s)
+[af3_evolve_r3/triadic__rep0] build
+[af3_evolve_r3/prodauto__rep1] assumptions
+[af3_evolve_r3/prodauto__rep2] probes (11 names)
+[af3_evolve_r3/prodauto__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.24, 'probes': 5.76, 'assumptions': 2.48, 'ext': 12.43, 'total': 43.92}
+--- 174/462 done (3266s)
+[af3_evolve_r3/triadic__rep1] build
+[af3_evolve_r3/prodauto__rep2] assumptions
+[af3_evolve_r3/prodauto__rep3] probes (11 names)
+[af3_evolve_r3/prodauto__rep3] assumptions
+[af3_evolve_r3/prodauto__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.79, 'probes': 5.71, 'assumptions': 2.52, 'ext': 11.19, 'total': 48.22}
+--- 175/462 done (3280s)
+[af3_evolve_r3/triadic__rep2] build
+[af3_evolve_r3/triadic__rep1] probes (14 names)
+[af3_evolve_r3/triadic__rep0] probes (14 names)
+[af3_evolve_r3/triadic__rep1] assumptions
+[af3_evolve_r3/prodauto__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.88, 'probes': 5.91, 'assumptions': 2.52, 'ext': 12.73, 'total': 50.04}
+--- 176/462 done (3290s)
+[af3_evolve_r3/triadic__rep3] build
+[af3_evolve_r3/triadic__rep0] assumptions
+[af3_evolve_r3/triadic__rep2] probes (14 names)
+[af3_evolve_r3/triadic__rep2] assumptions
+[af3_evolve_r3/triadic__rep3] probes (14 names)
+[af3_evolve_r3/triadic__rep3] probes FAILED in 0.04s
+--- 177/462 done (3308s)
+[af3_sota/frugal__rep0] build
+[af3_sota/frugal__rep0] probes (18 names)
+[af3_sota/frugal__rep0] assumptions
+[af3_sota/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 27.1, 'probes': 5.46, 'assumptions': 2.3, 'ext': 19.4, 'total': 54.27}
+--- 178/462 done (3362s)
+[af3_sota/frugal__rep1] build
+[af3_sota/frugal__rep1] probes (18 names)
+[af3_sota/frugal__rep1] assumptions
+[af3_sota/frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 26.38, 'probes': 5.14, 'assumptions': 2.15, 'ext': 19.23, 'total': 52.91}
+--- 179/462 done (3415s)
+[af3_sota/frugal__rep2] build
+[af3_sota/frugal__rep2] probes (18 names)
+[af3_sota/frugal__rep2] assumptions
+[af3_sota/frugal__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 26.12, 'probes': 5.18, 'assumptions': 2.13, 'ext': 19.16, 'total': 52.6}
+--- 180/462 done (3468s)
+[af3_sota/frugal__rep3] build
+[af3_evolve_r3/triadic__rep1] strict=False (non_allowlisted: p_tstep_fixed: axiom TaskLib.Fixed.Fixed.ts) orig=False cat=agree {'copy': 0.0, 'build': 17.85, 'probes': 5.88, 'assumptions': 2.49, 'ext': 176.76, 'total': 202.99}
+--- 181/462 done (3469s)
+[af3_sota/gauges__rep0] build
+[af3_evolve_r3/triadic__rep0] strict=False (non_allowlisted: p_tstep_shrink_odd: axiom TaskLib.Shrink.ts) orig=False cat=agree {'copy': 0.01, 'build': 40.56, 'probes': 6.14, 'assumptions': 3.31, 'ext': 176.06, 'total': 226.09}
+--- 182/462 done (3472s)
+[af3_sota/gauges__rep1] build
+[af3_evolve_r3/triadic__rep2] strict=False (non_allowlisted: p_tstep_shrink_odd: axiom TaskLib.Shrink.Sh) orig=False cat=agree {'copy': 0.0, 'build': 19.02, 'probes': 5.84, 'assumptions': 2.67, 'ext': 175.81, 'total': 203.34}
+--- 183/462 done (3484s)
+[af3_sota/gauges__rep2] build
+[af3_sota/gauges__rep1] probes (9 names)
+[af3_sota/gauges__rep0] probes (9 names)
+[af3_sota/frugal__rep3] probes (18 names)
+[af3_sota/gauges__rep1] assumptions
+[af3_sota/gauges__rep0] assumptions
+[af3_sota/frugal__rep3] assumptions
+[af3_sota/gauges__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 18.37, 'probes': 6.03, 'assumptions': 2.95, 'ext': 6.88, 'total': 34.23}
+--- 184/462 done (3506s)
+[af3_sota/gauges__rep3] build
+[af3_sota/gauges__rep2] probes (9 names)
+[af3_sota/gauges__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 24.23, 'probes': 6.04, 'assumptions': 2.91, 'ext': 6.79, 'total': 39.98}
+--- 185/462 done (3509s)
+[af3_sota/ledger__rep0] build
+[af3_sota/gauges__rep2] assumptions
+[af3_sota/ledger__rep0] probes (9 names)
+[af3_sota/gauges__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 24.6, 'probes': 6.0, 'assumptions': 2.96, 'ext': 6.8, 'total': 40.37}
+--- 186/462 done (3524s)
+[af3_sota/ledger__rep1] build
+[af3_sota/frugal__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 28.22, 'probes': 5.7, 'assumptions': 2.38, 'ext': 20.51, 'total': 56.81}
+--- 187/462 done (3524s)
+[af3_sota/ledger__rep2] build
+[af3_sota/gauges__rep3] probes (9 names)
+[af3_sota/ledger__rep0] assumptions
+[af3_sota/gauges__rep3] assumptions
+[af3_sota/gauges__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 18.41, 'probes': 5.94, 'assumptions': 2.95, 'ext': 6.67, 'total': 33.97}
+--- 188/462 done (3540s)
+[af3_sota/ledger__rep3] build
+[af3_sota/ledger__rep2] probes (9 names)
+[af3_sota/ledger__rep1] probes (9 names)
+[af3_sota/ledger__rep2] assumptions
+[af3_sota/ledger__rep1] assumptions
+[af3_sota/ledger__rep3] probes (9 names)
+[af3_sota/ledger__rep3] assumptions
+[af3_sota/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 10.82, 'probes': 5.68, 'assumptions': 2.5, 'ext': 149.61, 'total': 168.63}
+--- 189/462 done (3678s)
+[af3_sota/prodauto__rep0] build
+[af3_sota/prodauto__rep0] probes (11 names)
+[af3_sota/prodauto__rep0] probes FAILED in 0.04s
+--- 190/462 done (3694s)
+[af3_sota/prodauto__rep1] build
+[af3_sota/prodauto__rep1] build FAILED in 0.03s
+--- 191/462 done (3694s)
+[af3_sota/prodauto__rep2] build
+[af3_sota/ledger__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 16.78, 'probes': 5.39, 'assumptions': 2.54, 'ext': 149.71, 'total': 174.43}
+--- 192/462 done (3699s)
+[af3_sota/prodauto__rep3] build
+[af3_sota/ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.27, 'probes': 5.6, 'assumptions': 2.41, 'ext': 149.31, 'total': 179.61}
+--- 193/462 done (3704s)
+[af3_sota/triadic__rep0] build
+[af3_sota/triadic__rep0] build FAILED in 0.04s
+--- 194/462 done (3704s)
+[af3_sota/triadic__rep1] build
+[af3_sota/triadic__rep1] build FAILED in 0.04s
+--- 195/462 done (3704s)
+[af3_sota/triadic__rep2] build
+[af3_sota/prodauto__rep2] probes (11 names)
+[af3_sota/prodauto__rep2] probes FAILED in 0.04s
+--- 196/462 done (3704s)
+[af3_sota/triadic__rep3] build
+[af3_sota/triadic__rep2] probes (14 names)
+[af3_sota/triadic__rep2] probes FAILED in 0.05s
+--- 197/462 done (3715s)
+[mst3_base/frugal__rep0] build
+[af3_sota/triadic__rep3] probes (14 names)
+[mst3_base/frugal__rep0] build FAILED in 0.42s
+--- 198/462 done (3716s)
+[mst3_base/frugal__rep1] build
+[af3_sota/triadic__rep3] probes FAILED in 0.04s
+--- 199/462 done (3716s)
+[mst3_base/frugal__rep2] build
+[mst3_base/frugal__rep2] build FAILED in 0.72s
+--- 200/462 done (3716s)
+[mst3_base/frugal__rep3] build
+[af3_sota/ledger__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 21.86, 'probes': 5.23, 'assumptions': 2.28, 'ext': 149.11, 'total': 178.48}
+--- 201/462 done (3719s)
+[mst3_base/gauges__rep0] build
+[mst3_base/gauges__rep0] build FAILED in 0.28s
+--- 202/462 done (3719s)
+[mst3_base/gauges__rep1] build
+[mst3_base/frugal__rep1] build FAILED in 4.5s
+--- 203/462 done (3720s)
+[mst3_base/gauges__rep2] build
+[mst3_base/frugal__rep3] build FAILED in 4.55s
+--- 204/462 done (3721s)
+[mst3_base/gauges__rep3] build
+[mst3_base/gauges__rep3] build FAILED in 0.29s
+--- 205/462 done (3721s)
+[mst3_base/ledger__rep0] build
+[af3_sota/prodauto__rep3] build FAILED in 23.96s
+--- 206/462 done (3723s)
+[mst3_base/ledger__rep1] build
+[mst3_base/gauges__rep2] build FAILED in 5.05s
+--- 207/462 done (3725s)
+[mst3_base/ledger__rep2] build
+[mst3_base/gauges__rep1] build FAILED in 6.16s
+--- 208/462 done (3725s)
+[mst3_base/ledger__rep3] build
+[mst3_base/ledger__rep0] build FAILED in 4.06s
+--- 209/462 done (3725s)
+[mst3_base/prodauto__rep0] build
+[mst3_base/ledger__rep1] build FAILED in 2.52s
+--- 210/462 done (3725s)
+[mst3_base/prodauto__rep1] build
+[mst3_base/ledger__rep3] build FAILED in 4.48s
+--- 211/462 done (3730s)
+[mst3_base/prodauto__rep2] build
+[mst3_base/ledger__rep2] build FAILED in 4.62s
+--- 212/462 done (3730s)
+[mst3_base/prodauto__rep3] build
+[mst3_base/prodauto__rep3] build FAILED in 1.11s
+--- 213/462 done (3731s)
+[mst3_base/triadic__rep0] build
+[mst3_base/prodauto__rep0] build FAILED in 5.84s
+--- 214/462 done (3731s)
+[mst3_base/triadic__rep1] build
+[mst3_base/prodauto__rep1] build FAILED in 8.9s
+--- 215/462 done (3734s)
+[mst3_base/triadic__rep2] build
+[mst3_base/prodauto__rep2] build FAILED in 5.71s
+--- 216/462 done (3735s)
+[mst3_base/triadic__rep3] build
+[mst3_base/triadic__rep0] build FAILED in 4.63s
+--- 217/462 done (3736s)
+[mst3_evolve/frugal__rep0] build
+[mst3_evolve/frugal__rep0] build FAILED in 0.27s
+--- 218/462 done (3736s)
+[mst3_evolve/frugal__rep1] build
+[mst3_evolve/frugal__rep1] build FAILED in 0.31s
+--- 219/462 done (3736s)
+[mst3_evolve/frugal__rep2] build
+[mst3_evolve/frugal__rep2] build FAILED in 0.28s
+--- 220/462 done (3737s)
+[mst3_evolve/frugal__rep3] build
+--- 221/462 done (3737s)
+[mst3_evolve/gauges__rep0] build
+[mst3_evolve/gauges__rep0] build FAILED in 0.28s
+--- 222/462 done (3737s)
+[mst3_evolve/gauges__rep1] build
+[mst3_base/triadic__rep1] build FAILED in 5.89s
+--- 223/462 done (3737s)
+[mst3_evolve/gauges__rep2] build
+[mst3_base/triadic__rep2] build FAILED in 4.49s
+--- 224/462 done (3739s)
+[mst3_evolve/gauges__rep3] build
+[mst3_base/triadic__rep3] build FAILED in 4.5s
+--- 225/462 done (3740s)
+[mst3_evolve/ledger__rep0] build
+[mst3_evolve/gauges__rep2] build FAILED in 3.21s
+--- 226/462 done (3740s)
+[mst3_evolve/ledger__rep1] build
+[mst3_evolve/gauges__rep1] build FAILED in 5.48s
+--- 227/462 done (3742s)
+[mst3_evolve/ledger__rep2] build
+[mst3_evolve/ledger__rep0] build FAILED in 3.88s
+--- 228/462 done (3744s)
+[mst3_evolve/ledger__rep3] build
+[mst3_evolve/gauges__rep3] build FAILED in 6.22s
+--- 229/462 done (3745s)
+[mst3_evolve/prodauto__rep0] build
+[mst3_evolve/prodauto__rep0] build FAILED in 4.66s
+--- 230/462 done (3750s)
+[mst3_evolve/prodauto__rep1] build
+[mst3_evolve/ledger__rep2] build FAILED in 8.83s
+--- 231/462 done (3751s)
+[mst3_evolve/prodauto__rep2] build
+[mst3_evolve/ledger__rep1] build FAILED in 11.92s
+--- 232/462 done (3752s)
+[mst3_evolve/prodauto__rep3] build
+[mst3_evolve/prodauto__rep3] build FAILED in 0.76s
+--- 233/462 done (3753s)
+[mst3_evolve/triadic__rep0] build
+[mst3_evolve/ledger__rep3] build FAILED in 10.37s
+--- 234/462 done (3754s)
+[mst3_evolve/triadic__rep1] build
+[mst3_evolve/prodauto__rep1] build FAILED in 4.71s
+--- 235/462 done (3754s)
+[mst3_evolve/triadic__rep2] build
+[mst3_evolve/prodauto__rep2] build FAILED in 4.62s
+--- 236/462 done (3756s)
+[mst3_evolve/triadic__rep3] build
+[mst3_evolve/triadic__rep0] build FAILED in 5.83s
+--- 237/462 done (3759s)
+[mst3_sota/frugal__rep0] build
+[mst3_evolve/triadic__rep1] build FAILED in 4.7s
+--- 238/462 done (3759s)
+[mst3_sota/frugal__rep1] build
+[mst3_evolve/triadic__rep2] build FAILED in 4.61s
+--- 239/462 done (3759s)
+[mst3_sota/frugal__rep2] build
+[mst3_sota/frugal__rep0] build FAILED in 0.43s
+--- 240/462 done (3759s)
+[mst3_sota/frugal__rep3] build
+[mst3_evolve/triadic__rep3] build FAILED in 4.55s
+--- 241/462 done (3760s)
+[mst3_sota/gauges__rep0] build
+[mst3_sota/gauges__rep0] build FAILED in 0.5s
+--- 242/462 done (3761s)
+[mst3_sota/gauges__rep1] build
+[mst3_sota/frugal__rep2] build FAILED in 1.85s
+--- 243/462 done (3761s)
+[mst3_sota/gauges__rep2] build
+[mst3_sota/frugal__rep1] build FAILED in 3.62s
+--- 244/462 done (3763s)
+[mst3_sota/gauges__rep3] build
+[mst3_sota/frugal__rep3] build FAILED in 5.75s
+--- 245/462 done (3765s)
+[mst3_sota/ledger__rep0] build
+[mst3_sota/gauges__rep2] build FAILED in 4.83s
+--- 246/462 done (3766s)
+[mst3_sota/ledger__rep1] build
+[mst3_sota/gauges__rep1] build FAILED in 6.15s
+--- 247/462 done (3767s)
+[mst3_sota/ledger__rep2] build
+[mst3_sota/gauges__rep3] build FAILED in 4.96s
+--- 248/462 done (3768s)
+[mst3_sota/ledger__rep3] build
+[mst3_sota/ledger__rep1] build FAILED in 4.8s
+--- 249/462 done (3771s)
+[mst3_sota/prodauto__rep0] build
+[mst3_sota/ledger__rep3] build FAILED in 4.7s
+--- 250/462 done (3772s)
+[mst3_sota/prodauto__rep1] build
+[mst3_sota/prodauto__rep0] build FAILED in 4.72s
+--- 251/462 done (3775s)
+[mst3_sota/prodauto__rep2] build
+[mst3_sota/ledger__rep0] build FAILED in 11.47s
+--- 252/462 done (3777s)
+[mst3_sota/prodauto__rep3] build
+[mst3_sota/prodauto__rep3] build FAILED in 0.49s
+--- 253/462 done (3777s)
+[mst3_sota/triadic__rep0] build
+[mst3_sota/prodauto__rep1] build FAILED in 5.77s
+--- 254/462 done (3778s)
+[mst3_sota/triadic__rep1] build
+[mst3_sota/triadic__rep1] build FAILED in 0.44s
+--- 255/462 done (3778s)
+[mst3_sota/triadic__rep2] build
+[mst3_sota/ledger__rep2] build FAILED in 11.61s
+--- 256/462 done (3779s)
+[mst3_sota/triadic__rep3] build
+[mst3_sota/prodauto__rep2] build FAILED in 5.53s
+--- 257/462 done (3781s)
+[mst3_sota_v2/frugal__rep0] build
+[mst3_sota_v2/frugal__rep0] build FAILED in 0.03s
+--- 258/462 done (3781s)
+[mst3_sota_v2/frugal__rep1] build
+[mst3_sota/triadic__rep0] build FAILED in 4.7s
+--- 259/462 done (3782s)
+[mst3_sota_v2/frugal__rep2] build
+[mst3_sota_v2/frugal__rep2] build FAILED in 0.34s
+--- 260/462 done (3782s)
+[mst3_sota_v2/frugal__rep3] build
+[mst3_sota_v2/frugal__rep3] build FAILED in 0.42s
+--- 261/462 done (3783s)
+[mst3_sota_v2/gauges__rep0] build
+[mst3_sota/triadic__rep2] build FAILED in 4.67s
+--- 262/462 done (3783s)
+[mst3_sota_v2/gauges__rep1] build
+[mst3_sota/triadic__rep3] build FAILED in 4.63s
+--- 263/462 done (3783s)
+[mst3_sota_v2/gauges__rep2] build
+[mst3_sota_v2/gauges__rep0] build FAILED in 4.09s
+--- 264/462 done (3787s)
+[mst3_sota_v2/gauges__rep3] build
+[mst3_sota_v2/frugal__rep1] build FAILED in 5.75s
+--- 265/462 done (3787s)
+[mst3_sota_v2/ledger__rep0] build
+[mst3_sota_v2/gauges__rep1] build FAILED in 6.19s
+--- 266/462 done (3789s)
+[mst3_sota_v2/ledger__rep1] build
+[mst3_sota_v2/gauges__rep2] build FAILED in 6.18s
+--- 267/462 done (3789s)
+[mst3_sota_v2/ledger__rep2] build
+--- 268/462 done (3789s)
+[mst3_sota_v2/ledger__rep3] build
+[mst3_sota_v2/ledger__rep3] build FAILED in 0.03s
+--- 269/462 done (3790s)
+[mst3_sota_v2/prodauto__rep0] build
+[mst3_sota_v2/prodauto__rep0] build FAILED in 0.42s
+--- 270/462 done (3790s)
+[mst3_sota_v2/prodauto__rep1] build
+[mst3_sota_v2/prodauto__rep1] build FAILED in 0.28s
+--- 271/462 done (3790s)
+[mst3_sota_v2/prodauto__rep2] build
+[mst3_sota_v2/gauges__rep3] build FAILED in 3.83s
+--- 272/462 done (3790s)
+[mst3_sota_v2/prodauto__rep3] build
+[mst3_sota_v2/prodauto__rep3] build FAILED in 0.04s
+--- 273/462 done (3790s)
+[mst3_sota_v2/triadic__rep0] build
+[mst3_sota_v2/triadic__rep0] build FAILED in 0.04s
+--- 274/462 done (3791s)
+[mst3_sota_v2/triadic__rep1] build
+[mst3_sota_v2/prodauto__rep2] build FAILED in 0.29s
+--- 275/462 done (3791s)
+[mst3_sota_v2/triadic__rep2] build
+[mst3_sota_v2/ledger__rep0] build FAILED in 6.71s
+--- 276/462 done (3793s)
+[mst3_sota_v2/triadic__rep3] build
+[mst3_sota_v2/triadic__rep2] build FAILED in 4.73s
+--- 277/462 done (3795s)
+[mst_base/frugal__rep0] build
+[mst3_sota_v2/triadic__rep3] build FAILED in 4.57s
+--- 278/462 done (3798s)
+[mst_base/frugal__rep1] build
+[mst3_sota_v2/triadic__rep1] build FAILED in 9.7s
+--- 279/462 done (3800s)
+[mst_base/frugal__rep2] build
+[mst3_sota_v2/ledger__rep1] build FAILED in 11.61s
+--- 280/462 done (3801s)
+[mst_base/frugal__rep3] build
+[mst_base/frugal__rep0] build FAILED in 5.94s
+--- 281/462 done (3801s)
+[mst_base/gauges__rep0] build
+[mst_base/frugal__rep1] build FAILED in 5.89s
+--- 282/462 done (3804s)
+[mst_base/gauges__rep1] build
+[mst_base/frugal__rep2] build FAILED in 5.77s
+--- 283/462 done (3806s)
+[mst_base/gauges__rep2] build
+[mst_base/frugal__rep3] build FAILED in 5.76s
+--- 284/462 done (3807s)
+[mst_base/gauges__rep3] build
+[mst_base/gauges__rep0] build FAILED in 6.13s
+--- 285/462 done (3807s)
+[mst_base/ledger__rep0] build
+[mst_base/gauges__rep1] build FAILED in 6.17s
+--- 286/462 done (3810s)
+[mst_base/ledger__rep1] build
+[mst_base/gauges__rep2] build FAILED in 6.11s
+--- 287/462 done (3812s)
+[mst_base/ledger__rep2] build
+[mst_base/gauges__rep3] build FAILED in 6.13s
+--- 288/462 done (3813s)
+[mst_base/ledger__rep3] build
+[mst_base/ledger__rep1] build FAILED in 5.81s
+--- 289/462 done (3816s)
+[mst_base/prodauto__rep0] build
+[mst_base/ledger__rep0] build FAILED in 11.4s
+--- 290/462 done (3819s)
+[mst_base/prodauto__rep1] build
+[mst_base/prodauto__rep1] build FAILED in 4.75s
+--- 291/462 done (3824s)
+[mst_base/prodauto__rep2] build
+[mst_base/ledger__rep2] build FAILED in 11.56s
+--- 292/462 done (3824s)
+[mst_base/prodauto__rep3] build
+[mst_base/ledger__rep3] build FAILED in 11.61s
+--- 293/462 done (3824s)
+[mst_base/triadic__rep0] build
+[mst_base/prodauto__rep0] build FAILED in 9.18s
+--- 294/462 done (3825s)
+[mst_base/triadic__rep1] build
+[mst_base/prodauto__rep2] build FAILED in 4.6s
+--- 295/462 done (3828s)
+[mst_base/triadic__rep2] build
+[mst_base/prodauto__rep3] build FAILED in 5.76s
+--- 296/462 done (3829s)
+[mst_base/triadic__rep3] build
+[mst_base/triadic__rep0] build FAILED in 5.73s
+--- 297/462 done (3830s)
+[mst_evolve/frugal__rep0] build
+[mst_base/triadic__rep1] build FAILED in 5.76s
+--- 298/462 done (3831s)
+[mst_evolve/frugal__rep1] build
+[mst_base/triadic__rep2] build FAILED in 5.88s
+--- 299/462 done (3834s)
+[mst_evolve/frugal__rep2] build
+[mst_base/triadic__rep3] build FAILED in 5.93s
+--- 300/462 done (3835s)
+[mst_evolve/frugal__rep3] build
+[mst_evolve/frugal__rep0] build FAILED in 5.99s
+--- 301/462 done (3836s)
+[mst_evolve/gauges__rep0] build
+[mst_evolve/frugal__rep1] build FAILED in 5.98s
+--- 302/462 done (3837s)
+[mst_evolve/gauges__rep1] build
+[mst_evolve/frugal__rep2] build FAILED in 5.94s
+--- 303/462 done (3840s)
+[mst_evolve/gauges__rep2] build
+[mst_evolve/gauges__rep0] build FAILED in 5.02s
+--- 304/462 done (3841s)
+[mst_evolve/gauges__rep3] build
+[mst_evolve/frugal__rep3] build FAILED in 5.91s
+--- 305/462 done (3841s)
+[mst_evolve/ledger__rep0] build
+[mst_evolve/gauges__rep1] build FAILED in 6.57s
+--- 306/462 done (3843s)
+[mst_evolve/ledger__rep1] build
+[mst_evolve/gauges__rep2] build FAILED in 6.3s
+--- 307/462 done (3846s)
+[mst_evolve/ledger__rep2] build
+[mst_evolve/ledger__rep0] build FAILED in 11.73s
+--- 308/462 done (3853s)
+[mst_evolve/ledger__rep3] build
+[mst_evolve/ledger__rep1] build FAILED in 11.72s
+--- 309/462 done (3855s)
+[mst_evolve/prodauto__rep0] build
+[mst_evolve/ledger__rep2] build FAILED in 11.65s
+--- 310/462 done (3858s)
+[mst_evolve/prodauto__rep1] build
+[mst_evolve/gauges__rep3] build FAILED in 19.94s
+--- 311/462 done (3861s)
+[mst_evolve/prodauto__rep2] build
+[mst_evolve/prodauto__rep1] build FAILED in 6.12s
+--- 312/462 done (3864s)
+[mst_evolve/prodauto__rep3] build
+[mst_evolve/ledger__rep3] build FAILED in 11.85s
+--- 313/462 done (3865s)
+[mst_evolve/triadic__rep0] build
+[mst_evolve/prodauto__rep3] build FAILED in 5.94s
+--- 314/462 done (3870s)
+[mst_evolve/triadic__rep1] build
+[mst_evolve/triadic__rep0] build FAILED in 5.88s
+--- 315/462 done (3871s)
+[mst_evolve/triadic__rep2] build
+[mst_evolve/prodauto__rep0] build FAILED in 17.63s
+--- 316/462 done (3873s)
+[mst_evolve/triadic__rep3] build
+[mst_evolve/prodauto__rep2] build FAILED in 11.89s
+--- 317/462 done (3873s)
+[op_base/frugal__rep0] build
+--- 318/462 done (3873s)
+[op_base/frugal__rep1] build
+--- 319/462 done (3873s)
+[op_base/gauges__rep0] build
+--- 320/462 done (3873s)
+[op_base/gauges__rep1] build
+[mst_evolve/triadic__rep1] build FAILED in 4.71s
+--- 321/462 done (3875s)
+[op_base/ledger__rep0] build
+[mst_evolve/triadic__rep2] build FAILED in 5.91s
+--- 322/462 done (3877s)
+[op_base/ledger__rep1] build
+[mst_evolve/triadic__rep3] build FAILED in 5.82s
+--- 323/462 done (3879s)
+[op_base/prodauto__rep0] build
+--- 324/462 done (3879s)
+[op_base/prodauto__rep1] build
+--- 325/462 done (3879s)
+[op_base/triadic__rep0] build
+--- 326/462 done (3879s)
+[op_base/triadic__rep1] build
+--- 327/462 done (3879s)
+[op_evolve/frugal__rep0] build
+[op_base/gauges__rep1] probes (9 names)
+[op_base/ledger__rep1] probes (9 names)
+[op_base/ledger__rep0] probes (9 names)
+[op_base/gauges__rep1] assumptions
+[op_base/ledger__rep1] assumptions
+[op_evolve/frugal__rep0] probes (18 names)
+[op_base/ledger__rep0] assumptions
+[op_evolve/frugal__rep0] assumptions
+[op_base/gauges__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 19.89, 'probes': 6.33, 'assumptions': 3.57, 'ext': 7.02, 'total': 36.83}
+--- 328/462 done (3910s)
+[op_evolve/frugal__rep1] build
+[op_evolve/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.35, 'probes': 5.51, 'assumptions': 2.3, 'ext': 19.84, 'total': 51.0}
+--- 329/462 done (3930s)
+[op_evolve/gauges__rep0] build
+[op_evolve/frugal__rep1] probes (18 names)
+[op_evolve/frugal__rep1] assumptions
+[op_evolve/gauges__rep0] probes (9 names)
+[op_evolve/gauges__rep0] assumptions
+[op_evolve/frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 21.96, 'probes': 5.3, 'assumptions': 2.23, 'ext': 19.84, 'total': 49.34}
+--- 330/462 done (3959s)
+[op_evolve/gauges__rep1] build
+[op_evolve/gauges__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.49, 'probes': 5.89, 'assumptions': 2.8, 'ext': 6.41, 'total': 32.6}
+--- 331/462 done (3963s)
+[op_evolve/ledger__rep0] build
+[op_evolve/gauges__rep1] probes (9 names)
+[op_evolve/ledger__rep0] probes (9 names)
+[op_evolve/gauges__rep1] assumptions
+[op_evolve/ledger__rep0] assumptions
+[op_evolve/gauges__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.53, 'probes': 5.67, 'assumptions': 2.7, 'ext': 6.38, 'total': 32.29}
+--- 332/462 done (3992s)
+[op_evolve/ledger__rep1] build
+[op_evolve/ledger__rep1] probes (9 names)
+[op_evolve/ledger__rep1] assumptions
+[op_base/ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.78, 'probes': 5.67, 'assumptions': 2.51, 'ext': 149.85, 'total': 175.82}
+--- 333/462 done (4053s)
+[op_evolve/prodauto__rep0] build
+--- 334/462 done (4053s)
+[op_evolve/prodauto__rep1] build
+[op_base/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.54, 'probes': 5.52, 'assumptions': 2.49, 'ext': 149.77, 'total': 181.32}
+--- 335/462 done (4056s)
+[op_evolve/triadic__rep0] build
+[op_evolve/prodauto__rep1] build FAILED in 16.25s
+--- 336/462 done (4069s)
+[op_evolve/triadic__rep1] build
+[op_evolve/triadic__rep0] probes (14 names)
+[op_evolve/triadic__rep0] probes FAILED in 0.04s
+--- 337/462 done (4073s)
+[op_sota/frugal__rep0] build
+[op_evolve/triadic__rep1] probes (14 names)
+[op_evolve/triadic__rep1] assumptions
+[op_sota/frugal__rep0] probes (18 names)
+[op_sota/frugal__rep0] assumptions
+[op_sota/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 26.84, 'probes': 5.17, 'assumptions': 2.15, 'ext': 19.31, 'total': 53.48}
+--- 338/462 done (4126s)
+[op_sota/frugal__rep1] build
+[op_evolve/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 16.43, 'probes': 5.29, 'assumptions': 2.34, 'ext': 149.57, 'total': 173.64}
+--- 339/462 done (4136s)
+[op_sota/gauges__rep0] build
+[op_sota/frugal__rep1] probes (18 names)
+[op_sota/gauges__rep0] probes (9 names)
+[op_sota/frugal__rep1] assumptions
+[op_sota/gauges__rep0] assumptions
+[op_sota/gauges__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.55, 'probes': 5.65, 'assumptions': 2.7, 'ext': 6.39, 'total': 32.31}
+--- 340/462 done (4169s)
+[op_sota/gauges__rep1] build
+[op_evolve/ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 16.15, 'probes': 5.23, 'assumptions': 2.29, 'ext': 156.18, 'total': 179.85}
+--- 341/462 done (4171s)
+[op_sota/ledger__rep0] build
+[op_sota/frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 26.87, 'probes': 5.3, 'assumptions': 2.17, 'ext': 19.7, 'total': 54.04}
+--- 342/462 done (4180s)
+[op_sota/ledger__rep1] build
+[op_sota/gauges__rep1] probes (9 names)
+[op_sota/ledger__rep0] probes (9 names)
+[op_sota/gauges__rep1] assumptions
+[op_sota/ledger__rep0] assumptions
+[op_sota/ledger__rep1] probes (9 names)
+[op_sota/gauges__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.9, 'probes': 5.91, 'assumptions': 2.77, 'ext': 6.53, 'total': 33.12}
+--- 343/462 done (4202s)
+[op_sota/prodauto__rep0] build
+[op_sota/ledger__rep1] assumptions
+[op_sota/prodauto__rep0] build FAILED in 10.09s
+--- 344/462 done (4212s)
+[op_sota/prodauto__rep1] build
+--- 345/462 done (4212s)
+[op_sota/triadic__rep0] build
+[op_sota/triadic__rep0] probes (14 names)
+[op_sota/triadic__rep0] probes FAILED in 0.04s
+--- 346/462 done (4223s)
+[op_sota/triadic__rep1] build
+--- 347/462 done (4223s)
+[orp3_base/frugal__rep0] build
+[orp3_base/frugal__rep0] probes (18 names)
+[orp3_base/frugal__rep0] assumptions
+[orp3_base/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 13.17, 'probes': 5.25, 'assumptions': 2.17, 'ext': 19.6, 'total': 40.2}
+--- 348/462 done (4263s)
+[orp3_base/frugal__rep1] build
+[op_evolve/triadic__rep1] strict=False (non_allowlisted: p_mem_chorus: axiom TaskLib.Props.mem_choru) orig=False cat=agree {'copy': 0.0, 'build': 16.35, 'probes': 5.32, 'assumptions': 2.21, 'ext': 176.3, 'total': 200.18}
+--- 349/462 done (4269s)
+[orp3_base/frugal__rep2] build
+[orp3_base/frugal__rep1] probes (18 names)
+[orp3_base/frugal__rep1] assumptions
+[orp3_base/frugal__rep2] probes (18 names)
+[orp3_base/frugal__rep2] assumptions
+[orp3_base/frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 13.38, 'probes': 5.34, 'assumptions': 2.21, 'ext': 19.71, 'total': 40.63}
+--- 350/462 done (4304s)
+[orp3_base/frugal__rep3] build
+[orp3_base/frugal__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 13.36, 'probes': 5.31, 'assumptions': 2.2, 'ext': 19.88, 'total': 40.75}
+--- 351/462 done (4310s)
+[orp3_base/gauges__rep0] build
+[orp3_base/frugal__rep3] probes (18 names)
+[orp3_base/gauges__rep0] probes (9 names)
+[orp3_base/frugal__rep3] assumptions
+[orp3_base/gauges__rep0] probes FAILED in 5.7s
+--- 352/462 done (4327s)
+[orp3_base/gauges__rep1] build
+[orp3_base/gauges__rep1] build FAILED in 11.28s
+--- 353/462 done (4338s)
+[orp3_base/gauges__rep2] build
+[orp3_base/frugal__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 13.4, 'probes': 5.44, 'assumptions': 2.25, 'ext': 19.66, 'total': 40.77}
+--- 354/462 done (4345s)
+[orp3_base/gauges__rep3] build
+[op_sota/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 16.81, 'probes': 5.48, 'assumptions': 2.39, 'ext': 149.27, 'total': 173.96}
+--- 355/462 done (4345s)
+[orp3_base/ledger__rep0] build
+[orp3_base/gauges__rep2] build FAILED in 11.38s
+--- 356/462 done (4349s)
+[orp3_base/ledger__rep1] build
+[op_sota/ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 16.85, 'probes': 5.41, 'assumptions': 2.44, 'ext': 149.65, 'total': 174.35}
+--- 357/462 done (4355s)
+[orp3_base/ledger__rep2] build
+[orp3_base/gauges__rep3] build FAILED in 11.63s
+--- 358/462 done (4356s)
+[orp3_base/ledger__rep3] build
+[orp3_base/ledger__rep1] probes (9 names)
+[orp3_base/ledger__rep0] probes (9 names)
+[orp3_base/ledger__rep2] probes (9 names)
+[orp3_base/ledger__rep1] assumptions
+[orp3_base/ledger__rep3] probes (9 names)
+[orp3_base/ledger__rep0] assumptions
+[orp3_base/ledger__rep2] assumptions
+[orp3_base/ledger__rep3] assumptions
+[orp3_base/ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 10.65, 'probes': 5.65, 'assumptions': 2.46, 'ext': 150.22, 'total': 168.98}
+--- 359/462 done (4518s)
+[orp3_base/prodauto__rep0] build
+[orp3_base/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.02, 'probes': 5.52, 'assumptions': 2.48, 'ext': 149.56, 'total': 174.59}
+--- 360/462 done (4520s)
+[orp3_base/prodauto__rep1] build
+[orp3_base/ledger__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 10.77, 'probes': 5.48, 'assumptions': 2.46, 'ext': 150.02, 'total': 168.74}
+--- 361/462 done (4523s)
+[orp3_base/prodauto__rep2] build
+[orp3_base/ledger__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 10.74, 'probes': 5.5, 'assumptions': 2.41, 'ext': 150.26, 'total': 168.91}
+--- 362/462 done (4525s)
+[orp3_base/prodauto__rep3] build
+[orp3_base/prodauto__rep0] build FAILED in 10.4s
+--- 363/462 done (4529s)
+[orp3_base/triadic__rep0] build
+[orp3_base/prodauto__rep1] build FAILED in 10.58s
+--- 364/462 done (4531s)
+[orp3_base/triadic__rep1] build
+[orp3_base/prodauto__rep2] build FAILED in 10.82s
+--- 365/462 done (4534s)
+[orp3_base/triadic__rep2] build
+[orp3_base/prodauto__rep3] probes (11 names)
+[orp3_base/triadic__rep0] probes (14 names)
+[orp3_base/triadic__rep1] probes (14 names)
+[orp3_base/prodauto__rep3] probes FAILED in 5.65s
+--- 366/462 done (4542s)
+[orp3_base/triadic__rep3] build
+[orp3_base/triadic__rep2] probes (14 names)
+[orp3_base/triadic__rep0] assumptions
+[orp3_base/triadic__rep1] assumptions
+[orp3_base/triadic__rep2] assumptions
+[orp3_base/triadic__rep3] probes (14 names)
+[orp3_base/triadic__rep3] assumptions
+[orp3_base/triadic__rep0] strict=True (ok) orig=True cat=ext_mismatch {'copy': 0.0, 'build': 10.81, 'probes': 5.7, 'assumptions': 2.33, 'ext': 32.43, 'total': 51.28}
+--- 367/462 done (4580s)
+[orp3_evolve/frugal__rep0] build
+[orp3_base/triadic__rep3] strict=True (ok) orig=True cat=ext_mismatch {'copy': 0.0, 'build': 15.05, 'probes': 5.43, 'assumptions': 2.28, 'ext': 24.32, 'total': 47.09}
+--- 368/462 done (4589s)
+[orp3_evolve/frugal__rep1] build
+[orp3_evolve/frugal__rep0] probes (18 names)
+[orp3_evolve/frugal__rep0] assumptions
+[orp3_evolve/frugal__rep1] probes (18 names)
+[orp3_evolve/frugal__rep1] assumptions
+[orp3_evolve/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 21.97, 'probes': 5.25, 'assumptions': 2.16, 'ext': 19.66, 'total': 49.06}
+--- 369/462 done (4629s)
+[orp3_evolve/frugal__rep2] build
+[orp3_evolve/frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 21.77, 'probes': 5.32, 'assumptions': 2.22, 'ext': 19.57, 'total': 48.88}
+--- 370/462 done (4638s)
+[orp3_evolve/frugal__rep3] build
+[orp3_evolve/frugal__rep2] probes (18 names)
+[orp3_evolve/frugal__rep2] assumptions
+[orp3_evolve/frugal__rep3] probes (18 names)
+[orp3_evolve/frugal__rep3] assumptions
+[orp3_evolve/frugal__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 21.29, 'probes': 5.24, 'assumptions': 2.23, 'ext': 19.66, 'total': 48.43}
+--- 371/462 done (4678s)
+[orp3_evolve/gauges__rep0] build
+[orp3_evolve/frugal__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 21.28, 'probes': 5.38, 'assumptions': 2.26, 'ext': 19.69, 'total': 48.63}
+--- 372/462 done (4686s)
+[orp3_evolve/gauges__rep1] build
+[orp3_evolve/gauges__rep0] probes (9 names)
+[orp3_evolve/gauges__rep0] assumptions
+[orp3_evolve/gauges__rep1] probes (9 names)
+[orp3_evolve/gauges__rep1] probes FAILED in 5.69s
+--- 373/462 done (4710s)
+[orp3_evolve/gauges__rep2] build
+[orp3_evolve/gauges__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.5, 'probes': 5.77, 'assumptions': 2.8, 'ext': 6.49, 'total': 32.58}
+--- 374/462 done (4710s)
+[orp3_evolve/gauges__rep3] build
+[orp3_base/triadic__rep1] strict=False (non_allowlisted: p_tstep_fixed: guarded TaskLib.Fixed.fixed_) orig=False cat=agree {'copy': 0.0, 'build': 10.81, 'probes': 5.64, 'assumptions': 2.32, 'ext': 176.86, 'total': 195.64}
+--- 375/462 done (4726s)
+[orp3_evolve/ledger__rep0] build
+[orp3_evolve/gauges__rep2] probes (9 names)
+[orp3_evolve/gauges__rep3] probes (9 names)
+[orp3_base/triadic__rep2] strict=False (non_allowlisted: p_chorus_sorted: guarded TaskLib.Props.Prop) orig=False cat=agree {'copy': 0.0, 'build': 10.88, 'probes': 5.52, 'assumptions': 2.36, 'ext': 176.28, 'total': 195.05}
+--- 376/462 done (4729s)
+[orp3_evolve/ledger__rep1] build
+[orp3_evolve/gauges__rep2] probes FAILED in 6.29s
+--- 377/462 done (4734s)
+[orp3_evolve/ledger__rep2] build
+[orp3_evolve/gauges__rep3] assumptions
+[orp3_evolve/ledger__rep0] probes (9 names)
+[orp3_evolve/ledger__rep1] probes (9 names)
+[orp3_evolve/gauges__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 18.41, 'probes': 6.29, 'assumptions': 4.93, 'ext': 7.17, 'total': 36.81}
+--- 378/462 done (4747s)
+[orp3_evolve/ledger__rep3] build
+[orp3_evolve/ledger__rep0] assumptions
+[orp3_evolve/ledger__rep2] probes (9 names)
+[orp3_evolve/ledger__rep1] assumptions
+[orp3_evolve/ledger__rep2] assumptions
+[orp3_evolve/ledger__rep3] probes (9 names)
+[orp3_evolve/ledger__rep3] assumptions
+[orp3_evolve/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.08, 'probes': 5.62, 'assumptions': 2.47, 'ext': 149.88, 'total': 175.06}
+--- 379/462 done (4901s)
+[orp3_evolve/prodauto__rep0] build
+[orp3_evolve/ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.23, 'probes': 5.51, 'assumptions': 2.57, 'ext': 149.16, 'total': 174.47}
+--- 380/462 done (4904s)
+[orp3_evolve/prodauto__rep1] build
+[orp3_evolve/ledger__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.2, 'probes': 5.68, 'assumptions': 2.44, 'ext': 149.48, 'total': 174.81}
+--- 381/462 done (4909s)
+[orp3_evolve/prodauto__rep2] build
+[orp3_evolve/prodauto__rep0] probes (11 names)
+[orp3_evolve/ledger__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 16.84, 'probes': 5.38, 'assumptions': 2.36, 'ext': 149.58, 'total': 174.16}
+--- 382/462 done (4921s)
+[orp3_evolve/prodauto__rep3] build
+[orp3_evolve/prodauto__rep0] assumptions
+[orp3_evolve/prodauto__rep1] build FAILED in 22.82s
+--- 383/462 done (4926s)
+[orp3_evolve/triadic__rep0] build
+[orp3_evolve/prodauto__rep2] build FAILED in 17.3s
+--- 384/462 done (4927s)
+[orp3_evolve/triadic__rep1] build
+[orp3_evolve/prodauto__rep0] strict=True (ok) orig=True cat=ext_mismatch {'copy': 0.0, 'build': 17.01, 'probes': 5.61, 'assumptions': 2.5, 'ext': 10.77, 'total': 35.89}
+--- 385/462 done (4937s)
+[orp3_evolve/triadic__rep2] build
+[orp3_evolve/triadic__rep1] probes (14 names)
+[orp3_evolve/prodauto__rep3] build FAILED in 17.28s
+--- 386/462 done (4938s)
+[orp3_evolve/triadic__rep3] build
+[orp3_evolve/triadic__rep1] assumptions
+[orp3_evolve/triadic__rep0] probes (14 names)
+[orp3_evolve/triadic__rep2] probes (14 names)
+[orp3_evolve/triadic__rep0] assumptions
+[orp3_evolve/triadic__rep3] probes (14 names)
+[orp3_evolve/triadic__rep2] assumptions
+[orp3_evolve/triadic__rep3] assumptions
+[orp3_evolve/triadic__rep3] strict=True (ok) orig=True cat=ext_mismatch {'copy': 0.0, 'build': 16.98, 'probes': 5.38, 'assumptions': 2.31, 'ext': 30.63, 'total': 55.3}
+--- 387/462 done (4994s)
+[orp3_sota/frugal__rep0] build
+[orp3_sota/frugal__rep0] probes (18 names)
+[orp3_sota/frugal__rep0] assumptions
+[orp3_sota/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.01, 'build': 13.24, 'probes': 5.52, 'assumptions': 2.31, 'ext': 19.78, 'total': 40.88}
+--- 388/462 done (5035s)
+[orp3_sota/frugal__rep1] build
+[orp3_sota/frugal__rep1] probes (18 names)
+[orp3_sota/frugal__rep1] assumptions
+[orp3_sota/frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 13.42, 'probes': 5.32, 'assumptions': 2.22, 'ext': 19.84, 'total': 40.8}
+--- 389/462 done (5075s)
+[orp3_sota/frugal__rep2] build
+[orp3_sota/frugal__rep2] probes (18 names)
+[orp3_sota/frugal__rep2] assumptions
+[orp3_sota/frugal__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 13.48, 'probes': 5.38, 'assumptions': 2.2, 'ext': 19.79, 'total': 40.86}
+--- 390/462 done (5116s)
+[orp3_sota/frugal__rep3] build
+[orp3_evolve/triadic__rep1] strict=False (non_allowlisted: p_tstep_fixed: guarded TaskLib.Fixed.fixed_) orig=False cat=agree {'copy': 0.0, 'build': 10.78, 'probes': 5.51, 'assumptions': 2.3, 'ext': 177.0, 'total': 195.6}
+--- 391/462 done (5122s)
+[orp3_sota/gauges__rep0] build
+[orp3_sota/frugal__rep3] build FAILED in 10.2s
+--- 392/462 done (5126s)
+[orp3_sota/gauges__rep1] build
+[orp3_evolve/triadic__rep0] strict=False (non_allowlisted: p_tstep_fixed: guarded TaskLib.Fixed.chorus) orig=False cat=agree {'copy': 0.0, 'build': 22.89, 'probes': 5.89, 'assumptions': 2.4, 'ext': 177.46, 'total': 208.65}
+--- 393/462 done (5135s)
+[orp3_sota/gauges__rep2] build
+[orp3_evolve/triadic__rep2] strict=False (non_allowlisted: p_tstep_fixed: guarded TaskLib.Fixed.fixed_) orig=False cat=agree {'copy': 0.0, 'build': 16.83, 'probes': 5.37, 'assumptions': 2.27, 'ext': 177.0, 'total': 201.48}
+--- 394/462 done (5139s)
+[orp3_sota/gauges__rep3] build
+[orp3_sota/gauges__rep0] probes (9 names)
+[orp3_sota/gauges__rep1] build FAILED in 18.11s
+--- 395/462 done (5145s)
+[orp3_sota/ledger__rep0] build
+[orp3_sota/gauges__rep0] assumptions
+[orp3_sota/gauges__rep2] build FAILED in 12.28s
+--- 396/462 done (5147s)
+[orp3_sota/ledger__rep1] build
+[orp3_sota/gauges__rep3] probes (9 names)
+[orp3_sota/gauges__rep3] assumptions
+[orp3_sota/gauges__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 18.17, 'probes': 6.47, 'assumptions': 3.68, 'ext': 7.24, 'total': 35.57}
+--- 397/462 done (5158s)
+[orp3_sota/ledger__rep2] build
+[orp3_sota/ledger__rep1] probes (9 names)
+[orp3_sota/ledger__rep0] build FAILED in 17.45s
+--- 398/462 done (5162s)
+[orp3_sota/ledger__rep3] build
+[orp3_sota/ledger__rep1] assumptions
+[orp3_sota/gauges__rep3] strict=True (ok) orig=True cat=agree {'copy': 0.01, 'build': 12.18, 'probes': 6.21, 'assumptions': 2.89, 'ext': 6.88, 'total': 28.17}
+--- 399/462 done (5167s)
+[orp3_sota/prodauto__rep0] build
+[orp3_sota/ledger__rep3] build FAILED in 11.93s
+--- 400/462 done (5174s)
+[orp3_sota/prodauto__rep1] build
+[orp3_sota/ledger__rep2] probes (9 names)
+[orp3_sota/prodauto__rep0] build FAILED in 10.99s
+--- 401/462 done (5178s)
+[orp3_sota/prodauto__rep2] build
+[orp3_sota/ledger__rep2] assumptions
+[orp3_sota/prodauto__rep1] build FAILED in 10.63s
+--- 402/462 done (5185s)
+[orp3_sota/prodauto__rep3] build
+[orp3_sota/prodauto__rep2] build FAILED in 17.2s
+--- 403/462 done (5195s)
+[orp3_sota/triadic__rep0] build
+[orp3_sota/prodauto__rep3] build FAILED in 11.56s
+--- 404/462 done (5196s)
+[orp3_sota/triadic__rep1] build
+[orp3_sota/triadic__rep1] probes (14 names)
+[orp3_sota/triadic__rep1] probes FAILED in 0.04s
+--- 405/462 done (5207s)
+[orp3_sota/triadic__rep2] build
+[orp3_sota/triadic__rep0] build FAILED in 16.59s
+--- 406/462 done (5212s)
+[orp3_sota/triadic__rep3] build
+[orp3_sota/triadic__rep2] probes (14 names)
+[orp3_sota/triadic__rep3] build FAILED in 16.86s
+--- 407/462 done (5229s)
+[w2_base_sonnet/w2_frugal__rep0] build
+[orp3_sota/triadic__rep2] assumptions
+[w2_base_sonnet/w2_frugal__rep0] probes (18 names)
+[w2_base_sonnet/w2_frugal__rep0] assumptions
+[w2_base_sonnet/w2_frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 15.35, 'probes': 5.44, 'assumptions': 2.21, 'ext': 19.83, 'total': 42.84}
+--- 408/462 done (5271s)
+[w2_base_sonnet/w2_frugal__rep1] build
+--- 409/462 done (5271s)
+[w2_base_sonnet/w2_gauges__rep0] build
+[w2_base_sonnet/w2_gauges__rep0] probes (9 names)
+[w2_base_sonnet/w2_gauges__rep0] assumptions
+[w2_base_sonnet/w2_gauges__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 11.49, 'probes': 5.79, 'assumptions': 2.72, 'ext': 6.53, 'total': 26.54}
+--- 410/462 done (5298s)
+[w2_base_sonnet/w2_gauges__rep1] build
+[w2_base_sonnet/w2_gauges__rep1] probes (9 names)
+[orp3_sota/ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 11.01, 'probes': 5.64, 'assumptions': 2.62, 'ext': 150.7, 'total': 169.98}
+--- 411/462 done (5317s)
+[w2_base_sonnet/w2_ledger__rep0] build
+[w2_base_sonnet/w2_gauges__rep1] assumptions
+[w2_base_sonnet/w2_ledger__rep0] probes (9 names)
+[w2_base_sonnet/w2_gauges__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.81, 'probes': 5.85, 'assumptions': 2.9, 'ext': 6.61, 'total': 33.18}
+--- 412/462 done (5331s)
+[w2_base_sonnet/w2_ledger__rep1] build
+[w2_base_sonnet/w2_ledger__rep0] assumptions
+[orp3_sota/ledger__rep2] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.55, 'probes': 5.65, 'assumptions': 2.47, 'ext': 150.73, 'total': 176.4}
+--- 413/462 done (5334s)
+[w2_base_sonnet/w2_prodauto__rep0] build
+[w2_base_sonnet/w2_ledger__rep1] probes (9 names)
+[w2_base_sonnet/w2_prodauto__rep0] build FAILED in 18.05s
+--- 414/462 done (5352s)
+[w2_base_sonnet/w2_prodauto__rep1] build
+--- 415/462 done (5352s)
+[w2_prover2_sonnet/w2_frugal__rep0] build
+[w2_base_sonnet/w2_ledger__rep1] assumptions
+[w2_prover2_sonnet/w2_frugal__rep0] probes (18 names)
+[w2_prover2_sonnet/w2_frugal__rep0] assumptions
+[w2_prover2_sonnet/w2_frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.02, 'probes': 5.38, 'assumptions': 2.2, 'ext': 19.84, 'total': 49.45}
+--- 416/462 done (5402s)
+[w2_prover2_sonnet/w2_frugal__rep1] build
+[orp3_sota/triadic__rep2] strict=False (non_allowlisted: p_tstep_fixed: guarded TaskLib.Fixed.Fixed.) orig=False cat=agree {'copy': 0.0, 'build': 16.62, 'probes': 5.54, 'assumptions': 2.29, 'ext': 179.02, 'total': 203.48}
+--- 417/462 done (5411s)
+[w2_prover2_sonnet/w2_gauges__rep0] build
+[w2_prover2_sonnet/w2_gauges__rep0] probes (9 names)
+[w2_prover2_sonnet/w2_frugal__rep1] probes (18 names)
+[w2_prover2_sonnet/w2_gauges__rep0] assumptions
+[w2_prover2_sonnet/w2_frugal__rep1] assumptions
+[w2_prover2_sonnet/w2_gauges__rep0] strict=False (non_allowlisted: p_gneg_sound: axiom TaskLib.Sound.gneg_soun) orig=False cat=agree {'copy': 0.0, 'build': 12.64, 'probes': 6.35, 'assumptions': 3.64, 'ext': 7.07, 'total': 29.71}
+--- 418/462 done (5441s)
+[w2_prover2_sonnet/w2_gauges__rep1] build
+[w2_prover2_sonnet/w2_gauges__rep1] build FAILED in 4.05s
+--- 419/462 done (5445s)
+[w2_prover2_sonnet/w2_ledger__rep0] build
+[w2_prover2_sonnet/w2_frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.71, 'probes': 5.59, 'assumptions': 2.3, 'ext': 20.3, 'total': 50.91}
+--- 420/462 done (5453s)
+[w2_prover2_sonnet/w2_ledger__rep1] build
+[w2_prover2_sonnet/w2_ledger__rep0] probes (9 names)
+[w2_prover2_sonnet/w2_ledger__rep0] assumptions
+[w2_prover2_sonnet/w2_ledger__rep1] probes (9 names)
+[w2_prover2_sonnet/w2_ledger__rep1] assumptions
+[w2_base_sonnet/w2_ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 10.45, 'probes': 5.49, 'assumptions': 2.45, 'ext': 152.49, 'total': 170.89}
+--- 421/462 done (5488s)
+[w2_prover2_sonnet/w2_prodauto__rep0] build
+[w2_prover2_sonnet/w2_prodauto__rep0] probes (11 names)
+[w2_base_sonnet/w2_ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 18.1, 'probes': 5.48, 'assumptions': 2.41, 'ext': 152.24, 'total': 178.23}
+--- 422/462 done (5509s)
+[w2_prover2_sonnet/w2_prodauto__rep1] build
+[w2_prover2_sonnet/w2_prodauto__rep0] assumptions
+[w2_prover2_sonnet/w2_prodauto__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.37, 'probes': 5.45, 'assumptions': 2.36, 'ext': 10.94, 'total': 36.13}
+--- 423/462 done (5524s)
+[w2_prover_sonnet/w2_frugal__rep0] build
+[w2_prover2_sonnet/w2_prodauto__rep1] build FAILED in 16.87s
+--- 424/462 done (5526s)
+[w2_prover_sonnet/w2_frugal__rep1] build
+[w2_prover_sonnet/w2_frugal__rep0] probes (18 names)
+[w2_prover_sonnet/w2_frugal__rep1] probes (18 names)
+[w2_prover_sonnet/w2_frugal__rep0] assumptions
+[w2_prover_sonnet/w2_frugal__rep1] assumptions
+[w2_prover_sonnet/w2_frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.4, 'probes': 5.52, 'assumptions': 2.25, 'ext': 20.23, 'total': 50.41}
+--- 425/462 done (5575s)
+[w2_prover_sonnet/w2_gauges__rep0] build
+[w2_prover_sonnet/w2_frugal__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.4, 'probes': 5.55, 'assumptions': 2.28, 'ext': 20.22, 'total': 50.45}
+--- 426/462 done (5577s)
+[w2_prover_sonnet/w2_gauges__rep1] build
+[w2_prover_sonnet/w2_gauges__rep0] build FAILED in 6.11s
+--- 427/462 done (5581s)
+[w2_prover_sonnet/w2_ledger__rep0] build
+[w2_prover_sonnet/w2_gauges__rep1] probes (9 names)
+[w2_prover_sonnet/w2_ledger__rep0] probes (9 names)
+[w2_prover_sonnet/w2_gauges__rep1] assumptions
+[w2_prover_sonnet/w2_ledger__rep0] assumptions
+[w2_prover_sonnet/w2_gauges__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 18.4, 'probes': 5.87, 'assumptions': 2.77, 'ext': 6.65, 'total': 33.69}
+--- 428/462 done (5610s)
+[w2_prover_sonnet/w2_ledger__rep1] build
+[w2_prover2_sonnet/w2_ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.36, 'probes': 5.61, 'assumptions': 2.39, 'ext': 151.84, 'total': 177.21}
+--- 429/462 done (5622s)
+[w2_prover_sonnet/w2_prodauto__rep0] build
+[w2_prover_sonnet/w2_ledger__rep1] probes (9 names)
+[w2_prover2_sonnet/w2_ledger__rep1] strict=False (non_allowlisted: p_no_teleport: axiom TaskLib.Bounds.no_tele) orig=False cat=agree {'copy': 0.0, 'build': 17.24, 'probes': 5.48, 'assumptions': 2.35, 'ext': 152.21, 'total': 177.29}
+--- 430/462 done (5630s)
+[w2_prover_sonnet/w2_prodauto__rep1] build
+[w2_prover_sonnet/w2_ledger__rep1] assumptions
+[w2_prover_sonnet/w2_prodauto__rep0] probes (11 names)
+[w2_prover_sonnet/w2_prodauto__rep0] assumptions
+[w2_prover_sonnet/w2_prodauto__rep1] probes (11 names)
+[w2_prover_sonnet/w2_prodauto__rep1] assumptions
+[w2_prover_sonnet/w2_prodauto__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.63, 'probes': 5.54, 'assumptions': 2.33, 'ext': 12.14, 'total': 43.66}
+--- 431/462 done (5666s)
+[w2_sota_sonnet/frugal__rep0] build
+[w2_sota_sonnet/frugal__rep0] build FAILED in 0.03s
+--- 432/462 done (5666s)
+[w2_sota_sonnet/frugal__rep1] build
+[w2_prover_sonnet/w2_prodauto__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.44, 'probes': 5.47, 'assumptions': 2.33, 'ext': 10.8, 'total': 42.06}
+--- 433/462 done (5672s)
+[w2_sota_sonnet/gauges__rep0] build
+--- 434/462 done (5672s)
+[w2_sota_sonnet/gauges__rep1] build
+[w2_sota_sonnet/frugal__rep1] build FAILED in 10.39s
+--- 435/462 done (5676s)
+[w2_sota_sonnet/ledger__rep0] build
+[w2_sota_sonnet/ledger__rep0] probes (9 names)
+[w2_sota_sonnet/gauges__rep1] build FAILED in 17.94s
+--- 436/462 done (5690s)
+[w2_sota_sonnet/ledger__rep1] build
+[w2_sota_sonnet/ledger__rep1] build FAILED in 0.03s
+--- 437/462 done (5690s)
+[w2_sota_sonnet/prodauto__rep0] build
+[w2_sota_sonnet/ledger__rep0] assumptions
+[w2_sota_sonnet/prodauto__rep0] build FAILED in 11.15s
+--- 438/462 done (5702s)
+[w2_sota_sonnet/prodauto__rep1] build
+[w2_sota_sonnet/prodauto__rep1] build FAILED in 0.03s
+--- 439/462 done (5702s)
+[w2_sota_unfair/frugal__rep0] build
+[w2_sota_unfair/frugal__rep0] probes (18 names)
+[w2_sota_unfair/frugal__rep0] assumptions
+[w2_sota_unfair/frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.11, 'probes': 5.42, 'assumptions': 2.23, 'ext': 19.9, 'total': 49.67}
+--- 440/462 done (5751s)
+[w2_sota_unfair/frugal__rep1] build
+[w2_prover_sonnet/w2_ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.31, 'probes': 5.51, 'assumptions': 2.4, 'ext': 152.02, 'total': 177.25}
+--- 441/462 done (5758s)
+[w2_sota_unfair/gauges__rep0] build
+[w2_sota_unfair/gauges__rep0] build FAILED in 0.03s
+--- 442/462 done (5758s)
+[w2_sota_unfair/gauges__rep1] build
+[w2_sota_unfair/frugal__rep1] probes (18 names)
+[w2_sota_unfair/frugal__rep1] probes FAILED in 0.04s
+--- 443/462 done (5768s)
+[w2_sota_unfair/ledger__rep0] build
+[w2_sota_unfair/gauges__rep1] probes (9 names)
+[w2_sota_unfair/ledger__rep0] probes (9 names)
+[w2_sota_unfair/ledger__rep0] probes FAILED in 0.05s
+--- 444/462 done (5780s)
+[w2_sota_unfair/ledger__rep1] build
+[w2_sota_unfair/ledger__rep1] build FAILED in 0.04s
+--- 445/462 done (5780s)
+[w2_sota_unfair/prodauto__rep0] build
+[w2_sota_unfair/gauges__rep1] assumptions
+[w2_prover_sonnet/w2_ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 16.85, 'probes': 6.12, 'assumptions': 2.5, 'ext': 151.85, 'total': 177.33}
+--- 446/462 done (5788s)
+[w2_sota_unfair/prodauto__rep1] build
+[w2_sota_unfair/prodauto__rep1] build FAILED in 0.05s
+--- 447/462 done (5788s)
+[w2_team_sonnet/w2_frugal__rep0] build
+[w2_sota_unfair/gauges__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 18.16, 'probes': 6.3, 'assumptions': 2.87, 'ext': 7.49, 'total': 34.83}
+--- 448/462 done (5793s)
+[w2_team_sonnet/w2_gauges__rep0] build
+[w2_sota_unfair/prodauto__rep0] probes (11 names)
+[w2_sota_unfair/prodauto__rep0] probes FAILED in 0.05s
+--- 449/462 done (5798s)
+[w2_team_sonnet/w2_ledger__rep0] build
+[w2_team_sonnet/w2_gauges__rep0] build FAILED in 6.32s
+--- 450/462 done (5799s)
+[w2_team_sonnet/w2_prodauto__rep0] build
+[w2_team_sonnet/w2_frugal__rep0] probes (18 names)
+[w2_team_sonnet/w2_frugal__rep0] probes FAILED in 0.05s
+--- 451/462 done (5806s)
+[w2_verify_sonnet/w2_frugal__rep0] build
+[w2_team_sonnet/w2_ledger__rep0] probes (9 names)
+[w2_team_sonnet/w2_ledger__rep0] assumptions
+[w2_team_sonnet/w2_prodauto__rep0] probes (11 names)
+[w2_team_sonnet/w2_prodauto__rep0] assumptions
+[w2_verify_sonnet/w2_frugal__rep0] probes (18 names)
+[w2_verify_sonnet/w2_frugal__rep0] assumptions
+[w2_team_sonnet/w2_prodauto__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.61, 'probes': 5.59, 'assumptions': 2.36, 'ext': 10.84, 'total': 42.41}
+--- 452/462 done (5842s)
+[w2_verify_sonnet/w2_frugal__rep1] build
+[w2_sota_sonnet/ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 10.41, 'probes': 5.5, 'assumptions': 2.45, 'ext': 152.8, 'total': 171.16}
+--- 453/462 done (5847s)
+[w2_verify_sonnet/w2_gauges__rep0] build
+[w2_verify_sonnet/w2_gauges__rep0] build FAILED in 6.27s
+--- 454/462 done (5853s)
+[w2_verify_sonnet/w2_gauges__rep1] build
+[w2_verify_sonnet/w2_frugal__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 23.52, 'probes': 5.54, 'assumptions': 2.24, 'ext': 20.17, 'total': 51.48}
+--- 455/462 done (5857s)
+[w2_verify_sonnet/w2_ledger__rep0] build
+[w2_verify_sonnet/w2_frugal__rep1] probes (18 names)
+[w2_verify_sonnet/w2_frugal__rep1] assumptions
+[w2_verify_sonnet/w2_gauges__rep1] probes (9 names)
+[w2_verify_sonnet/w2_ledger__rep0] probes (9 names)
+[w2_verify_sonnet/w2_gauges__rep1] assumptions
+[w2_verify_sonnet/w2_ledger__rep0] assumptions
+[w2_verify_sonnet/w2_gauges__rep1] strict=False (non_allowlisted: p_gneg_sound: axiom TaskLib.Sound.Sound.gne) orig=False cat=agree {'copy': 0.0, 'build': 19.25, 'probes': 6.27, 'assumptions': 3.74, 'ext': 7.07, 'total': 36.34}
+--- 456/462 done (5890s)
+[w2_verify_sonnet/w2_ledger__rep1] build
+[w2_verify_sonnet/w2_frugal__rep1] strict=False (non_allowlisted: p_mmulA: axiom TaskLib.Mat2.mmulA) orig=False cat=agree {'copy': 0.0, 'build': 22.53, 'probes': 5.77, 'assumptions': 2.35, 'ext': 20.3, 'total': 50.95}
+--- 457/462 done (5893s)
+[w2_verify_sonnet/w2_prodauto__rep0] build
+[w2_verify_sonnet/w2_ledger__rep1] probes (9 names)
+[w2_verify_sonnet/w2_ledger__rep1] assumptions
+[w2_verify_sonnet/w2_prodauto__rep0] build FAILED in 23.2s
+--- 458/462 done (5916s)
+[w2_verify_sonnet/w2_prodauto__rep1] build
+[w2_verify_sonnet/w2_prodauto__rep1] probes (11 names)
+[w2_verify_sonnet/w2_prodauto__rep1] assumptions
+[w2_verify_sonnet/w2_prodauto__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 22.29, 'probes': 5.42, 'assumptions': 2.3, 'ext': 11.95, 'total': 41.96}
+--- 459/462 done (5958s)
+[w2_team_sonnet/w2_ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 18.02, 'probes': 5.63, 'assumptions': 2.46, 'ext': 151.68, 'total': 177.8}
+--- 460/462 done (5976s)
+[w2_verify_sonnet/w2_ledger__rep0] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.19, 'probes': 5.58, 'assumptions': 2.49, 'ext': 150.96, 'total': 176.23}
+--- 461/462 done (6033s)
+[w2_verify_sonnet/w2_ledger__rep1] strict=True (ok) orig=True cat=agree {'copy': 0.0, 'build': 17.49, 'probes': 5.43, 'assumptions': 2.41, 'ext': 148.59, 'total': 173.93}
+--- 462/462 done (6064s)
+finished 462 attempts in 6064s -> /Users/gbaudart/Project/llm4rocq/rocq-tools/rocq-tools/logs/audit_autoform/attempts.jsonl

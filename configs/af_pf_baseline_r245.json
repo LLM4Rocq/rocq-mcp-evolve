@@ -1,0 +1,22 @@
+{
+ "config_id": "af_pf_baseline_r245",
+ "description": "A144 regime probe of af_pf_baseline (sonnet control): CLI 2.1.245, effort xhigh explicit, version/effort recorded per attempt; everything else identical | A80 prompt-free held-out pair: audited frozen arm minus system prompt; wall-bound",
+ "server": {
+  "command": "{repo}/_build/default/src/baseline_server/rocq_agent_baseline.exe",
+  "args": [],
+  "env": {
+   "ROCQ_COMPILE_TIMEOUT": "60"
+  }
+ },
+ "mcp_server_name": "rocq",
+ "allowed_tools": [
+  "mcp__rocq__check"
+ ],
+ "model": "claude-sonnet-5",
+ "max_turns": 100,
+ "attempt_timeout_s": 300,
+ "system_prompt": "",
+ "task_prompt_template": "Prove the theorem below by appending a proof to this exact file, then verify it with the check tool.\n\nRules, enforced by an external checker on the delivered file: the given prefix (imports, definitions, theorem statement) must stay EXACTLY as provided, character for character; never use admit, Admitted, Axiom, Parameter, Hypothesis, Variable, or extra Require — submissions containing them are rejected. When you believe the proof is complete and verified, reply DONE.\n\n```coq\n{prefix}```",
+ "cli_version": "2.1.245",
+ "effort": "xhigh"
+}

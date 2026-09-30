@@ -133,14 +133,21 @@ process (COW memory) or (b) served to a second policy agent. Three layers:
    trials are ~ms, so sequential auto_close was never latency-bound; the
    binding constraints were elsewhere (turns, knowledge). Remains the
    natural next step if heavier per-goal search (external ATPs) arrives.]
-2. Session daemon: BUILT and validated (src/psession) — branch-per-subgoal,
-   merge-by-replay with conclusion-digest renumbering (review fix), JSONL
-   instrumentation, gate-verified composed candidates; used by the team
-   experiments and covered by the test suite (suite B).
+2. Session daemon: BUILT and validated — branch-per-subgoal, merge-by-replay
+   with conclusion-digest renumbering (review fix), JSONL instrumentation,
+   gate-verified composed candidates; used by the team experiments and
+   covered by the test suite at the time (suite B). Removed from this branch
+   (A127, 2026-09-03) after the negative result below — the daemon
+   (`src/psession/rocq_agent_daemon.ml`), its MCP shim
+   (`src/psession/rocq_agent_shim.ml`), the `team_k3` config, and
+   `harness/run_team.py` still live on branch `main` (the frozen artifact,
+   named `autoform-experiments` until A128; commit `ec0c104` and later) for
+   reproducibility.
 3. Decomposition workflow: BUILT (harness/run_team.py) and measured twice —
-   hard70 (team .32 vs solo .40) and the decomposable-27 manifest (team ~half
-   of solo, merge-fixed daemon). Decisively negative at this scale; the
-   honest boundary of the parallel axis (REPORT §5c + completion section).
+   hard70 (team 45/140 vs solo 56/140) and the decomposable-27 manifest
+   (team 13/54 vs solo 36/54, merge-fixed daemon). Decisively negative at
+   this scale; the honest boundary of the parallel axis (REPORT §5c +
+   completion section).
 
 Order rationale: 2 unlocks 3-5 mechanically; 3 targets the measured dominant
 cost (turns); 4 targets token growth; 5 targets the #2 error class.

@@ -37,7 +37,21 @@ let submit_tool : M.tool =
       (fun args ->
         match JU.member "content" args with
         | `String content ->
-            let oc = open_out (Filename.concat (Lazy.force workdir) "candidate.v") in
+            (* A76 parity: keep every submission versioned. The other arms'
+               artifact is effectively their newest COMPILING attempt
+               (baseline writes candidate.v only on exit-0; the session
+               server only on verified completion) — grading mirrors that
+               by taking the newest submission that compiles, so a later
+               broken submit can no longer clobber an earlier good one. *)
+            let dir = Lazy.force workdir in
+            let subs = Filename.concat dir "submissions" in
+            (try Unix.mkdir subs 0o755
+             with Unix.Unix_error (Unix.EEXIST, _, _) -> ());
+            let n = Array.length (Sys.readdir subs) in
+            let oc = open_out (Filename.concat subs (Printf.sprintf "%03d.v" n)) in
+            output_string oc content;
+            close_out oc;
+            let oc = open_out (Filename.concat dir "candidate.v") in
             output_string oc content;
             close_out oc;
             M.text_result

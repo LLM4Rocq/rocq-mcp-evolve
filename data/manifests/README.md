@@ -18,6 +18,9 @@ the directory containing the dataset checkouts (content stays on disk).
 | `dev150.jsonl` | 150 | same pools, 50 per difficulty, **disjoint from dev60** |
 | `smoke5.jsonl` | 5 | 5 easy stdlib problems for debugging; **may overlap** dev60/dev150 |
 | `minif2f_valid.jsonl` | 244 | all miniF2F-rocq *valid* problems |
+| `minif2f_test_sonnet_probe60.jsonl` | 60 | A144 regime probe of the sonnet control (`FINAL_pf_baseline_sonnet`): 40 solved in both July reps + 10 in one + 10 in neither, `random.Random(144)` per stratum sorted by id; records verbatim from `minif2f_test.jsonl` |
+| `minif2f_test_haiku_probe60.jsonl` | 60 | A144 regime probe of the haiku wall-only evolve arm (`FINAL_frozen_wallonly`): same 40/10/10 construction, seed 144 |
+| `minif2f_test_opus_probe60.jsonl` | 60 | A143 regime probe: 60 of the 201 July problems of the opus control, by July/August outcome stratum (all 45 july_only + 2 aug_only + 7 both + 6 neither, `random.Random(142)` per stratum sorted by id); records verbatim from `minif2f_test.jsonl` |
 
 ## Sampling procedure
 

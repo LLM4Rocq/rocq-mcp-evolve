@@ -16,6 +16,7 @@ import argparse
 import json
 import os
 import platform
+import shutil
 import signal
 import subprocess
 import sys
@@ -30,6 +31,22 @@ import datasets
 import gate
 
 CLAUDE_BIN = os.environ.get("CLAUDE_BIN", os.path.expanduser("~/.local/bin/claude"))
+
+
+def _parse_claude_version(bin_path):
+    """A142 (CLI era gate): resolve the actual CLI build behind CLAUDE_BIN
+    (which may be a pinned binary, a shim, or the ambient PATH claude) so a
+    run can be pinned to it and every run records what actually ran."""
+    try:
+        out = subprocess.run(
+            [bin_path, "--version"], capture_output=True, text=True, timeout=30
+        )
+        text = (out.stdout or out.stderr or "").strip()
+        return text.split()[0] if text else None
+    except (OSError, subprocess.SubprocessError) as e:
+        print(f"[run_eval] A142: could not run {bin_path!r} --version: {e!r}",
+              file=sys.stderr)
+        return None
 
 
 def _descendants(pid: int) -> list[int]:
@@ -130,13 +147,54 @@ def aggregate_usage(events, result_event):
     }
 
 
+def _recorded_effort(session_id, adir):
+    """A142/A149: read the CLI's own session log IN PLACE (never copied into
+    the attempt dir any more, A149) and return the sorted list of distinct
+    top-level "effort" values on its assistant records -- the per-attempt
+    effort provenance kept in the result row. Returns None if no session
+    file could be found (the CLI prunes them after 30 days), [] if the
+    model has no effort parameter (haiku). Never raises: the caller must
+    not fail an attempt over this."""
+    if not session_id:
+        return None
+    projects_dir = Path(os.path.expanduser("~/.claude/projects"))
+    matches = list(projects_dir.glob(f"*/{session_id}.jsonl"))
+    if not matches:
+        # fall back to the sanitized-cwd directory convention ("/" and "_"
+        # both replaced by "-")
+        sanitized = str(adir).replace("/", "-").replace("_", "-")
+        fallback = projects_dir / sanitized / f"{session_id}.jsonl"
+        if fallback.exists():
+            matches = [fallback]
+    if not matches:
+        return None
+    efforts = {
+        r["effort"] for r in common.read_jsonl(matches[0])
+        if r.get("type") == "assistant" and "effort" in r
+    }
+    return sorted(efforts)
+
+
 def run_attempt(cfg, rec, rep, run_dir, run_id):
     prefix, thm = build_task(rec)
+    # A99: environment standardization delivered via the task file, for
+    # servers that cannot receive ambient flags any other way (the gate
+    # injects the same modules via -ri for every arm; A11 verified them
+    # statement-invariant). The gate below receives the SAME prefix, so
+    # grading and session see one file.
+    if cfg.get("prefix_prepend"):
+        prefix = cfg["prefix_prepend"] + prefix
     aid = f"{rec['problem_id']}__rep{rep}"
     adir = run_dir / "attempts" / aid
     work = adir / "work"
     work.mkdir(parents=True, exist_ok=True)
     server_log = adir / "server.jsonl"
+    # A93: a crashed or duplicated predecessor attempt may have left grading
+    # artifacts behind; this attempt must never be graded on them.
+    for stale in [work / "candidate.v", server_log, adir / "gate_reject.txt"]:
+        stale.unlink(missing_ok=True)
+    if (work / "submissions").exists():
+        shutil.rmtree(work / "submissions")
     bucket = datasets.bucket_of(rec)
     meta = {
         "run_id": run_id,
@@ -186,11 +244,15 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
         CLAUDE_BIN,
         "-p", task_prompt,
         "--model", cfg["model"],
-        "--system-prompt", cfg["system_prompt"],
+        *(["--system-prompt", cfg["system_prompt"]]
+          if cfg.get("system_prompt") else []),
         "--strict-mcp-config", "--mcp-config", str(adir / "mcp.json"),
         "--tools", "",
         "--allowedTools", ",".join(cfg["allowed_tools"]),
         "--max-turns", str(cfg["max_turns"]),
+        # A142 (CLI era gate): explicit --effort when the config pins one,
+        # so a comparison across CLI eras also controls thinking effort.
+        *(["--effort", cfg["effort"]] if cfg.get("effort") else []),
         "--output-format", "stream-json", "--verbose",
     ]
     t0 = time.time()
@@ -251,6 +313,39 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
 
     events = common.read_jsonl(adir / "transcript.jsonl")
     result_event = next((e for e in reversed(events) if e.get("type") == "result"), None)
+    # A83: quota poisoning — a 429/session-limit result invalidates the
+    # attempt (infrastructure, not model). Park the transcript, wait out the
+    # window, and redo the SAME slot (identical-slot repair; machine_slept
+    # precedent). Recursion depth is bounded by the subscription window.
+    _re = result_event or {}
+    _dead_stream = (result_event is None
+                    and not any(e.get("type") == "assistant" for e in events)
+                    and not any(e.get("type") == "system"
+                                and e.get("subtype") == "thinking_tokens"
+                                for e in events))
+    if (_re.get("api_error_status") == 429
+            or "session limit" in str(_re.get("result", "")).lower()
+            or _dead_stream):
+        import shutil as _sh
+        _sh.move(adir / "transcript.jsonl",
+                 adir / f"transcript.poisoned.{int(time.time())}.jsonl")
+        klog("quota-poisoned or dead stream (zero assistant events); parking 20min then redoing this slot")
+        time.sleep(1200)
+        return run_attempt(cfg, rec, rep, run_dir, run_id)
+    # A142 (CLI era gate): the init event names the CLI build and session
+    # actually used for this attempt, independent of CLAUDE_BIN/cfg intent.
+    init_event = next(
+        (e for e in events if e.get("type") == "system" and e.get("subtype") == "init"),
+        None,
+    )
+    claude_code_version = (init_event or {}).get("claude_code_version")
+    session_id = (init_event or {}).get("session_id")
+    try:
+        effort_recorded = _recorded_effort(session_id, adir)
+    except Exception as e:
+        print(f"[run_eval] A142: effort recovery failed for "
+              f"session_id={session_id!r} attempt={adir}: {e!r}", file=sys.stderr)
+        effort_recorded = None
     usage = aggregate_usage(events, result_event)
     denials = (result_event or {}).get("permission_denials", [])
 
@@ -260,7 +355,21 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
     tool_durs = [round(r.get("dur_ms", 0.0), 1) for r in calls]
 
     candidate_path = work / "candidate.v"
-    if candidate_path.exists():
+    subs_dir = work / "submissions"
+    if subs_dir.exists() and any(subs_dir.glob("*.v")):
+        # A76 parity (external-submit arms): the artifact is the NEWEST
+        # submission that compiles — mirroring baseline's last-exit-0
+        # semantics — so a later broken submit cannot clobber a good one.
+        gate_res = None
+        for sub in sorted(subs_dir.glob("*.v"), reverse=True):
+            r = gate.check(sub.read_text(), prefix, thm,
+                           extra_args=tuple(rocq_args))
+            if gate_res is None:
+                gate_res = r          # newest verdict is the default
+            if r.get("reason") not in ("recompile_failed", "compile_failed"):
+                gate_res = r
+                break
+    elif candidate_path.exists():
         gate_res = gate.check(candidate_path.read_text(), prefix, thm,
                               extra_args=tuple(rocq_args))
     else:
@@ -296,6 +405,14 @@ def run_attempt(cfg, rec, rep, run_dir, run_id):
         "permission_denials": len(denials),
         "result_text": ((result_event or {}).get("result") or "")[:200],
         "attempt_dir": str(adir.relative_to(common.LOGS)),
+        # A142 (CLI era gate): what the CLI reports it ran as (init event)
+        # and what was asked for (cfg), plus what the CLI's own session log
+        # carries per-turn — these can disagree (silent auto-update, a
+        # config effort the CLI ignored) and that disagreement is the point.
+        "claude_code_version": claude_code_version,
+        "session_id": session_id,
+        "effort_requested": cfg.get("effort"),
+        "effort_recorded": effort_recorded,
     }
     if gate_res.get("detail"):
         (adir / "gate_reject.txt").write_text(gate_res["detail"])
@@ -315,6 +432,21 @@ def main():
     args = ap.parse_args()
 
     cfg = common.load_config(args.config)
+
+    # A142 (CLI era gate): resolve the CLI build behind CLAUDE_BIN before any
+    # attempt spawns; when the config pins one, refuse to start on a mismatch
+    # rather than silently mixing CLI eras into one arm (a mid-run
+    # auto-update is the failure this guards against).
+    claude_bin_realpath = os.path.realpath(CLAUDE_BIN)
+    claude_version = _parse_claude_version(CLAUDE_BIN)
+    if cfg.get("cli_version") and claude_version != cfg["cli_version"]:
+        sys.exit(
+            f"[run_eval] A142: config {cfg['config_id']!r} pins cli_version="
+            f"{cfg['cli_version']!r}, but CLAUDE_BIN={CLAUDE_BIN} "
+            f"(realpath {claude_bin_realpath}) reports version "
+            f"{claude_version!r}. Refusing to start."
+        )
+
     problems = common.load_manifest(args.manifest)
     if args.buckets:
         keep = set(args.buckets.split(","))
@@ -353,6 +485,12 @@ def main():
         },
         "claude_bin": CLAUDE_BIN,
         "resumed_skipping": len(done),
+        # A142 (CLI era gate): what actually ran, vs. what the config asked
+        # for; the end-of-run census below checks these against every row.
+        "claude_bin_realpath": claude_bin_realpath,
+        "claude_version": claude_version,
+        "effort": cfg.get("effort"),
+        "cli_version_pinned": cfg.get("cli_version"),
     }
     (run_dir / "run_meta.json").write_text(json.dumps(run_meta, indent=1))
     print(f"[run {run_id}] {len(todo)} attempts (skipping {len(done)} done), "
@@ -391,6 +529,16 @@ def main():
                         "harness_error": repr(e),
                     },
                 )
+    # A142/A145 provenance: record the CLI builds actually used across this
+    # run's attempts. Informational only — the build was shown immaterial
+    # (A144), so a mixed census is not an error.
+    final_rows = common.read_jsonl(run_dir / "results.jsonl")
+    versions_seen = sorted({
+        r["claude_code_version"] for r in final_rows if r.get("claude_code_version")
+    })
+    run_meta["claude_version_census"] = versions_seen
+    (run_dir / "run_meta.json").write_text(json.dumps(run_meta, indent=1))
+    print(f"[run {run_id}] CLI build census: {versions_seen}", flush=True)
     print(f"[run {run_id}] done: {n_solved}/{n_done} solved in {time.time()-t0:.0f}s")
 
 

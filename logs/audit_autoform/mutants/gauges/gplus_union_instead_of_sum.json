@@ -1,0 +1,13 @@
+{
+ "task": "gauges",
+ "mutant": "gplus_union_instead_of_sum",
+ "solved": false,
+ "layers": {
+  "forbidden": "clean",
+  "build": "failed",
+  "probes": "not_run",
+  "audit": "not_run"
+ },
+ "reason": "build failed: Sound.gplus_sound unprovable (hull/union formula does not bound the sum)",
+ "n_probes": null
+}

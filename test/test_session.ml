@@ -23,7 +23,8 @@ let base_env ~workdir ~taskfile ~tools extra =
   [ ("ROCQ_ENV_V2", "1");
     ("ROCQ_ENABLE_TOOLS", tools);
     ("ROCQ_TASK_FILE", taskfile);
-    ("ROCQ_WORKDIR", workdir) ]
+    ("ROCQ_WORKDIR", workdir);
+  ]
   @ extra
 
 let step s text = call s ~name:"step" ~args:(`Assoc [ ("text", `String text) ])
@@ -332,6 +333,7 @@ let a12 () =
   let r4 = call s ~name:"open" ~args:(`Assoc [ ("file", `String "/nonexistent/x.v") ]) in
   check (contains r4 "no such file") (name ^ ": missing file reported");
   close s
+
 
 (* ---- A13 prefix replay memoization (A30) ----------------------------- *)
 let a13 () =

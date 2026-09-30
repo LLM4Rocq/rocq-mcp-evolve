@@ -17,3 +17,6 @@ data/generated/
 .csdp.cache
 .vscode/
 FINAL_UNLOCK
+# scratch output of harness/results_tables/*.py main() (ad-hoc JSON dumps); the generator never reads it
+docs/results_tables/
+.claude/

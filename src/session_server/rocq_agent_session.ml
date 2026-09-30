@@ -186,6 +186,11 @@ let truncate n s =
   end
 
 let render_compact =
+  (* opt-in (ROCQ_RENDER=compact). A69 measured the compact default on the
+     autoform benchmark: accuracy flat but +27% cost/solved and +33% input
+     tokens — smaller replies made the model buy the elided hypothesis
+     context back with extra round-trips. Full rendering is the measured
+     default: information density per exchange beats tokens per reply. *)
   lazy (match Sys.getenv_opt "ROCQ_RENDER" with Some "compact" -> true | _ -> false)
 
 let goals_block_full st =
@@ -286,11 +291,61 @@ let try_auto_qed s =
 let proof_script s =
   String.concat "\n" (List.rev_map fst s.committed)
 
+(* A59: the session preloads tactic modules (Stdlib Lia/Lra/Psatz, and the
+   mathcomp zify/lra bridge when the file mentions mathcomp), so finishers
+   like `lia`/`nra` succeed HERE even when the agent's file does not Require
+   them. A pasted proof then fails the fresh build ("The reference nra was
+   not found") — measured: 10 such round-trips and one lost task in the
+   w2_prover autoform arm (gauges rep0). On completion, if the committed
+   script uses one of those tactics and the session prefix does not already
+   Require a providing module, echo the exact lines to add. Token-based
+   heuristic: may over-echo (harmless — Require Import is idempotent), never
+   silently under-echoes what the session itself preloaded.
+   ROCQ_IMPORT_ECHO=0 disables (A/B isolation); harness mode (ROCQ_ENV_V2)
+   is excluded — its gate forbids Require and injects modules at recompile. *)
+let preload_tactic_re =
+  Str.regexp
+    "\\(^\\|[^A-Za-z0-9_']\\)\\(lia\\|nia\\|lra\\|nra\\|psatz\\)\\($\\|[^A-Za-z0-9_']\\)"
+
+let import_echo s =
+  if
+    Sys.getenv_opt "ROCQ_ENV_V2" = Some "1"
+    || Sys.getenv_opt "ROCQ_IMPORT_ECHO" = Some "0"
+    || Sys.getenv_opt "ROCQ_PRELOAD" = Some "0"
+  then ""
+  else
+    let contains re txt =
+      try
+        ignore (Str.search_forward re txt 0);
+        true
+      with Not_found -> false
+    in
+    if not (contains preload_tactic_re (proof_script s)) then ""
+    else
+      let lines =
+        (if contains (Str.regexp "Lia\\|Lra\\|Psatz") s.prefix then []
+         else [ "From Stdlib Require Import Lia Lra Psatz." ])
+        @ (if !mc_tactics && not (contains (Str.regexp "zify\\|mczify") s.prefix)
+           then
+             [ "From mathcomp Require Import zify.";
+               "From mathcomp Require Import lra." ]
+           else [])
+      in
+      if lines = [] then ""
+      else
+        Printf.sprintf
+          "\nIMPORTANT: this proof uses lia/lra-family tactics. They work in \
+           this session because it preloads the tactic modules, but your FILE \
+           must Require them itself or a fresh build fails with \"The \
+           reference ... was not found\". Add after your existing imports:\n%s"
+          (String.concat "\n" lines)
+
 let complete_msg s =
   Printf.sprintf
     "PROOF COMPLETE. The finished proof script (insert it after the theorem \
-     statement in your file):\n%s"
+     statement in your file):\n%s%s"
     (truncate 3000 (proof_script s))
+    (import_echo s)
 
 let fmt_msgs msgs =
   match msgs with
@@ -1007,6 +1062,65 @@ let portfolio () =
 
 let auto_timeout = lazy (getenv_f "ROCQ_AUTO_TIMEOUT" 2.)
 
+(* the finisher core (factored during A65; the open-side fusion built on
+   it was measured at +2 — below the keep threshold — and REVERTED: of 70
+   fused open replies only 1 closed a goal, because at open time the goal
+   precedes the structural work finishers need). Returns
+   (body, prover_ms, winner, complete). *)
+let run_finishers s =
+  let st = cur_state s in
+  let t0 = Unix.gettimeofday () in
+  let tried = ref [] in
+  let winner = ref None in
+  let cands = portfolio () @ auto2_scripts st in
+  List.iter
+    (fun cand ->
+      if !winner = None then begin
+        (* synthesized hint scripts get a longer budget: nra over an
+           enriched context is slower than a bare closer *)
+        let tmo =
+          if String.length cand > 40 then 5.0 else Lazy.force auto_timeout
+        in
+        let steps, stop = D.exec_text ~timeout_s:tmo ~qed_timeout_s:tmo st cand in
+        match stop with
+        | D.Done when steps <> [] ->
+            (* no-op-tolerant tactics (auto, ring_simplify, ...) "succeed"
+               without progress: require the goal count to actually drop
+               (or the proof to close) to win *)
+            let last = List.nth steps (List.length steps - 1) in
+            if
+              (not (D.proof_open last.D.post))
+              || D.n_goals last.D.post < D.n_goals st
+            then winner := Some (cand, steps)
+            else tried := cand :: !tried
+        | _ -> tried := cand :: !tried
+      end)
+    cands;
+  let prover_ms = (Unix.gettimeofday () -. t0) *. 1000. in
+  let body =
+    match !winner with
+    | Some (cand, steps) ->
+        List.iter
+          (fun (x : D.exec_step) ->
+            if not x.D.is_query then
+              s.committed <- (x.D.text, x.D.post) :: s.committed)
+          steps;
+        ignore (try_auto_qed s);
+        if s.complete then
+          Printf.sprintf "`%s` closes it — COMMITTED.\n%s" cand (complete_msg s)
+        else
+          Printf.sprintf "`%s` closes the current goal — COMMITTED.\n%s" cand
+            (goals_block ~prev:st (cur_state s))
+    | None ->
+        Printf.sprintf
+          "no finisher applies (tried %d: %s). Do structural work \
+           (intros / destruct / assert a helper fact) and try again."
+          (List.length cands)
+          (String.concat " " (List.map first_word cands))
+  in
+  (body, prover_ms,
+   (match !winner with Some (c, _) -> Some c | None -> None), s.complete)
+
 let auto_close_tool : M.tool =
   {
     name = "auto_close";
@@ -1031,68 +1145,13 @@ let auto_close_tool : M.tool =
              start one (the loaded file ran to completion without leaving a \
              goal)."
         else
-          let st = cur_state s in
-          let t0 = Unix.gettimeofday () in
-          let tried = ref [] in
-          let winner = ref None in
-          let cands = portfolio () @ auto2_scripts st in
-          List.iter
-            (fun cand ->
-              if !winner = None then begin
-                (* synthesized hint scripts get a longer budget: nra over an
-                   enriched context is slower than a bare closer *)
-                let tmo =
-                  if String.length cand > 40 then 5.0
-                  else Lazy.force auto_timeout
-                in
-                let steps, stop =
-                  D.exec_text ~timeout_s:tmo ~qed_timeout_s:tmo st cand
-                in
-                match stop with
-                | D.Done when steps <> [] ->
-                    (* no-op-tolerant tactics (auto, ring_simplify, ...)
-                       "succeed" without progress: require the goal count to
-                       actually drop (or the proof to close) to win *)
-                    let last = List.nth steps (List.length steps - 1) in
-                    if
-                      (not (D.proof_open last.D.post))
-                      || D.n_goals last.D.post < D.n_goals st
-                    then winner := Some (cand, steps)
-                    else tried := cand :: !tried
-                | _ -> tried := cand :: !tried
-              end)
-            cands;
-          let prover_ms = (Unix.gettimeofday () -. t0) *. 1000. in
-          let body =
-            match !winner with
-            | Some (cand, steps) ->
-                List.iter
-                  (fun (x : D.exec_step) ->
-                    if not x.D.is_query then
-                      s.committed <- (x.D.text, x.D.post) :: s.committed)
-                  steps;
-                ignore (try_auto_qed s);
-                if s.complete then
-                  Printf.sprintf
-                    "`%s` closes it — COMMITTED.\n%s"
-                    cand (complete_msg s)
-                else
-                  Printf.sprintf "`%s` closes the current goal — COMMITTED.\n%s"
-                    cand
-                    (goals_block ~prev:st (cur_state s))
-            | None ->
-                Printf.sprintf
-                  "no finisher applies (tried %d: %s). Do structural work \
-                   (intros / destruct / assert a helper fact) and try again."
-                  (List.length cands)
-                  (String.concat " " (List.map first_word cands))
-          in
+          let body, prover_ms, winner, complete = run_finishers s in
           M.text_result body
             ~log:
               [ ("prover_ms", `Float prover_ms);
-                ("closed", `Bool (!winner <> None));
-                ("winner", `String (match !winner with Some (c, _) -> c | None -> ""));
-                ("complete", `Bool s.complete) ]);
+                ("closed", `Bool (winner <> None));
+                ("winner", `String (match winner with Some c -> c | None -> ""));
+                ("complete", `Bool complete) ]);
   }
 
 
@@ -1494,6 +1553,21 @@ let open_tool =
           | `String f when f <> "" -> Some f
           | _ -> Sys.getenv_opt "ROCQ_TASK_FILE" (* fall back to the preset *)
         in
+        (* A42/A48: agents naturally pass workspace-relative paths — resolve
+           against the PROJECT ROOT (ROCQ_PROJECT_ROOT, else the process
+           cwd; NOT the server's scratch workdir, which A43 moved out of
+           the workspace — the original A42 fix resolved into an empty dir) *)
+        let file =
+          match file with
+          | Some f when Filename.is_relative f ->
+              let base =
+                match Sys.getenv_opt "ROCQ_PROJECT_ROOT" with
+                | Some d when d <> "" -> d
+                | _ -> Sys.getcwd ()
+              in
+              Some (Filename.concat base f)
+          | x -> x
+        in
         let thm =
           match JU.member "theorem" args with `String t -> Some t | _ -> None
         in
@@ -1683,6 +1757,16 @@ let build_tool =
     handler =
       (fun args ->
         let file = JU.member "file" args |> JU.to_string in
+        let file =
+          if Filename.is_relative file then
+            let base =
+              match Sys.getenv_opt "ROCQ_PROJECT_ROOT" with
+              | Some d when d <> "" -> d
+              | _ -> Sys.getcwd ()
+            in
+            Filename.concat base file
+          else file
+        in
         if not (Sys.file_exists file) then
           M.text_result ~is_error:true (Printf.sprintf "no such file: %s" file)
         else begin

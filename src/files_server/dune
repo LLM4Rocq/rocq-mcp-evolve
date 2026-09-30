@@ -1,0 +1,3 @@
+(executable
+ (name rocq_agent_files)
+ (libraries mcp_core yojson unix str))

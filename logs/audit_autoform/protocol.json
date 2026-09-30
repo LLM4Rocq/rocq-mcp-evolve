@@ -1,0 +1,784 @@
+{
+ "runs": [
+  "af2_base",
+  "af2_evolve",
+  "af2_sota",
+  "af3_base",
+  "af3_base2",
+  "af3_evolve",
+  "af3_evolve_c3",
+  "af3_evolve_r1",
+  "af3_evolve_r3",
+  "af3_sota",
+  "mst3_base",
+  "mst3_evolve",
+  "mst3_sota",
+  "mst3_sota_v2",
+  "mst_base",
+  "mst_evolve",
+  "op_base",
+  "op_evolve",
+  "op_sota",
+  "orp3_base",
+  "orp3_evolve",
+  "orp3_sota",
+  "w2_base_sonnet",
+  "w2_prover2_sonnet",
+  "w2_prover_sonnet",
+  "w2_sota_sonnet",
+  "w2_sota_unfair",
+  "w2_team_sonnet",
+  "w2_verify_sonnet"
+ ],
+ "reference_reads": {
+  "n_attempts_with_hits": 0,
+  "details": []
+ },
+ "results_vs_verdict": {
+  "n_disagreements_total": 0,
+  "disagreements": [],
+  "n_missing_verdict_total": 1,
+  "missing_verdict": [
+   {
+    "attempt": "ledger__rep1",
+    "results_row": {
+     "task": "ledger",
+     "rep": 1,
+     "config_id": "af3_base",
+     "solved": false,
+     "reason": "build_failed",
+     "layer": 1,
+     "n_probes": null,
+     "wall_s": 900.0,
+     "num_turns": null,
+     "total_cost_usd": null,
+     "result_text": "[gate build exceeded 1800s budget (ref builds in ~20s) -> build_failed; A63 grading policy]",
+     "ts": 1783683271.259302
+    },
+    "note": "no verdict.json (killed at the wall / no build produced)",
+    "run": "af3_base"
+   }
+  ]
+ },
+ "regrades": {
+  "n_regrade_rows_total": 8,
+  "details": [
+   {
+    "run": "af2_base",
+    "attempt": "frugal__rep3",
+    "regrade_row": {
+     "task": "frugal",
+     "rep": 3,
+     "config_id": "af2_base",
+     "solved": true,
+     "reason": "ok",
+     "layer": 4,
+     "n_probes": 18,
+     "wall_s": 865.7,
+     "num_turns": 40,
+     "total_cost_usd": 2.4076728000000003,
+     "result_text": "The project builds cleanly, the probes.v acceptance tests compile successfully against it, and the verify gate confirms ",
+     "ts": 1783767826.284387,
+     "regraded": "A75 gate fix"
+    },
+    "trigger_class": {
+     "in_trigger_class": true,
+     "n_dune_files_with_coq_theory": 2,
+     "files": [
+      "tests/dune",
+      "theories/dune"
+     ]
+    },
+    "current_gate": {
+     "passes_now": true,
+     "returncode": 0,
+     "verdict": {
+      "task": "frugal",
+      "solved": true,
+      "layers": {
+       "forbidden": "clean",
+       "build": "ok",
+       "probes": "ok",
+       "audit": "closed"
+      },
+      "reason": "ok",
+      "n_probes": 18
+     },
+     "stdout_tail": "{\n \"task\": \"frugal\",\n \"solved\": true,\n \"layers\": {\n  \"forbidden\": \"clean\",\n  \"build\": \"ok\",\n  \"probes\": \"ok\",\n  \"audit\": \"closed\"\n },\n \"reason\": \"ok\",\n \"n_probes\": 18\n}",
+     "stderr_tail": ""
+    }
+   },
+   {
+    "run": "af2_base",
+    "attempt": "gauges__rep0",
+    "regrade_row": {
+     "task": "gauges",
+     "rep": 0,
+     "config_id": "af2_base",
+     "solved": true,
+     "reason": "ok",
+     "layer": 4,
+     "n_probes": 9,
+     "wall_s": 589.8,
+     "num_turns": 37,
+     "total_cost_usd": 1.4151610000000001,
+     "result_text": "The project builds cleanly and passes the acceptance gate (no admits/axioms/forbidden tokens, probes.v compiles against ",
+     "ts": 1783767848.723147,
+     "regraded": "A75 gate fix"
+    },
+    "trigger_class": {
+     "in_trigger_class": true,
+     "n_dune_files_with_coq_theory": 2,
+     "files": [
+      "probes/dune",
+      "theories/dune"
+     ]
+    },
+    "current_gate": {
+     "passes_now": true,
+     "returncode": 0,
+     "verdict": {
+      "task": "gauges",
+      "solved": true,
+      "layers": {
+       "forbidden": "clean",
+       "build": "ok",
+       "probes": "ok",
+       "audit": "closed"
+      },
+      "reason": "ok",
+      "n_probes": 9
+     },
+     "stdout_tail": "{\n \"task\": \"gauges\",\n \"solved\": true,\n \"layers\": {\n  \"forbidden\": \"clean\",\n  \"build\": \"ok\",\n  \"probes\": \"ok\",\n  \"audit\": \"closed\"\n },\n \"reason\": \"ok\",\n \"n_probes\": 9\n}",
+     "stderr_tail": ""
+    }
+   },
+   {
+    "run": "af3_base",
+    "attempt": "ledger__rep3",
+    "regrade_row": {
+     "task": "ledger",
+     "rep": 3,
+     "config_id": "af3_base",
+     "solved": true,
+     "reason": "ok",
+     "layer": 4,
+     "n_probes": 9,
+     "wall_s": 654.8,
+     "num_turns": 20,
+     "total_cost_usd": 1.9449327999999997,
+     "result_text": "Build passes cleanly and the verification gate confirms no forbidden tokens (no `admit`/`Admitted`/`Axiom`/`Parameter`/`",
+     "ts": 1783770335.8918169,
+     "regraded": "A75 gate fix"
+    },
+    "trigger_class": {
+     "in_trigger_class": true,
+     "n_dune_files_with_coq_theory": 2,
+     "files": [
+      "tests/dune",
+      "theories/dune"
+     ]
+    },
+    "current_gate": {
+     "passes_now": true,
+     "returncode": 0,
+     "verdict": {
+      "task": "ledger",
+      "solved": true,
+      "layers": {
+       "forbidden": "clean",
+       "build": "ok",
+       "probes": "ok",
+       "audit": "closed"
+      },
+      "reason": "ok",
+      "n_probes": 9
+     },
+     "stdout_tail": "{\n \"task\": \"ledger\",\n \"solved\": true,\n \"layers\": {\n  \"forbidden\": \"clean\",\n  \"build\": \"ok\",\n  \"probes\": \"ok\",\n  \"audit\": \"closed\"\n },\n \"reason\": \"ok\",\n \"n_probes\": 9\n}",
+     "stderr_tail": ""
+    }
+   },
+   {
+    "run": "af3_evolve",
+    "attempt": "frugal__rep0",
+    "regrade_row": {
+     "task": "frugal",
+     "rep": 0,
+     "config_id": "af3_evolve",
+     "solved": true,
+     "reason": "ok",
+     "layer": 4,
+     "n_probes": 18,
+     "wall_s": 405.1,
+     "num_turns": 57,
+     "total_cost_usd": 1.3276675999999998,
+     "result_text": "The project builds cleanly, contains the required `Carrier.v <- Laws.v <- Mat2.v <- Main.v` dependency chain, and the fu",
+     "ts": 1783770373.919022,
+     "regraded": "A75 gate fix"
+    },
+    "trigger_class": {
+     "in_trigger_class": true,
+     "n_dune_files_with_coq_theory": 2,
+     "files": [
+      "probes/dune",
+      "theories/dune"
+     ]
+    },
+    "current_gate": {
+     "passes_now": true,
+     "returncode": 0,
+     "verdict": {
+      "task": "frugal",
+      "solved": true,
+      "layers": {
+       "forbidden": "clean",
+       "build": "ok",
+       "probes": "ok",
+       "audit": "closed"
+      },
+      "reason": "ok",
+      "n_probes": 18
+     },
+     "stdout_tail": "{\n \"task\": \"frugal\",\n \"solved\": true,\n \"layers\": {\n  \"forbidden\": \"clean\",\n  \"build\": \"ok\",\n  \"probes\": \"ok\",\n  \"audit\": \"closed\"\n },\n \"reason\": \"ok\",\n \"n_probes\": 18\n}",
+     "stderr_tail": ""
+    }
+   },
+   {
+    "run": "af3_evolve_c3",
+    "attempt": "frugal__rep0",
+    "regrade_row": {
+     "task": "frugal",
+     "rep": 0,
+     "config_id": "af3_evolve_c3",
+     "solved": true,
+     "reason": "ok",
+     "layer": 4,
+     "n_probes": 18,
+     "wall_s": 900.1,
+     "num_turns": null,
+     "total_cost_usd": null,
+     "result_text": "",
+     "ts": 1783770411.7463071,
+     "regraded": "A75 gate fix"
+    },
+    "trigger_class": {
+     "in_trigger_class": true,
+     "n_dune_files_with_coq_theory": 2,
+     "files": [
+      "tests/dune",
+      "theories/dune"
+     ]
+    },
+    "current_gate": {
+     "passes_now": true,
+     "returncode": 0,
+     "verdict": {
+      "task": "frugal",
+      "solved": true,
+      "layers": {
+       "forbidden": "clean",
+       "build": "ok",
+       "probes": "ok",
+       "audit": "closed"
+      },
+      "reason": "ok",
+      "n_probes": 18
+     },
+     "stdout_tail": "{\n \"task\": \"frugal\",\n \"solved\": true,\n \"layers\": {\n  \"forbidden\": \"clean\",\n  \"build\": \"ok\",\n  \"probes\": \"ok\",\n  \"audit\": \"closed\"\n },\n \"reason\": \"ok\",\n \"n_probes\": 18\n}",
+     "stderr_tail": ""
+    }
+   },
+   {
+    "run": "af3_evolve_r1",
+    "attempt": "frugal__rep2",
+    "regrade_row": {
+     "task": "frugal",
+     "rep": 2,
+     "config_id": "af3_evolve_r1",
+     "solved": true,
+     "reason": "ok",
+     "layer": 4,
+     "n_probes": 18,
+     "wall_s": 782.4,
+     "num_turns": 81,
+     "total_cost_usd": 3.2868394999999992,
+     "result_text": "Everything checks out \u2014 required names, dependency chain (`Carrier <- Laws <- Mat2 <- Main`), no forbidden tokens, clean",
+     "ts": 1783770447.879191,
+     "regraded": "A75 gate fix"
+    },
+    "trigger_class": {
+     "in_trigger_class": true,
+     "n_dune_files_with_coq_theory": 2,
+     "files": [
+      "test/dune",
+      "theories/dune"
+     ]
+    },
+    "current_gate": {
+     "passes_now": true,
+     "returncode": 0,
+     "verdict": {
+      "task": "frugal",
+      "solved": true,
+      "layers": {
+       "forbidden": "clean",
+       "build": "ok",
+       "probes": "ok",
+       "audit": "closed"
+      },
+      "reason": "ok",
+      "n_probes": 18
+     },
+     "stdout_tail": "{\n \"task\": \"frugal\",\n \"solved\": true,\n \"layers\": {\n  \"forbidden\": \"clean\",\n  \"build\": \"ok\",\n  \"probes\": \"ok\",\n  \"audit\": \"closed\"\n },\n \"reason\": \"ok\",\n \"n_probes\": 18\n}",
+     "stderr_tail": ""
+    }
+   },
+   {
+    "run": "af3_evolve_r1",
+    "attempt": "prodauto__rep1",
+    "regrade_row": {
+     "task": "prodauto",
+     "rep": 1,
+     "config_id": "af3_evolve_r1",
+     "solved": true,
+     "reason": "ok",
+     "layer": 4,
+     "n_probes": 11,
+     "wall_s": 802.9,
+     "num_turns": 50,
+     "total_cost_usd": 2.0563871,
+     "result_text": "Both verification tools confirm success: clean `dune build`, no forbidden tokens (no admit/Admitted/Axiom/Parameter/Hypo",
+     "ts": 1783770484.575519,
+     "regraded": "A75 gate fix"
+    },
+    "trigger_class": {
+     "in_trigger_class": true,
+     "n_dune_files_with_coq_theory": 2,
+     "files": [
+      "tests/dune",
+      "theories/dune"
+     ]
+    },
+    "current_gate": {
+     "passes_now": true,
+     "returncode": 0,
+     "verdict": {
+      "task": "prodauto",
+      "solved": true,
+      "layers": {
+       "forbidden": "clean",
+       "build": "ok",
+       "probes": "ok",
+       "audit": "closed"
+      },
+      "reason": "ok",
+      "n_probes": 11
+     },
+     "stdout_tail": "{\n \"task\": \"prodauto\",\n \"solved\": true,\n \"layers\": {\n  \"forbidden\": \"clean\",\n  \"build\": \"ok\",\n  \"probes\": \"ok\",\n  \"audit\": \"closed\"\n },\n \"reason\": \"ok\",\n \"n_probes\": 11\n}",
+     "stderr_tail": ""
+    }
+   },
+   {
+    "run": "af3_evolve_r1",
+    "attempt": "prodauto__rep2",
+    "regrade_row": {
+     "task": "prodauto",
+     "rep": 2,
+     "config_id": "af3_evolve_r1",
+     "solved": true,
+     "reason": "ok",
+     "layer": 4,
+     "n_probes": 11,
+     "wall_s": 790.3,
+     "num_turns": 58,
+     "total_cost_usd": 2.2736495000000003,
+     "result_text": "Both verification tools confirm a clean build with no admits/axioms and all 11 probe proof blocks pass.\n\nThe project is ",
+     "ts": 1783770524.350174,
+     "regraded": "A75 gate fix"
+    },
+    "trigger_class": {
+     "in_trigger_class": true,
+     "n_dune_files_with_coq_theory": 2,
+     "files": [
+      "probes/dune",
+      "theories/dune"
+     ]
+    },
+    "current_gate": {
+     "passes_now": true,
+     "returncode": 0,
+     "verdict": {
+      "task": "prodauto",
+      "solved": true,
+      "layers": {
+       "forbidden": "clean",
+       "build": "ok",
+       "probes": "ok",
+       "audit": "closed"
+      },
+      "reason": "ok",
+      "n_probes": 11
+     },
+     "stdout_tail": "{\n \"task\": \"prodauto\",\n \"solved\": true,\n \"layers\": {\n  \"forbidden\": \"clean\",\n  \"build\": \"ok\",\n  \"probes\": \"ok\",\n  \"audit\": \"closed\"\n },\n \"reason\": \"ok\",\n \"n_probes\": 11\n}",
+     "stderr_tail": ""
+    }
+   }
+  ]
+ },
+ "toolchain": {
+  "rocq_version": "The Rocq Prover, version 9.1.1\ncompiled with OCaml 5.3.0",
+  "dune_version": "3.23.1",
+  "opam_list_rocq_coq_dune": "coq                          9.1.1          Compatibility metapackage for Coq after the Rocq renaming\ncoq-coquelicot               3.4.4          A Coq formalization of real analysis compatible with the standard library\ncoq-core                     9.1.1          Compatibility binaries for Coq after the Rocq renaming\ncoq-elpi                     3.4.0          Compatibility metapackage for Elpi extension language after the Rocq renaming\ncoq-lsp                      0.2.5+9.1      Language Server Protocol native server for Coq\ncoq-mathcomp-algebra         2.5.0          Compatibility package for rocq-mathcomp-algebra\ncoq-mathcomp-algebra-tactics 1.2.7          Ring, field, lra, nra, and psatz tactics for Mathematical Components\ncoq-mathcomp-analysis        1.16.0         Compatibility package for rocq-mathcomp-analysis\ncoq-mathcomp-ssreflect       2.5.0          Compatibility package for rocq-mathcomp-ssreflect\ncoq-mathcomp-zify            1.6.0+2.3+8.18 Micromega tactics for Mathematical Components\ncoq-stdlib                   9.0.0          Compatibility metapackage for Coq Stdlib library after the Rocq renaming\ndune                         3.23.1         Fast, portable, and opinionated build system\nrocq-core                    9.1.1          The Rocq Prover with its prelude\nrocq-elpi                    3.4.0          Elpi extension language for Coq\nrocq-hierarchy-builder       1.10.3         High level commands to declare and evolve a hierarchy based on packed classes\nrocq-mathcomp-algebra        2.5.0          Mathematical Components Library on Algebra\nrocq-mathcomp-analysis       1.16.0         An analysis library for mathematical components\nrocq-mathcomp-bigenough      1.0.4          A small library to do epsilon - N reasoning\nrocq-mathcomp-boot           2.5.0          Small Scale Reflection\nrocq-mathcomp-classical      1.16.0         A library for classical logic for mathematical components\nrocq-mathcomp-field          2.5.0          Mathematical Components Library on Fields\nrocq-mathcomp-fingroup       2.5.0          Mathematical Components Library on finite groups\nrocq-mathcomp-finmap         2.2.2          Finite sets, finite maps, finitely supported functions\nrocq-mathcomp-order          2.5.0          Mathematical Components Library on order theory\nrocq-mathcomp-reals          1.16.0         A library for real numbers for mathematical components\nrocq-mathcomp-solvable       2.5.0          Mathematical Components Library on finite groups (II)\nrocq-mathcomp-ssreflect      2.5.0          Compatibility package for rocq-mathcomp-boot and rocq-mathcomp-order\nrocq-prover                  meta.1         The Rocq Prover with Stdlib\nrocq-runtime                 9.1.1          The Rocq Prover -- Core Binaries and Tools\nrocq-stdlib                  9.0.0          The Rocq Proof Assistant -- Standard Library\nrocq-tools                   dev            pinned to version dev at git+https://github.com/LLM4Rocq/rocq-tools.git",
+  "dev_worktree_commit": "71b2bfe2e5be1c139844a2cb041700ac47d92249"
+ },
+ "per_run_table": [
+  {
+   "run": "af2_base",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 40,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 9,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "af2_evolve",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 40,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 7,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "af2_sota",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 40,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 2,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "af3_base",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 9,
+   "n_disagreements": 0,
+   "n_missing_verdict": 1
+  },
+  {
+   "run": "af3_base2",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 12,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "af3_evolve",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 13,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "af3_evolve_c3",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 13,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "af3_evolve_r1",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 12,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "af3_evolve_r3",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 15,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "af3_sota",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 12,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "mst3_base",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 0,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "mst3_evolve",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 0,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "mst3_sota",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 0,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "mst3_sota_v2",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 0,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "mst_base",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 0,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "mst_evolve",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 0,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "op_base",
+   "model": "claude-opus-4-8",
+   "reps": 2,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 10,
+   "n_results_rows": 10,
+   "n_solved_per_results_jsonl": 3,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "op_evolve",
+   "model": "claude-opus-4-8",
+   "reps": 2,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 10,
+   "n_results_rows": 10,
+   "n_solved_per_results_jsonl": 6,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "op_sota",
+   "model": "claude-opus-4-8",
+   "reps": 2,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 10,
+   "n_results_rows": 10,
+   "n_solved_per_results_jsonl": 6,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "orp3_base",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 10,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "orp3_evolve",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 12,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "orp3_sota",
+   "model": "claude-sonnet-5",
+   "reps": 4,
+   "max_turns": 200,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 20,
+   "n_results_rows": 20,
+   "n_solved_per_results_jsonl": 7,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "w2_base_sonnet",
+   "model": "claude-sonnet-5",
+   "reps": 2,
+   "max_turns": 40,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 8,
+   "n_results_rows": 8,
+   "n_solved_per_results_jsonl": 5,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "w2_prover2_sonnet",
+   "model": "claude-sonnet-5",
+   "reps": 2,
+   "max_turns": 40,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 8,
+   "n_results_rows": 8,
+   "n_solved_per_results_jsonl": 4,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "w2_prover_sonnet",
+   "model": "claude-sonnet-5",
+   "reps": 2,
+   "max_turns": 40,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 8,
+   "n_results_rows": 8,
+   "n_solved_per_results_jsonl": 7,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "w2_sota_sonnet",
+   "model": "claude-sonnet-5",
+   "reps": 2,
+   "max_turns": 40,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 8,
+   "n_results_rows": 8,
+   "n_solved_per_results_jsonl": 1,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "w2_sota_unfair",
+   "model": "claude-sonnet-5",
+   "reps": 2,
+   "max_turns": 40,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 8,
+   "n_results_rows": 8,
+   "n_solved_per_results_jsonl": 2,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "w2_team_sonnet",
+   "model": "claude-sonnet-5",
+   "reps": 1,
+   "max_turns": 40,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 4,
+   "n_results_rows": 4,
+   "n_solved_per_results_jsonl": 2,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  },
+  {
+   "run": "w2_verify_sonnet",
+   "model": "claude-sonnet-5",
+   "reps": 2,
+   "max_turns": 40,
+   "attempt_timeout_s": 900,
+   "n_attempts_dirs": 8,
+   "n_results_rows": 8,
+   "n_solved_per_results_jsonl": 4,
+   "n_disagreements": 0,
+   "n_missing_verdict": 0
+  }
+ ]
+}

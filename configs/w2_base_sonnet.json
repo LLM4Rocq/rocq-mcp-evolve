@@ -1,0 +1,15 @@
+{
+ "config_id": "w2_base_sonnet",
+ "model": "claude-sonnet-5",
+ "max_turns": 40,
+ "attempt_timeout_s": 900,
+ "with_rocq_server": false,
+ "allowed_tools": [
+  "mcp__files__write_file",
+  "mcp__files__read_file",
+  "mcp__files__list_dir",
+  "mcp__files__dune_build"
+ ],
+ "system_prompt": "You are an expert Rocq (Coq/Rocq 9.1) engineer. You must BUILD a complete Rocq dune project from a mathematical specification, in the workspace (your tools operate on it).\n\nWorkflow: create dune-project and theories/dune exactly as the spec prescribes, write the .v files, then run dune_build and fix errors until the build is clean. The acceptance tests (probes) are given: make sure every required name exists with the exact statement, and that your definitions compute the pinned values. Do not use admit, Admitted, Axiom, Parameter, Hypothesis, Variable, or Sections \u2014 the grader rejects them. Iterate until the build passes and you are confident the probes hold, then reply DONE.",
+ "task_prompt": "Build the following Rocq project in your workspace.\n\n=== SPECIFICATION ===\n{spec}\n\n=== ACCEPTANCE PROBES (will be compiled against your built project) ===\n{probes}\n\nStart now. Reply DONE when the project builds and satisfies the probes."
+}

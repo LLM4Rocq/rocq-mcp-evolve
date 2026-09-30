@@ -1,0 +1,364 @@
+{
+ "arms": [
+  {
+   "label": "evolve (haiku, phase-1 frozen config)",
+   "run": "FINAL_minif2f_test",
+   "n": 488,
+   "expected_n": 488,
+   "complete": true,
+   "buckets": {
+    "easy": {
+     "n_problems": 130,
+     "pass1": 0.5153846153846153,
+     "pass1_ci": [
+      0.43,
+      0.6
+     ],
+     "pass2": 0.5692307692307692,
+     "cost_per_solve": 0.0975808925925926,
+     "latency_solved_s": 18.2,
+     "kill_rate": "7/260"
+    },
+    "medium": {
+     "n_problems": 79,
+     "pass1": 0.13924050632911392,
+     "pass1_ci": [
+      0.08,
+      0.232
+     ],
+     "pass2": 0.16455696202531644,
+     "cost_per_solve": 0.55393903,
+     "latency_solved_s": 43.9,
+     "kill_rate": "5/158"
+    },
+    "hard": {
+     "n_problems": 35,
+     "pass1": 0.02857142857142857,
+     "pass1_ci": [
+      0.005,
+      0.145
+     ],
+     "pass2": 0.05714285714285714,
+     "cost_per_solve": 2.1635657,
+     "latency_solved_s": 31.7,
+     "kill_rate": "0/70"
+    }
+   }
+  },
+  {
+   "label": "naive control (sonnet, guided)",
+   "run": "FINAL_baseline_sonnet",
+   "n": 488,
+   "expected_n": 488,
+   "complete": true,
+   "buckets": {
+    "easy": {
+     "n_problems": 130,
+     "pass1": 0.6615384615384615,
+     "pass1_ci": [
+      0.577,
+      0.737
+     ],
+     "pass2": 0.7384615384615385,
+     "cost_per_solve": 0.1776475405882353,
+     "latency_solved_s": 81.3,
+     "kill_rate": "76/260"
+    },
+    "medium": {
+     "n_problems": 79,
+     "pass1": 0.27848101265822783,
+     "pass1_ci": [
+      0.192,
+      0.386
+     ],
+     "pass2": 0.34177215189873417,
+     "cost_per_solve": 0.3698542727272727,
+     "latency_solved_s": 164.8,
+     "kill_rate": "111/158"
+    },
+    "hard": {
+     "n_problems": 35,
+     "pass1": 0.22857142857142856,
+     "pass1_ci": [
+      0.121,
+      0.39
+     ],
+     "pass2": 0.2571428571428571,
+     "cost_per_solve": 0.5267314461538462,
+     "latency_solved_s": 210.7,
+     "kill_rate": "54/70"
+    }
+   }
+  },
+  {
+   "label": "evolve (sonnet, guided)",
+   "run": "FINAL_session_sonnet",
+   "n": 488,
+   "expected_n": 488,
+   "complete": true,
+   "buckets": {
+    "easy": {
+     "n_problems": 130,
+     "pass1": 0.9,
+     "pass1_ci": [
+      0.836,
+      0.941
+     ],
+     "pass2": 0.9461538461538461,
+     "cost_per_solve": 0.08640682320675105,
+     "latency_solved_s": 40.1,
+     "kill_rate": "23/260"
+    },
+    "medium": {
+     "n_problems": 79,
+     "pass1": 0.6455696202531646,
+     "pass1_ci": [
+      0.536,
+      0.742
+     ],
+     "pass2": 0.7215189873417721,
+     "cost_per_solve": 0.2808975519230769,
+     "latency_solved_s": 104.4,
+     "kill_rate": "51/158"
+    },
+    "hard": {
+     "n_problems": 35,
+     "pass1": 0.6285714285714286,
+     "pass1_ci": [
+      0.463,
+      0.768
+     ],
+     "pass2": 0.7142857142857143,
+     "cost_per_solve": 0.3729579204545454,
+     "latency_solved_s": 148.6,
+     "kill_rate": "26/70"
+    }
+   }
+  },
+  {
+   "label": "rocq-mcp fair (sonnet, guided)",
+   "run": "FINAL_rocqmcp_sonnet",
+   "n": 488,
+   "expected_n": 488,
+   "complete": true,
+   "buckets": {
+    "easy": {
+     "n_problems": 130,
+     "pass1": 0.7307692307692307,
+     "pass1_ci": [
+      0.649,
+      0.8
+     ],
+     "pass2": 0.7615384615384615,
+     "cost_per_solve": 0.23109637777777778,
+     "latency_solved_s": 78.0,
+     "kill_rate": "61/260"
+    },
+    "medium": {
+     "n_problems": 79,
+     "pass1": 0.43037974683544306,
+     "pass1_ci": [
+      0.327,
+      0.54
+     ],
+     "pass2": 0.5189873417721519,
+     "cost_per_solve": 0.527274095522388,
+     "latency_solved_s": 152.1,
+     "kill_rate": "78/158"
+    },
+    "hard": {
+     "n_problems": 35,
+     "pass1": 0.2,
+     "pass1_ci": [
+      0.1,
+      0.359
+     ],
+     "pass2": 0.42857142857142855,
+     "cost_per_solve": 0.5307448761904762,
+     "latency_solved_s": 176.0,
+     "kill_rate": "48/70"
+    }
+   }
+  },
+  {
+   "label": "naive control (sonnet, prompt-free A80)",
+   "run": "FINAL_pf_baseline_sonnet",
+   "n": 488,
+   "expected_n": 488,
+   "complete": true,
+   "buckets": {
+    "easy": {
+     "n_problems": 130,
+     "pass1": 0.6692307692307692,
+     "pass1_ci": [
+      0.585,
+      0.744
+     ],
+     "pass2": 0.7076923076923077,
+     "cost_per_solve": 0.1962098593220339,
+     "latency_solved_s": 77.3,
+     "kill_rate": "83/260"
+    },
+    "medium": {
+     "n_problems": 79,
+     "pass1": 0.34177215189873417,
+     "pass1_ci": [
+      0.247,
+      0.452
+     ],
+     "pass2": 0.4050632911392405,
+     "cost_per_solve": 0.43372924,
+     "latency_solved_s": 160.7,
+     "kill_rate": "99/158"
+    },
+    "hard": {
+     "n_problems": 35,
+     "pass1": 0.2,
+     "pass1_ci": [
+      0.1,
+      0.359
+     ],
+     "pass2": 0.2,
+     "cost_per_solve": 0.390923875,
+     "latency_solved_s": 153.2,
+     "kill_rate": "58/70"
+    }
+   }
+  },
+  {
+   "label": "evolve (sonnet, prompt-free A80)",
+   "run": "FINAL_pf_session_sonnet",
+   "n": 488,
+   "expected_n": 488,
+   "complete": true,
+   "buckets": {
+    "easy": {
+     "n_problems": 130,
+     "pass1": 0.9307692307692308,
+     "pass1_ci": [
+      0.874,
+      0.963
+     ],
+     "pass2": 0.9307692307692308,
+     "cost_per_solve": 0.1305825670886076,
+     "latency_solved_s": 40.7,
+     "kill_rate": "21/260"
+    },
+    "medium": {
+     "n_problems": 79,
+     "pass1": 0.6075949367088608,
+     "pass1_ci": [
+      0.497,
+      0.708
+     ],
+     "pass2": 0.7468354430379747,
+     "cost_per_solve": 0.3363016882352941,
+     "latency_solved_s": 112.6,
+     "kill_rate": "51/158"
+    },
+    "hard": {
+     "n_problems": 35,
+     "pass1": 0.6857142857142857,
+     "pass1_ci": [
+      0.52,
+      0.814
+     ],
+     "pass2": 0.7428571428571429,
+     "cost_per_solve": 0.41999015833333336,
+     "latency_solved_s": 142.2,
+     "kill_rate": "22/70"
+    }
+   }
+  },
+  {
+   "label": "rocq-mcp fair (sonnet, prompt-free A99, env-bridged)",
+   "run": "FINAL_pf_rocqmcp_sonnet",
+   "n": 488,
+   "expected_n": 488,
+   "complete": true,
+   "buckets": {
+    "easy": {
+     "n_problems": 130,
+     "pass1": 0.8769230769230769,
+     "pass1_ci": [
+      0.809,
+      0.923
+     ],
+     "pass2": 0.9,
+     "cost_per_solve": 0.19203278157894738,
+     "latency_solved_s": 46.6,
+     "kill_rate": "22/260"
+    },
+    "medium": {
+     "n_problems": 79,
+     "pass1": 0.5443037974683544,
+     "pass1_ci": [
+      0.435,
+      0.65
+     ],
+     "pass2": 0.569620253164557,
+     "cost_per_solve": 0.48330962409638556,
+     "latency_solved_s": 113.8,
+     "kill_rate": "56/158"
+    },
+    "hard": {
+     "n_problems": 35,
+     "pass1": 0.6285714285714286,
+     "pass1_ci": [
+      0.463,
+      0.768
+     ],
+     "pass2": 0.6571428571428571,
+     "cost_per_solve": 0.521568323076923,
+     "latency_solved_s": 142.3,
+     "kill_rate": "28/70"
+    }
+   }
+  },
+  {
+   "label": "evolve (haiku, phase-1 config, wall-only A100)",
+   "run": "FINAL_frozen_wallonly",
+   "n": 488,
+   "expected_n": 488,
+   "complete": true,
+   "buckets": {
+    "easy": {
+     "n_problems": 130,
+     "pass1": 0.6692307692307692,
+     "pass1_ci": [
+      0.585,
+      0.744
+     ],
+     "pass2": 0.7153846153846154,
+     "cost_per_solve": 0.06472946705202312,
+     "latency_solved_s": 51.4,
+     "kill_rate": "85/260"
+    },
+    "medium": {
+     "n_problems": 79,
+     "pass1": 0.25316455696202533,
+     "pass1_ci": [
+      0.17,
+      0.359
+     ],
+     "pass2": 0.3291139240506329,
+     "cost_per_solve": 0.2648170840909091,
+     "latency_solved_s": 107.2,
+     "kill_rate": "88/158"
+    },
+    "hard": {
+     "n_problems": 35,
+     "pass1": 0.08571428571428572,
+     "pass1_ci": [
+      0.03,
+      0.224
+     ],
+     "pass2": 0.17142857142857143,
+     "cost_per_solve": 0.6795929625,
+     "latency_solved_s": 156.5,
+     "kill_rate": "51/70"
+    }
+   }
+  }
+ ]
+}

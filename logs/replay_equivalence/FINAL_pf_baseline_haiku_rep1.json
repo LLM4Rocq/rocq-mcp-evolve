@@ -1,0 +1,2214 @@
+{
+ "summary": {
+  "run": "FINAL_pf_baseline_haiku",
+  "rep": 1,
+  "exe": "/Users/gbaudart/Project/llm4rocq/rocq-tools/rocq-tools/.claude/worktrees/main-frozen/_build/default/src/baseline_server/rocq_agent_baseline.exe",
+  "attempts": 244,
+  "check_calls": 8349,
+  "mismatching_calls": 0,
+  "attempts_with_fewer_replayed_calls": 0,
+  "candidate_v": {
+   "absent in both": 179,
+   "identical": 65
+  },
+  "errors": 0
+ },
+ "attempts": [
+  {
+   "attempt": "aime_1983_p1__rep1",
+   "n_calls": 41,
+   "n_other_tools": 0,
+   "n_replayed": 41,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "aime_1983_p2__rep1",
+   "n_calls": 46,
+   "n_other_tools": 0,
+   "n_replayed": 46,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "aime_1983_p3__rep1",
+   "n_calls": 8,
+   "n_other_tools": 0,
+   "n_replayed": 8,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "aime_1984_p1__rep1",
+   "n_calls": 62,
+   "n_other_tools": 0,
+   "n_replayed": 62,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "aime_1984_p7__rep1",
+   "n_calls": 7,
+   "n_other_tools": 0,
+   "n_replayed": 7,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "aime_1987_p5__rep1",
+   "n_calls": 49,
+   "n_other_tools": 0,
+   "n_replayed": 49,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "aime_1988_p8__rep1",
+   "n_calls": 16,
+   "n_other_tools": 0,
+   "n_replayed": 16,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "aime_1989_p8__rep1",
+   "n_calls": 26,
+   "n_other_tools": 0,
+   "n_replayed": 26,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "aime_1990_p15__rep1",
+   "n_calls": 25,
+   "n_other_tools": 0,
+   "n_replayed": 25,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "aime_1990_p4__rep1",
+   "n_calls": 48,
+   "n_other_tools": 0,
+   "n_replayed": 48,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "aime_1991_p9__rep1",
+   "n_calls": 17,
+   "n_other_tools": 0,
+   "n_replayed": 17,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "aime_1994_p3__rep1",
+   "n_calls": 8,
+   "n_other_tools": 0,
+   "n_replayed": 8,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "aime_1995_p7__rep1",
+   "n_calls": 41,
+   "n_other_tools": 0,
+   "n_replayed": 41,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "aime_1997_p9__rep1",
+   "n_calls": 21,
+   "n_other_tools": 0,
+   "n_replayed": 21,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "aime_1999_p11__rep1",
+   "n_calls": 39,
+   "n_other_tools": 0,
+   "n_replayed": 39,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_2varlineareq_fp3zeq11_3tfm1m5zeqn68_feqn10_zeq7__rep1",
+   "n_calls": 45,
+   "n_other_tools": 0,
+   "n_replayed": 45,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_9onxpypzleqsum2onxpy__rep1",
+   "n_calls": 21,
+   "n_other_tools": 0,
+   "n_replayed": 21,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_abpbcpcageq3_sumaonsqrtapbgeq3onsqrt2__rep1",
+   "n_calls": 47,
+   "n_other_tools": 0,
+   "n_replayed": 47,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_absapbon1pabsapbleqsumabsaon1pabsa__rep1",
+   "n_calls": 47,
+   "n_other_tools": 0,
+   "n_replayed": 47,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_absxm1pabsxpabsxp1eqxp2_0leqxleq1__rep1",
+   "n_calls": 23,
+   "n_other_tools": 0,
+   "n_replayed": 23,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_amgm_sum1toneqn_prod1tonleq1__rep1",
+   "n_calls": 30,
+   "n_other_tools": 0,
+   "n_replayed": 30,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_amgm_sumasqdivbgeqsuma__rep1",
+   "n_calls": 58,
+   "n_other_tools": 0,
+   "n_replayed": 58,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_apbmpcneq0_aeq0anbeq0anceq0__rep1",
+   "n_calls": 42,
+   "n_other_tools": 0,
+   "n_replayed": 42,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_apbon2pownleqapownpbpowon2__rep1",
+   "n_calls": 42,
+   "n_other_tools": 0,
+   "n_replayed": 42,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_apbpceq2_abpbcpcaeq1_aleq1on3anbleq1ancleq4on3__rep1",
+   "n_calls": 37,
+   "n_other_tools": 0,
+   "n_replayed": 37,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_bleqa_apbon2msqrtableqambsqon8b__rep1",
+   "n_calls": 43,
+   "n_other_tools": 0,
+   "n_replayed": 43,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "algebra_cubrtrp1oncubrtreq3_rcubp1onrcubeq5778__rep1",
+   "n_calls": 64,
+   "n_other_tools": 0,
+   "n_replayed": 64,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_ineq_nto1onlt2m1on__rep1",
+   "n_calls": 53,
+   "n_other_tools": 0,
+   "n_replayed": 53,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_others_exirrpowirrrat__rep1",
+   "n_calls": 26,
+   "n_other_tools": 0,
+   "n_replayed": 26,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_sqineq_at2malt1__rep1",
+   "n_calls": 32,
+   "n_other_tools": 0,
+   "n_replayed": 32,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "algebra_sqineq_unitcircatbpabsamblt1__rep1",
+   "n_calls": 50,
+   "n_other_tools": 0,
+   "n_replayed": 50,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "algebra_sqineq_unitcircatbpamblt1__rep1",
+   "n_calls": 64,
+   "n_other_tools": 0,
+   "n_replayed": 64,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "algebra_sum1onsqrt2to1onsqrt10000lt198__rep1",
+   "n_calls": 53,
+   "n_other_tools": 0,
+   "n_replayed": 53,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "amc12_2000_p12__rep1",
+   "n_calls": 74,
+   "n_other_tools": 0,
+   "n_replayed": 74,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12_2000_p1__rep1",
+   "n_calls": 34,
+   "n_other_tools": 0,
+   "n_replayed": 34,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12_2000_p20__rep1",
+   "n_calls": 45,
+   "n_other_tools": 0,
+   "n_replayed": 45,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12_2000_p6__rep1",
+   "n_calls": 49,
+   "n_other_tools": 0,
+   "n_replayed": 49,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "amc12_2001_p21__rep1",
+   "n_calls": 44,
+   "n_other_tools": 0,
+   "n_replayed": 44,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12_2001_p5__rep1",
+   "n_calls": 6,
+   "n_other_tools": 0,
+   "n_replayed": 6,
+   "mismatches": [],
+   "n_timed_out_orig": 3,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2002_p13__rep1",
+   "n_calls": 33,
+   "n_other_tools": 0,
+   "n_replayed": 33,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2002_p6__rep1",
+   "n_calls": 92,
+   "n_other_tools": 0,
+   "n_replayed": 92,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2003_p23__rep1",
+   "n_calls": 14,
+   "n_other_tools": 0,
+   "n_replayed": 14,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2003_p5__rep1",
+   "n_calls": 29,
+   "n_other_tools": 0,
+   "n_replayed": 29,
+   "mismatches": [],
+   "n_timed_out_orig": 1,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2008_p25__rep1",
+   "n_calls": 20,
+   "n_other_tools": 0,
+   "n_replayed": 20,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2009_p6__rep1",
+   "n_calls": 63,
+   "n_other_tools": 0,
+   "n_replayed": 63,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "amc12a_2009_p7__rep1",
+   "n_calls": 62,
+   "n_other_tools": 0,
+   "n_replayed": 62,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2013_p4__rep1",
+   "n_calls": 29,
+   "n_other_tools": 0,
+   "n_replayed": 29,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "amc12a_2019_p12__rep1",
+   "n_calls": 36,
+   "n_other_tools": 0,
+   "n_replayed": 36,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2020_p10__rep1",
+   "n_calls": 26,
+   "n_other_tools": 0,
+   "n_replayed": 26,
+   "mismatches": [],
+   "n_timed_out_orig": 2,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2020_p15__rep1",
+   "n_calls": 33,
+   "n_other_tools": 0,
+   "n_replayed": 33,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2020_p25__rep1",
+   "n_calls": 33,
+   "n_other_tools": 0,
+   "n_replayed": 33,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2020_p4__rep1",
+   "n_calls": 3,
+   "n_other_tools": 0,
+   "n_replayed": 3,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "amc12a_2020_p7__rep1",
+   "n_calls": 25,
+   "n_other_tools": 0,
+   "n_replayed": 25,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2020_p9__rep1",
+   "n_calls": 32,
+   "n_other_tools": 0,
+   "n_replayed": 32,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2021_p12__rep1",
+   "n_calls": 15,
+   "n_other_tools": 0,
+   "n_replayed": 15,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2021_p14__rep1",
+   "n_calls": 10,
+   "n_other_tools": 0,
+   "n_replayed": 10,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2021_p18__rep1",
+   "n_calls": 51,
+   "n_other_tools": 0,
+   "n_replayed": 51,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2021_p19__rep1",
+   "n_calls": 24,
+   "n_other_tools": 0,
+   "n_replayed": 24,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2021_p22__rep1",
+   "n_calls": 20,
+   "n_other_tools": 0,
+   "n_replayed": 20,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2021_p25__rep1",
+   "n_calls": 31,
+   "n_other_tools": 0,
+   "n_replayed": 31,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2021_p3__rep1",
+   "n_calls": 63,
+   "n_other_tools": 0,
+   "n_replayed": 63,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2021_p8__rep1",
+   "n_calls": 31,
+   "n_other_tools": 0,
+   "n_replayed": 31,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12a_2021_p9__rep1",
+   "n_calls": 13,
+   "n_other_tools": 0,
+   "n_replayed": 13,
+   "mismatches": [],
+   "n_timed_out_orig": 2,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12b_2002_p19__rep1",
+   "n_calls": 56,
+   "n_other_tools": 0,
+   "n_replayed": 56,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12b_2002_p2__rep1",
+   "n_calls": 2,
+   "n_other_tools": 0,
+   "n_replayed": 2,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "amc12b_2002_p4__rep1",
+   "n_calls": 38,
+   "n_other_tools": 0,
+   "n_replayed": 38,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "amc12b_2002_p7__rep1",
+   "n_calls": 37,
+   "n_other_tools": 0,
+   "n_replayed": 37,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12b_2020_p13__rep1",
+   "n_calls": 58,
+   "n_other_tools": 0,
+   "n_replayed": 58,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "amc12b_2020_p21__rep1",
+   "n_calls": 35,
+   "n_other_tools": 0,
+   "n_replayed": 35,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12b_2020_p22__rep1",
+   "n_calls": 50,
+   "n_other_tools": 0,
+   "n_replayed": 50,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12b_2020_p2__rep1",
+   "n_calls": 1,
+   "n_other_tools": 0,
+   "n_replayed": 1,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "amc12b_2020_p6__rep1",
+   "n_calls": 60,
+   "n_other_tools": 0,
+   "n_replayed": 60,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12b_2021_p13__rep1",
+   "n_calls": 43,
+   "n_other_tools": 0,
+   "n_replayed": 43,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12b_2021_p18__rep1",
+   "n_calls": 43,
+   "n_other_tools": 0,
+   "n_replayed": 43,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "amc12b_2021_p1__rep1",
+   "n_calls": 49,
+   "n_other_tools": 0,
+   "n_replayed": 49,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12b_2021_p3__rep1",
+   "n_calls": 29,
+   "n_other_tools": 0,
+   "n_replayed": 29,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12b_2021_p4__rep1",
+   "n_calls": 19,
+   "n_other_tools": 0,
+   "n_replayed": 19,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "amc12b_2021_p9__rep1",
+   "n_calls": 56,
+   "n_other_tools": 0,
+   "n_replayed": 56,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "imo_1959_p1__rep1",
+   "n_calls": 30,
+   "n_other_tools": 0,
+   "n_replayed": 30,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1960_p2__rep1",
+   "n_calls": 40,
+   "n_other_tools": 0,
+   "n_replayed": 40,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1962_p2__rep1",
+   "n_calls": 34,
+   "n_other_tools": 0,
+   "n_replayed": 34,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1963_p5__rep1",
+   "n_calls": 55,
+   "n_other_tools": 0,
+   "n_replayed": 55,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1964_p2__rep1",
+   "n_calls": 68,
+   "n_other_tools": 0,
+   "n_replayed": 68,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1965_p2__rep1",
+   "n_calls": 11,
+   "n_other_tools": 0,
+   "n_replayed": 11,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1968_p5_1__rep1",
+   "n_calls": 42,
+   "n_other_tools": 0,
+   "n_replayed": 42,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1969_p2__rep1",
+   "n_calls": 30,
+   "n_other_tools": 0,
+   "n_replayed": 30,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1974_p3__rep1",
+   "n_calls": 44,
+   "n_other_tools": 0,
+   "n_replayed": 44,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1977_p6__rep1",
+   "n_calls": 4,
+   "n_other_tools": 0,
+   "n_replayed": 4,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1981_p6__rep1",
+   "n_calls": 41,
+   "n_other_tools": 0,
+   "n_replayed": 41,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1982_p1__rep1",
+   "n_calls": 34,
+   "n_other_tools": 0,
+   "n_replayed": 34,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1983_p6__rep1",
+   "n_calls": 31,
+   "n_other_tools": 0,
+   "n_replayed": 31,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1984_p6__rep1",
+   "n_calls": 28,
+   "n_other_tools": 0,
+   "n_replayed": 28,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1985_p6__rep1",
+   "n_calls": 40,
+   "n_other_tools": 0,
+   "n_replayed": 40,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1992_p1__rep1",
+   "n_calls": 6,
+   "n_other_tools": 0,
+   "n_replayed": 6,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_1997_p5__rep1",
+   "n_calls": 21,
+   "n_other_tools": 0,
+   "n_replayed": 21,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_2001_p6__rep1",
+   "n_calls": 29,
+   "n_other_tools": 0,
+   "n_replayed": 29,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imo_2019_p1__rep1",
+   "n_calls": 32,
+   "n_other_tools": 0,
+   "n_replayed": 32,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "imosl_2007_algebra_p6__rep1",
+   "n_calls": 58,
+   "n_other_tools": 0,
+   "n_replayed": 58,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "induction_11div10tonmn1ton__rep1",
+   "n_calls": 62,
+   "n_other_tools": 0,
+   "n_replayed": 62,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "induction_12dvd4expnp1p20__rep1",
+   "n_calls": 21,
+   "n_other_tools": 0,
+   "n_replayed": 21,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "induction_1pxpownlt1pnx__rep1",
+   "n_calls": 39,
+   "n_other_tools": 0,
+   "n_replayed": 39,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "induction_nfactltnexpnm1ngt3__rep1",
+   "n_calls": 51,
+   "n_other_tools": 0,
+   "n_replayed": 51,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "induction_pord1p1on2powklt5on2__rep1",
+   "n_calls": 55,
+   "n_other_tools": 0,
+   "n_replayed": 55,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "induction_pprime_pdvdapowpma__rep1",
+   "n_calls": 75,
+   "n_other_tools": 0,
+   "n_replayed": 75,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "induction_prod1p1onk3le3m1onn__rep1",
+   "n_calls": 54,
+   "n_other_tools": 0,
+   "n_replayed": 54,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "induction_sumkexp3eqsumksq__rep1",
+   "n_calls": 45,
+   "n_other_tools": 0,
+   "n_replayed": 45,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_107__rep1",
+   "n_calls": 29,
+   "n_other_tools": 0,
+   "n_replayed": 29,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_113__rep1",
+   "n_calls": 51,
+   "n_other_tools": 0,
+   "n_replayed": 51,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_114__rep1",
+   "n_calls": 24,
+   "n_other_tools": 0,
+   "n_replayed": 24,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_125__rep1",
+   "n_calls": 15,
+   "n_other_tools": 0,
+   "n_replayed": 15,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_129__rep1",
+   "n_calls": 24,
+   "n_other_tools": 0,
+   "n_replayed": 24,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_137__rep1",
+   "n_calls": 34,
+   "n_other_tools": 0,
+   "n_replayed": 34,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_139__rep1",
+   "n_calls": 31,
+   "n_other_tools": 0,
+   "n_replayed": 31,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_141__rep1",
+   "n_calls": 42,
+   "n_other_tools": 0,
+   "n_replayed": 42,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_142__rep1",
+   "n_calls": 77,
+   "n_other_tools": 0,
+   "n_replayed": 77,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_143__rep1",
+   "n_calls": 2,
+   "n_other_tools": 0,
+   "n_replayed": 2,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_148__rep1",
+   "n_calls": 47,
+   "n_other_tools": 0,
+   "n_replayed": 47,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_153__rep1",
+   "n_calls": 54,
+   "n_other_tools": 0,
+   "n_replayed": 54,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_156__rep1",
+   "n_calls": 78,
+   "n_other_tools": 0,
+   "n_replayed": 78,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_158__rep1",
+   "n_calls": 26,
+   "n_other_tools": 0,
+   "n_replayed": 26,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_160__rep1",
+   "n_calls": 59,
+   "n_other_tools": 0,
+   "n_replayed": 59,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_170__rep1",
+   "n_calls": 35,
+   "n_other_tools": 0,
+   "n_replayed": 35,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_171__rep1",
+   "n_calls": 7,
+   "n_other_tools": 0,
+   "n_replayed": 7,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_176__rep1",
+   "n_calls": 1,
+   "n_other_tools": 0,
+   "n_replayed": 1,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_17__rep1",
+   "n_calls": 56,
+   "n_other_tools": 0,
+   "n_replayed": 56,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_184__rep1",
+   "n_calls": 60,
+   "n_other_tools": 0,
+   "n_replayed": 60,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_188__rep1",
+   "n_calls": 15,
+   "n_other_tools": 0,
+   "n_replayed": 15,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_196__rep1",
+   "n_calls": 39,
+   "n_other_tools": 0,
+   "n_replayed": 39,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_208__rep1",
+   "n_calls": 38,
+   "n_other_tools": 0,
+   "n_replayed": 38,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_209__rep1",
+   "n_calls": 23,
+   "n_other_tools": 0,
+   "n_replayed": 23,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_215__rep1",
+   "n_calls": 17,
+   "n_other_tools": 0,
+   "n_replayed": 17,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_246__rep1",
+   "n_calls": 53,
+   "n_other_tools": 0,
+   "n_replayed": 53,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_24__rep1",
+   "n_calls": 24,
+   "n_other_tools": 0,
+   "n_replayed": 24,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_263__rep1",
+   "n_calls": 86,
+   "n_other_tools": 0,
+   "n_replayed": 86,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_270__rep1",
+   "n_calls": 43,
+   "n_other_tools": 0,
+   "n_replayed": 43,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_275__rep1",
+   "n_calls": 32,
+   "n_other_tools": 0,
+   "n_replayed": 32,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_276__rep1",
+   "n_calls": 70,
+   "n_other_tools": 0,
+   "n_replayed": 70,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_288__rep1",
+   "n_calls": 64,
+   "n_other_tools": 0,
+   "n_replayed": 64,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_289__rep1",
+   "n_calls": 27,
+   "n_other_tools": 0,
+   "n_replayed": 27,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_293__rep1",
+   "n_calls": 95,
+   "n_other_tools": 0,
+   "n_replayed": 95,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_296__rep1",
+   "n_calls": 2,
+   "n_other_tools": 0,
+   "n_replayed": 2,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_302__rep1",
+   "n_calls": 41,
+   "n_other_tools": 0,
+   "n_replayed": 41,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_304__rep1",
+   "n_calls": 2,
+   "n_other_tools": 0,
+   "n_replayed": 2,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_313__rep1",
+   "n_calls": 52,
+   "n_other_tools": 0,
+   "n_replayed": 52,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_314__rep1",
+   "n_calls": 40,
+   "n_other_tools": 0,
+   "n_replayed": 40,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_320__rep1",
+   "n_calls": 46,
+   "n_other_tools": 0,
+   "n_replayed": 46,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_329__rep1",
+   "n_calls": 98,
+   "n_other_tools": 0,
+   "n_replayed": 98,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_332__rep1",
+   "n_calls": 66,
+   "n_other_tools": 0,
+   "n_replayed": 66,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_338__rep1",
+   "n_calls": 36,
+   "n_other_tools": 0,
+   "n_replayed": 36,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_33__rep1",
+   "n_calls": 29,
+   "n_other_tools": 0,
+   "n_replayed": 29,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_342__rep1",
+   "n_calls": 56,
+   "n_other_tools": 0,
+   "n_replayed": 56,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_346__rep1",
+   "n_calls": 35,
+   "n_other_tools": 0,
+   "n_replayed": 35,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_354__rep1",
+   "n_calls": 33,
+   "n_other_tools": 0,
+   "n_replayed": 33,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_359__rep1",
+   "n_calls": 46,
+   "n_other_tools": 0,
+   "n_replayed": 46,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_362__rep1",
+   "n_calls": 34,
+   "n_other_tools": 0,
+   "n_replayed": 34,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_388__rep1",
+   "n_calls": 1,
+   "n_other_tools": 0,
+   "n_replayed": 1,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_392__rep1",
+   "n_calls": 61,
+   "n_other_tools": 0,
+   "n_replayed": 61,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_398__rep1",
+   "n_calls": 28,
+   "n_other_tools": 0,
+   "n_replayed": 28,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_400__rep1",
+   "n_calls": 41,
+   "n_other_tools": 0,
+   "n_replayed": 41,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_412__rep1",
+   "n_calls": 27,
+   "n_other_tools": 0,
+   "n_replayed": 27,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_419__rep1",
+   "n_calls": 3,
+   "n_other_tools": 0,
+   "n_replayed": 3,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_427__rep1",
+   "n_calls": 25,
+   "n_other_tools": 0,
+   "n_replayed": 25,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_432__rep1",
+   "n_calls": 1,
+   "n_other_tools": 0,
+   "n_replayed": 1,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_440__rep1",
+   "n_calls": 34,
+   "n_other_tools": 0,
+   "n_replayed": 34,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_441__rep1",
+   "n_calls": 5,
+   "n_other_tools": 0,
+   "n_replayed": 5,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_44__rep1",
+   "n_calls": 45,
+   "n_other_tools": 0,
+   "n_replayed": 45,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_452__rep1",
+   "n_calls": 23,
+   "n_other_tools": 0,
+   "n_replayed": 23,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_459__rep1",
+   "n_calls": 49,
+   "n_other_tools": 0,
+   "n_replayed": 49,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_478__rep1",
+   "n_calls": 12,
+   "n_other_tools": 0,
+   "n_replayed": 12,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_484__rep1",
+   "n_calls": 83,
+   "n_other_tools": 0,
+   "n_replayed": 83,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_487__rep1",
+   "n_calls": 36,
+   "n_other_tools": 0,
+   "n_replayed": 36,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_513__rep1",
+   "n_calls": 34,
+   "n_other_tools": 0,
+   "n_replayed": 34,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_598__rep1",
+   "n_calls": 21,
+   "n_other_tools": 0,
+   "n_replayed": 21,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_756__rep1",
+   "n_calls": 30,
+   "n_other_tools": 0,
+   "n_replayed": 30,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_algebra_76__rep1",
+   "n_calls": 8,
+   "n_other_tools": 0,
+   "n_replayed": 8,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_algebra_80__rep1",
+   "n_calls": 26,
+   "n_other_tools": 0,
+   "n_replayed": 26,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_100__rep1",
+   "n_calls": 36,
+   "n_other_tools": 0,
+   "n_replayed": 36,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_1124__rep1",
+   "n_calls": 68,
+   "n_other_tools": 0,
+   "n_replayed": 68,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_127__rep1",
+   "n_calls": 13,
+   "n_other_tools": 0,
+   "n_replayed": 13,
+   "mismatches": [],
+   "n_timed_out_orig": 2,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_12__rep1",
+   "n_calls": 1,
+   "n_other_tools": 0,
+   "n_replayed": 1,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_135__rep1",
+   "n_calls": 30,
+   "n_other_tools": 0,
+   "n_replayed": 30,
+   "mismatches": [],
+   "n_timed_out_orig": 1,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_150__rep1",
+   "n_calls": 20,
+   "n_other_tools": 0,
+   "n_replayed": 20,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_175__rep1",
+   "n_calls": 10,
+   "n_other_tools": 0,
+   "n_replayed": 10,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_185__rep1",
+   "n_calls": 60,
+   "n_other_tools": 0,
+   "n_replayed": 60,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_207__rep1",
+   "n_calls": 2,
+   "n_other_tools": 0,
+   "n_replayed": 2,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_212__rep1",
+   "n_calls": 3,
+   "n_other_tools": 0,
+   "n_replayed": 3,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_222__rep1",
+   "n_calls": 34,
+   "n_other_tools": 0,
+   "n_replayed": 34,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_227__rep1",
+   "n_calls": 33,
+   "n_other_tools": 0,
+   "n_replayed": 33,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_229__rep1",
+   "n_calls": 11,
+   "n_other_tools": 0,
+   "n_replayed": 11,
+   "mismatches": [],
+   "n_timed_out_orig": 4,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_233__rep1",
+   "n_calls": 62,
+   "n_other_tools": 0,
+   "n_replayed": 62,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_234__rep1",
+   "n_calls": 58,
+   "n_other_tools": 0,
+   "n_replayed": 58,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_235__rep1",
+   "n_calls": 3,
+   "n_other_tools": 0,
+   "n_replayed": 3,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_237__rep1",
+   "n_calls": 1,
+   "n_other_tools": 0,
+   "n_replayed": 1,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_239__rep1",
+   "n_calls": 1,
+   "n_other_tools": 0,
+   "n_replayed": 1,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_247__rep1",
+   "n_calls": 19,
+   "n_other_tools": 0,
+   "n_replayed": 19,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_254__rep1",
+   "n_calls": 5,
+   "n_other_tools": 0,
+   "n_replayed": 5,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_277__rep1",
+   "n_calls": 65,
+   "n_other_tools": 0,
+   "n_replayed": 65,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_293__rep1",
+   "n_calls": 20,
+   "n_other_tools": 0,
+   "n_replayed": 20,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_296__rep1",
+   "n_calls": 14,
+   "n_other_tools": 0,
+   "n_replayed": 14,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_299__rep1",
+   "n_calls": 3,
+   "n_other_tools": 0,
+   "n_replayed": 3,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_314__rep1",
+   "n_calls": 19,
+   "n_other_tools": 0,
+   "n_replayed": 19,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_320__rep1",
+   "n_calls": 1,
+   "n_other_tools": 0,
+   "n_replayed": 1,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_321__rep1",
+   "n_calls": 36,
+   "n_other_tools": 0,
+   "n_replayed": 36,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_328__rep1",
+   "n_calls": 25,
+   "n_other_tools": 0,
+   "n_replayed": 25,
+   "mismatches": [],
+   "n_timed_out_orig": 3,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_341__rep1",
+   "n_calls": 14,
+   "n_other_tools": 0,
+   "n_replayed": 14,
+   "mismatches": [],
+   "n_timed_out_orig": 1,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_342__rep1",
+   "n_calls": 1,
+   "n_other_tools": 0,
+   "n_replayed": 1,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_343__rep1",
+   "n_calls": 4,
+   "n_other_tools": 0,
+   "n_replayed": 4,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_345__rep1",
+   "n_calls": 3,
+   "n_other_tools": 0,
+   "n_replayed": 3,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_34__rep1",
+   "n_calls": 32,
+   "n_other_tools": 0,
+   "n_replayed": 32,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_353__rep1",
+   "n_calls": 9,
+   "n_other_tools": 0,
+   "n_replayed": 9,
+   "mismatches": [],
+   "n_timed_out_orig": 2,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_3__rep1",
+   "n_calls": 3,
+   "n_other_tools": 0,
+   "n_replayed": 3,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_427__rep1",
+   "n_calls": 22,
+   "n_other_tools": 0,
+   "n_replayed": 22,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_430__rep1",
+   "n_calls": 50,
+   "n_other_tools": 0,
+   "n_replayed": 50,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_435__rep1",
+   "n_calls": 40,
+   "n_other_tools": 0,
+   "n_replayed": 40,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_447__rep1",
+   "n_calls": 4,
+   "n_other_tools": 0,
+   "n_replayed": 4,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_451__rep1",
+   "n_calls": 29,
+   "n_other_tools": 0,
+   "n_replayed": 29,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_457__rep1",
+   "n_calls": 29,
+   "n_other_tools": 0,
+   "n_replayed": 29,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_483__rep1",
+   "n_calls": 46,
+   "n_other_tools": 0,
+   "n_replayed": 46,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_495__rep1",
+   "n_calls": 27,
+   "n_other_tools": 0,
+   "n_replayed": 27,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_517__rep1",
+   "n_calls": 3,
+   "n_other_tools": 0,
+   "n_replayed": 3,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_521__rep1",
+   "n_calls": 35,
+   "n_other_tools": 0,
+   "n_replayed": 35,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_541__rep1",
+   "n_calls": 41,
+   "n_other_tools": 0,
+   "n_replayed": 41,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_551__rep1",
+   "n_calls": 2,
+   "n_other_tools": 0,
+   "n_replayed": 2,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_552__rep1",
+   "n_calls": 27,
+   "n_other_tools": 0,
+   "n_replayed": 27,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_559__rep1",
+   "n_calls": 58,
+   "n_other_tools": 0,
+   "n_replayed": 58,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_582__rep1",
+   "n_calls": 69,
+   "n_other_tools": 0,
+   "n_replayed": 69,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_5__rep1",
+   "n_calls": 62,
+   "n_other_tools": 0,
+   "n_replayed": 62,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_618__rep1",
+   "n_calls": 46,
+   "n_other_tools": 0,
+   "n_replayed": 46,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_66__rep1",
+   "n_calls": 1,
+   "n_other_tools": 0,
+   "n_replayed": 1,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_711__rep1",
+   "n_calls": 37,
+   "n_other_tools": 0,
+   "n_replayed": 37,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_728__rep1",
+   "n_calls": 3,
+   "n_other_tools": 0,
+   "n_replayed": 3,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_764__rep1",
+   "n_calls": 30,
+   "n_other_tools": 0,
+   "n_replayed": 30,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_765__rep1",
+   "n_calls": 26,
+   "n_other_tools": 0,
+   "n_replayed": 26,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "mathd_numbertheory_769__rep1",
+   "n_calls": 5,
+   "n_other_tools": 0,
+   "n_replayed": 5,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_85__rep1",
+   "n_calls": 1,
+   "n_other_tools": 0,
+   "n_replayed": 1,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "mathd_numbertheory_99__rep1",
+   "n_calls": 81,
+   "n_other_tools": 0,
+   "n_replayed": 81,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "numbertheory_2pownm1prime_nprime__rep1",
+   "n_calls": 44,
+   "n_other_tools": 0,
+   "n_replayed": 44,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "numbertheory_3pow2pownm1mod2pownp3eq2pownp2__rep1",
+   "n_calls": 24,
+   "n_other_tools": 0,
+   "n_replayed": 24,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "numbertheory_4x3m7y3neq2003__rep1",
+   "n_calls": 46,
+   "n_other_tools": 0,
+   "n_replayed": 46,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "numbertheory_aoddbdiv4asqpbsqmod8eq1__rep1",
+   "n_calls": 55,
+   "n_other_tools": 0,
+   "n_replayed": 55,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "numbertheory_exk2powkeqapb2mulbpa2_aeq1__rep1",
+   "n_calls": 35,
+   "n_other_tools": 0,
+   "n_replayed": 35,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "numbertheory_fxeq4powxp6powxp9powx_f2powmdvdf2pown__rep1",
+   "n_calls": 48,
+   "n_other_tools": 0,
+   "n_replayed": 48,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "identical"
+  },
+  {
+   "attempt": "numbertheory_notequiv2i2jasqbsqdiv8__rep1",
+   "n_calls": 28,
+   "n_other_tools": 0,
+   "n_replayed": 28,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  },
+  {
+   "attempt": "numbertheory_x5neqy2p4__rep1",
+   "n_calls": 62,
+   "n_other_tools": 0,
+   "n_replayed": 62,
+   "mismatches": [],
+   "n_timed_out_orig": 0,
+   "candidate": "absent in both"
+  }
+ ]
+}

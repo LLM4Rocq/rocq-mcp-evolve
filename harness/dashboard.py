@@ -431,6 +431,61 @@ def sweep_section():
             f'upper bound)</summary><table>{head}{trs}</table></details></div>')
 
 
+# ---------- held-out + phase-2 sections (combined results page) ----------
+
+def heldout_section():
+    """Held-out miniF2F table rendered VERBATIM from the registered
+    artifact (harness/final_tables.py output, single look, A96). This
+    function only formats — it never recomputes a number."""
+    art_path = common.LOGS / "final_heldout_table.json"
+    if not art_path.exists():
+        art_path = common.REPO / "docs" / "final_heldout_table.json"
+    if not art_path.exists():
+        return ""
+    art = json.loads(art_path.read_text())
+    BK = ("easy", "medium", "hard")
+    trs = []
+    for a in art["arms"]:
+        b = a["buckets"]
+
+        def trip(key, fmt):
+            return " / ".join(fmt(b[x][key]) if b[x][key] is not None else "–"
+                              for x in BK)
+        ci = "; ".join(f"{x} {b[x]['pass1_ci'][0]:.2f}–{b[x]['pass1_ci'][1]:.2f}"
+                       for x in BK)
+        lead = "evolve" in a["label"] and "frozen" not in a["label"]
+        p1 = trip("pass1", lambda v: f"{v:.2f}")
+        # pooled over all problems: pass1*n recovers the exact solve count
+        k_all = round(sum(b[x]["pass1"] * b[x]["n_problems"] for x in BK))
+        n_all = sum(b[x]["n_problems"] for x in BK)
+        pooled = f"{k_all / n_all:.2f}"
+        trs.append(
+            f'<tr title="Wilson 95% CI pass@1: {esc(ci)}; pooled = {k_all}/{n_all}">'
+            f'<td>{"<b>" + esc(a["label"]) + "</b>" if lead else esc(a["label"])}</td>'
+            f'<td class=num>{"<b>" + pooled + "</b>" if lead else pooled}</td>'
+            f'<td class=num>{"<b>" + p1 + "</b>" if lead else p1}</td>'
+            f'<td class=num>{trip("pass2", lambda v: f"{v:.2f}")}</td>'
+            f'<td class=num>{trip("cost_per_solve", lambda v: f"${v:.2f}")}</td>'
+            f'<td class=num>{trip("latency_solved_s", lambda v: f"{v:.0f}s")}</td>'
+            f'<td class=num>{" / ".join(b[x]["kill_rate"] for x in BK)}</td></tr>')
+    return ("<table><tr><th>arm</th><th class=num>pass@1 all (244)</th>"
+            "<th class=num>pass@1 (e/m/h)</th>"
+            "<th class=num>pass@2</th><th class=num>$ / solve</th>"
+            "<th class=num>latency (solved)</th><th class=num>wall-killed</th></tr>"
+            + "".join(trs) + "</table>")
+
+
+def autoform_section():
+    """Phase-2 autoformalization headline, rendered by autoform_dashboard's
+    own table builder (single source of truth)."""
+    try:
+        import autoform_dashboard as afd
+        table, _ = afd.headline_table()
+        return table
+    except Exception:
+        return ""
+
+
 # ---------- page ----------
 
 def build():
@@ -446,6 +501,11 @@ def build():
                 cfg_meta = meta.get("config", {}) or {}
                 tools_by_cfg[cfg] = [t.replace("mcp__rocq__", "")
                                      for t in cfg_meta.get("allowed_tools", [])]
+    # A101/A102 supersession: the cap-30 rerun IS the reported universal
+    # haiku dev row (arena-matched to every comparator).
+    for rid, meta, rows in runs:
+        if rid == "universal_c30_dev60" and rows:
+            stats_by_cfg["universal"] = bucket_stats(rows)
 
     total_cost = sum((r.get("total_cost_usd") or 0) for _, _, rows in runs for r in rows)
     total_attempts = sum(len(rows) for _, _, rows in runs)
@@ -576,8 +636,10 @@ def build():
                    "<th>pass@1 e/m/h</th></tr>" + "".join(annex) + "</table>")
     n_annex = len(annex)
 
-    sota_h = stats_for(runs, "rocq_mcp_fair_dev60")
-    sota_s = stats_for(runs, "rocq_mcp_fair_sonnet_dev60")
+    # A99/A102 supersession: the env-bridged fair2 runs are the reported
+    # sibling dev rows.
+    sota_h = stats_for(runs, "rocq_mcp_fair2_dev60")
+    sota_s = stats_for(runs, "rocq_mcp_fair2_sonnet_dev60")
     sota = ""
     if sota_h and sota_s:
         sgroups = [
@@ -666,10 +728,10 @@ def build():
 <style>{CSS}</style></head>
 <body class="viz-root">
 <h1>AI-native Rocq tooling — final results</h1>
-<div class="sub">experiment complete (Jun 30 – Jul 7, 2026) · generated {updated} ·
-full analysis: docs/REPORT.md · per-decision rationale: docs/DESIGN.md · repo README for install &amp; try</div>
+<div class="sub">phase 1: interface evolution (Jun 30 – Jul 7, 2026) · phase 2: autoformalization + held-out matrix (Jul 9 – 15, 2026) · generated {updated} ·
+full analysis: docs/REPORT.md · per-decision rationale: docs/DESIGN.md · phase 2 story: docs/AUTOFORM.md · repo README for install &amp; try</div>
 
-<h2>The three objectives, across three policies</h2>
+<h2>Phase 1 — the three objectives, across three policies</h2>
 <p class="caption">Naive compiler baseline → rocq-mcp-evolve, mean over the three
 difficulty bins (dev set). Accuracy should rise; cost per solved proof and
 time per attempt should drop. The interface helps most where the model is
@@ -699,8 +761,8 @@ rates there.</p>
 <p class="caption">One server, one neutral prompt, measured at both a weak and a
 strong policy. The universal config beats the naive interface in every bucket
 at sonnet (first substrate config to do so) and is best-or-tied at haiku
-except hard, where the haiku-tuned variant keeps a .075 edge (within ½σ).
-pass@1, dev60.</p>
+except hard, where the haiku-tuned variant keeps a .012 edge (within ¼σ,
+post-repair A94). pass@1, dev60.</p>
 <div class="card">{a24}</div>
 
 <h2>Comparison with SOTA (rocq-mcp) — fair integration</h2>
@@ -711,9 +773,11 @@ expected cost per solved proof (failures included), wall = mean s/attempt.
 Numbers from the FAIR rerun (Jul 8): an audit found the original runs
 started with rocq-mcp's server still connecting in 97-98 % of attempts (our
 integration artifact — retracted); an instant-handshake proxy fixed it,
-120/120 connected. Fair verdict: near accuracy-parity at sonnet, rocq-mcp
-edges easy at haiku; rocq-mcp-evolve leads weak-policy medium/hard and costs
-about half per solved proof at sonnet. See REPORT for the full audit story.</p>
+120/120 connected. Fair verdict on dev60: near accuracy-parity at sonnet,
+rocq-mcp edges easy at haiku; rocq-mcp-evolve leads weak-policy medium/hard
+and costs about half per solved proof at sonnet. On the harder held-out test
+split the arms separate sharply — rocq-mcp .73/.43/.20 vs evolve .90/.65/.63
+pass@1 (see the held-out final below). REPORT has the full audit story.</p>
 <div class="card">{sota}</div>
 
 <h2>Scalability — N parallel agents on one machine</h2>
@@ -726,6 +790,29 @@ efficiency at N=8); the winner's advantage is its ~2.7× per-attempt speed,
 compounding to ≈6× solved-proofs-per-hour at N=8. The local prover is never
 the bottleneck (CPU ≤ 24 % of a 14-core laptop).</p>
 {sweep_section()}
+
+<h2>Phase 2 — autoformalization: NL spec → verified multi-file project</h2>
+<p class="caption">Five contamination-controlled mathcomp tasks, graded by
+fresh isolated rebuild + open-book probes + assumption audit — no tool
+output trusted. Fair protocol: no system prompts, wall-clock budgets.
+Baseline 10/20 → evolve 14/20 (pre-registered criterion met; four
+evolve-family arms replicate, task-clustered p=0.006); the SOTA sibling
+lands at 12/20, within noise of both. Full story, tiers, and failure
+atlas: docs/AUTOFORM.md.</p>
+<div class="card">{autoform_section()}</div>
+
+<h2>The held-out final — miniF2F test, single registered look</h2>
+<p class="caption">The locked test split, consumed once per registration and
+never tuned against: six pre-registered arms, 244 problems × 2 reps each,
+integrity-gated, single registered look (2026-07-15). pass@1 = rep-0 solves;
+"all" pools the 244 problems (the split is easy-heavy: 130/79/35, so pooled
+numbers weight easy accordingly — hover a row for the exact solve count);
+$/solve counts failed attempts; latency over solved attempts only; hover a
+row for Wilson 95% CIs (archived in docs/final_heldout_table.json). The
+evolved interface leads the naive control in every bucket with disjoint CIs
+under BOTH the guided and the prompt-free protocol — the advantage is the
+interface, not the prompt.</p>
+<div class="card">{heldout_section()}</div>
 
 <h2>Everything else measured</h2>
 <p class="caption">Cross-policy annexes, SOTA comparison, team experiments,

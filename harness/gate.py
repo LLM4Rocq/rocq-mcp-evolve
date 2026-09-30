@@ -141,6 +141,11 @@ def _run_rocq(vfile: Path, timeout_s: float, extra_args=()) -> tuple[int, str, f
         )
         return p.returncode, p.stdout + p.stderr, time.monotonic() - t0
     except subprocess.TimeoutExpired:
+        # A115c-d: the rocqworker child detaches from `rocq compile` and
+        # survives the subprocess timeout kill, growing into a multi-GB
+        # orphan. Reap any worker still referencing this exact (unique)
+        # tempfile name — scoped so it cannot touch other compiles.
+        subprocess.run(["pkill", "-f", str(vfile.name)], capture_output=True)
         return -1, "GATE TIMEOUT", time.monotonic() - t0
 
 

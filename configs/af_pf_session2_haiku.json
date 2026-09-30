@@ -1,0 +1,34 @@
+{
+ "config_id": "af_pf_session2_haiku",
+ "description": "A150 prompt-free haiku evolve arm: af_pf_session2 verbatim with the model swapped to claude-haiku-4-5 and the haiku family's cap-200 rail (A118b); frozen session server from the main worktree by absolute path (A148 rule) | A80 prompt-free held-out pair: audited frozen arm minus system prompt; wall-bound | A108: the tool-strategy tail sentence removed — template now byte-equal to the control arm (round-3 review finding)",
+ "server": {
+  "command": "/Users/gbaudart/Project/llm4rocq/rocq-tools/rocq-tools/.claude/worktrees/main-frozen/_build/default/src/session_server/rocq_agent_session.exe",
+  "args": [],
+  "env": {
+   "ROCQ_STEP_TIMEOUT": "10",
+   "ROCQ_QED_TIMEOUT": "60",
+   "ROCQ_TRY_TIMEOUT": "5",
+   "ROCQ_ENABLE_TOOLS": "step,rollback,state,try,auto_close",
+   "ROCQ_HINTS": "1",
+   "ROCQ_SUGGEST": "1",
+   "ROCQ_ENV_V2": "1",
+   "ROCQ_AUTO2": "0",
+   "ROCQ_EXEMPLARS": "0",
+   "ROCQ_MC_TACTICS": "0"
+  }
+ },
+ "mcp_server_name": "rocq",
+ "allowed_tools": [
+  "mcp__rocq__step",
+  "mcp__rocq__rollback",
+  "mcp__rocq__state",
+  "mcp__rocq__try",
+  "mcp__rocq__auto_close"
+ ],
+ "model": "claude-haiku-4-5",
+ "max_turns": 200,
+ "attempt_timeout_s": 300,
+ "system_prompt": "",
+ "task_prompt_template": "Prove this theorem (already loaded in the session; its goal is open):\n\nRules, enforced by an external checker on the delivered file: the given prefix (imports, definitions, theorem statement) must stay EXACTLY as provided, character for character; never use admit, Admitted, Axiom, Parameter, Hypothesis, Variable, or extra Require — submissions containing them are rejected. When you believe the proof is complete and verified, reply DONE.\n\n```coq\n{prefix}```",
+ "cli_version": "2.1.245"
+}

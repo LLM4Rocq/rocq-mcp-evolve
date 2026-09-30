@@ -1,0 +1,13 @@
+{
+ "task": "gauges",
+ "mutant": "inside_or_instead_of_and",
+ "solved": false,
+ "layers": {
+  "forbidden": "clean",
+  "build": "failed",
+  "probes": "not_run",
+  "audit": "not_run"
+ },
+ "reason": "build failed: Gauge.outside_3_02 unprovable (disjunctive inside makes 3 inside (0,2))",
+ "n_probes": null
+}

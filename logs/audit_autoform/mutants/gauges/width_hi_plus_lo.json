@@ -1,0 +1,13 @@
+{
+ "task": "gauges",
+ "mutant": "width_hi_plus_lo",
+ "solved": false,
+ "layers": {
+  "forbidden": "clean",
+  "build": "failed",
+  "probes": "not_run",
+  "audit": "not_run"
+ },
+ "reason": "build failed: Width.width_gneg unprovable (hi+lo width forces width g = 0 for all g)",
+ "n_probes": null
+}

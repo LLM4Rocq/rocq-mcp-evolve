@@ -1,0 +1,39 @@
+{
+ "config_id": "af_pf_rocqmcp_opus",
+ "description": "A99 prompt-free sibling arm: rocq-mcp fair integration, no system prompt, rules in task prompt (A80 wording, submit-mechanism sentence adapted), ambient micromega via task-file prefix | A104 checkpoint: frontier-tier sibling arm, appended per the registered projection rule",
+ "server": {
+  "command": "/usr/bin/python3",
+  "args": [
+   "-S",
+   "/Users/gbaudart/Project/llm4rocq/rocq-tools/rocq-tools/harness/mcp_prewarm_proxy.py",
+   "/Users/gbaudart/Project/llm4rocq/rocq-mcp/.venv-eval/bin/rocq-mcp"
+  ],
+  "env": {}
+ },
+ "mcp_server_name": "rocqmcp",
+ "extra_servers": {
+  "final": {
+   "command": "{repo}/_build/default/src/submit_server/rocq_agent_submit.exe"
+  }
+ },
+ "allowed_tools": [
+  "mcp__rocqmcp__rocq_compile",
+  "mcp__rocqmcp__rocq_compile_file",
+  "mcp__rocqmcp__rocq_verify",
+  "mcp__rocqmcp__rocq_query",
+  "mcp__rocqmcp__rocq_assumptions",
+  "mcp__rocqmcp__rocq_start",
+  "mcp__rocqmcp__rocq_check",
+  "mcp__rocqmcp__rocq_step_multi",
+  "mcp__rocqmcp__rocq_toc",
+  "mcp__rocqmcp__rocq_notations",
+  "mcp__rocqmcp__rocq_diag",
+  "mcp__final__submit"
+ ],
+ "model": "claude-opus-4-8",
+ "max_turns": 100,
+ "attempt_timeout_s": 300,
+ "system_prompt": "",
+ "task_prompt_template": "Prove the theorem below. Work with the tools, then submit the complete final file (given prefix + your proof) with the submit tool.\n\nRules, enforced by an external checker on the delivered file: the given prefix (imports, definitions, theorem statement) must stay EXACTLY as provided, character for character; never use admit, Admitted, Axiom, Parameter, Hypothesis, Variable, or extra Require \u2014 submissions containing them are rejected. When you believe the proof is complete and submitted, reply DONE.\n\n```coq\n{prefix}```",
+ "prefix_prepend": "From Stdlib Require Import Lia Lra Psatz.\n"
+}

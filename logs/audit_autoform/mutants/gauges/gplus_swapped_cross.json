@@ -1,0 +1,13 @@
+{
+ "task": "gauges",
+ "mutant": "gplus_swapped_cross",
+ "solved": false,
+ "layers": {
+  "forbidden": "clean",
+  "build": "failed",
+  "probes": "not_run",
+  "audit": "not_run"
+ },
+ "reason": "build failed: Sound.gplus_sound unprovable (cross/difference formula not an upper/lower bound)",
+ "n_probes": null
+}

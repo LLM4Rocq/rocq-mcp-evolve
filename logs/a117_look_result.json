@@ -1,0 +1,147 @@
+{
+ "pre_registration": "A117 (A104 scope) + A119 rep-1",
+ "arms": {
+  "control": {
+   "run": "FINAL_pf_baseline_opus",
+   "status": "COMPLETE (2 reps)",
+   "metrics": {
+    "easy": {
+     "n": 130,
+     "pass1": 0.785,
+     "pass1_ci": [
+      0.706,
+      0.847
+     ],
+     "cost_per_solve": 0.213,
+     "latency_solved_s": 71.5,
+     "kill_pct": 31,
+     "pass2": 0.792
+    },
+    "medium": {
+     "n": 79,
+     "pass1": 0.443,
+     "pass1_ci": [
+      0.339,
+      0.553
+     ],
+     "cost_per_solve": 0.444,
+     "latency_solved_s": 147.2,
+     "kill_pct": 64,
+     "pass2": 0.456
+    },
+    "hard": {
+     "n": 35,
+     "pass1": 0.343,
+     "pass1_ci": [
+      0.208,
+      0.508
+     ],
+     "cost_per_solve": 0.626,
+     "latency_solved_s": 197.5,
+     "kill_pct": 76,
+     "pass2": 0.343
+    },
+    "pooled": {
+     "n": 244,
+     "pass1": 0.611,
+     "pass2": 0.619
+    }
+   }
+  },
+  "evolve": {
+   "run": "FINAL_pf_session2_opus",
+   "status": "COMPLETE (2 reps)",
+   "metrics": {
+    "easy": {
+     "n": 130,
+     "pass1": 0.892,
+     "pass1_ci": [
+      0.827,
+      0.935
+     ],
+     "cost_per_solve": 0.177,
+     "latency_solved_s": 49.2,
+     "kill_pct": 9,
+     "pass2": 0.931
+    },
+    "medium": {
+     "n": 79,
+     "pass1": 0.608,
+     "pass1_ci": [
+      0.497,
+      0.708
+     ],
+     "cost_per_solve": 0.376,
+     "latency_solved_s": 116.5,
+     "kill_pct": 40,
+     "pass2": 0.646
+    },
+    "hard": {
+     "n": 35,
+     "pass1": 0.514,
+     "pass1_ci": [
+      0.356,
+      0.67
+     ],
+     "cost_per_solve": 0.545,
+     "latency_solved_s": 165.3,
+     "kill_pct": 47,
+     "pass2": 0.629
+    },
+    "pooled": {
+     "n": 244,
+     "pass1": 0.746,
+     "pass2": 0.795
+    }
+   }
+  },
+  "sibling": {
+   "run": "FINAL_pf_rocqmcp_opus",
+   "status": "COMPLETE (2 reps)",
+   "metrics": {
+    "easy": {
+     "n": 130,
+     "pass1": 0.892,
+     "pass1_ci": [
+      0.827,
+      0.935
+     ],
+     "cost_per_solve": 0.244,
+     "latency_solved_s": 57.0,
+     "kill_pct": 12,
+     "pass2": 0.923
+    },
+    "medium": {
+     "n": 79,
+     "pass1": 0.544,
+     "pass1_ci": [
+      0.435,
+      0.65
+     ],
+     "cost_per_solve": 0.493,
+     "latency_solved_s": 120.9,
+     "kill_pct": 43,
+     "pass2": 0.62
+    },
+    "hard": {
+     "n": 35,
+     "pass1": 0.514,
+     "pass1_ci": [
+      0.356,
+      0.67
+     ],
+     "cost_per_solve": 0.615,
+     "latency_solved_s": 162.6,
+     "kill_pct": 56,
+     "pass2": 0.514
+    },
+    "pooled": {
+     "n": 244,
+     "pass1": 0.725,
+     "pass2": 0.766
+    }
+   }
+  }
+ },
+ "status": "CLEAN"
+}

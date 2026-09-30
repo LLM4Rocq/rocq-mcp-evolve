@@ -1,0 +1,7 @@
+{
+ "task": "frugal",
+ "solved": null,
+ "buildable": false,
+ "reason": "own_project_does_not_build",
+ "detail": "Carrier.one changed from Some 0 to Some 1 (wrong chain-neutral); Laws.chain_onel (left_id one chain) becomes false in general (chain (Some 1) x = Some (1+n) <> x) so its reference proof (rewrite add0n) fails with 'The LHS of add0n ... doesn't match'. No repair is possible without weakening the pinned universal statement of chain_onel, which the gate's probes.v pins exactly (p_chain_one : forall x, Carrier.chain Carrier.one x = x). Not run through the gate: it never reaches probes."
+}

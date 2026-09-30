@@ -468,15 +468,16 @@ atlas fixes included. Measured at both policies (1 rep, dev60):
 
 | policy | universal (2 reps) | previous best | naive |
 |---|---|---|---|
-| claude-haiku-4-5 | .662/.575/.400 (4 reps, hard σ=.14) | .650/.575/.475 (winner_auto2) | .438/.250/.300 |
+| claude-haiku-4-5 | .650/.500/.475 (4 reps, cap-30 arena A101, σ≤.04) | .650/.575/.475 (winner_auto2) | .438/.250/.300 |
 | claude-sonnet-5 | **.950/1.000/.850** (σ ≤ .07) | 1.00/.85/.85 (sonnet_native_auto2) | .925/.950/.800 |
 
 **At Sonnet (2 reps), universal beats naive in EVERY bucket** — easy
 .95 > .925, medium 1.00 > .95 (perfect in both reps), hard .85 > .80 — at
 −40 % wall; it is the first session-substrate configuration to dominate the
 naive interface at a strong policy. At Haiku it leads on easy, ties medium,
-and trails winner_auto2 on hard by .075 at 4 reps (.400±.14 vs .475 — the
-one cell where the Haiku-tuned prompt retains an edge; within ~½σ). The medium
+and ties winner_auto2 on hard (.475) and trails it on medium by .075
+(.500±.03 vs .575 — where the Haiku-tuned prompt retains an edge; both
+configs now measured at the identical cap-30 arena, A101). The medium
 gap that motivated "policy-dependent interfaces" (§5b) was, per the failure
 atlas, largely the missing Qed handshake — with rung 10 fixed, ONE
 policy-neutral configuration is best-or-tied everywhere measured. By the
@@ -558,14 +559,14 @@ included); wall = mean seconds per attempt.
 |---|---|---|---|
 | naive @ haiku | .44 / .25 / .30 | .18 / .44 / .49 | 90 / 122 / 157 |
 | winner_auto2 @ haiku | .65 / .575 / .475 | .08 / .09 / .12 | 49 / 42 / 48 |
-| universal @ haiku | .66 / .575 / .40 | .10 / .16 / .23 | 59 / 71 / 74 |
-| rocq-mcp (SOTA, fair) @ haiku | .675 / .35 / .325 | .08 / .22 / .31 | 65 / 76 / 97 |
+| universal @ haiku (cap-30, A101) | .65 / .50 / .48 | .08 / .12 / .15 | 41 / 54 / 73 |
+| rocq-mcp (fair, env-bridged) @ haiku | .675 / .35 / .35 | .09 / .23 / .29 | 65 / 80 / 97 |
 | naive @ sonnet | .925 / .95 / .80 | .09 / .15 / .18 | 61 / 77 / 112 |
 | sonnet_native_auto2 | 1.00 / .85 / .85 | .09 / .12 / .15 | 42 / 47 / 93 |
 | universal @ sonnet | **.95 / 1.00 / .85** | **.07 / .09 / .13** | **36 / 42 / 85** |
 | naive @ fable (1 rep) | .95 / 1.00 / .95 | .09 / .19 / .35 | 51 / 40 / 73 |
 | universal @ fable (1 rep) | .95 / 1.00 / 1.00 | .14 / .16 / .29 | 49 / 41 / 57 |
-| rocq-mcp (SOTA, fair) @ sonnet | .95 / .925 / .80 | .11 / .19 / .26 | 50 / 64 / 105 |
+| rocq-mcp (fair, env-bridged) @ sonnet | 1.00 / .975 / .775 | .11 / .17 / .18 | 45 / 61 / 110 |
 
 Readings: (1) `universal` @ sonnet is simultaneously the most accurate cell
 AND the cheapest per solved proof of anything measured — including cheaper
@@ -716,3 +717,197 @@ natural falsification test and remains future work.
    10 pp at the strong policy) were found not by more benchmarking but by
    adversarial review and qualitative reading of transcripts. Instrument
    first; audit what you instrument.
+
+---
+
+# Part II — Phase 2: autoformalization evaluation and the fair-arena findings
+
+*(Self-contained; every number carries its trail citation. Detailed
+benchmark/docs: docs/AUTOFORM.md; failure taxonomy:
+docs/FAILURE_ATLAS_AUTOFORM.md; decisions A39–A86.)*
+
+## 10. Question and setup
+
+Does the phase-1 interface help on the realistic task — building an entire
+verified multi-file Rocq project from a natural-language specification?
+Five novel, contamination-controlled tasks (renamed/composed mathematics,
+heavy mathcomp preludes, gate-validated references; A51/A61). Grading
+never trusts tool output: fresh isolated dune build, open-book acceptance
+probes (vm_compute semantic pins + statement-shape pins), assumption
+audit, forbidden-token scan (A75 fixed a theory-directory discovery bug in
+this gate; 8 verdicts corrected, 6 of them raising evolve-family arms).
+
+## 11. The protocol was the hard part
+
+Three successive protocols, each fixing a measured artifact of the last:
+- **w2 (guided)**: per-arm system prompts; evolve 7/8 vs base 5/8. Real
+  for its arena, but prompt authorship is an uncontrolled degree of
+  freedom (A58: the sibling swung 2/8 → 1/8 under two author-written
+  prompts).
+- **af2 (prompt-free, 40-turn cap)**: evolve −4 vs baseline (corrected).
+  The cap is a covert tool-call tax: models emit exactly one tool call
+  per assistant turn (0 multi-call turns in 2,109 audited messages —
+  harness/count_parallel_calls.py), so 40 turns = 40 calls; tool-rich
+  arms were guillotined at half the baseline's wallclock (A62/A62b).
+- **af3 (prompt-free, wall-only 900 s)**: the fair arena. Same binaries
+  as af2 (A63).
+
+Efficiency reporting: latency = mean wall over solved attempts, kill
+rates separate; means over all attempts re-measure accuracy under
+differential censoring (A78/A71b).
+
+## 12. Results (corrected grading, A75)
+
+| arm | solved | latency (solved) | kill rate | $/solved |
+|---|---|---|---|---|
+| baseline (files+dune) | 10/20 | 608 s | 10/20 | $2.47 |
+| **+ evolve** | **14/20** | **429 s** | **7/20** | $2.91 |
+| + sibling (fair) | 12/20 | 595 s | 10/20 | $5.73 |
+
+Evolve meets the pre-registered |Δ|≥3 criterion at +4 (task-clustered
+p = 0.16 alone); four independent evolve-family arms replicate at
+14/15/15/14 → pooled 58/80 = 72.5% vs 50%, task-clustered p = 0.006
+(A79). Paired-task latency −43%. The sibling is within noise of both
+sides (A70→A75 downgrade). Frontier tier (opus, n=10/arm, directional):
+baseline 3/10, evolve 6/10, sibling 6/10 — the unassisted baseline
+collapses against the wall; both prover interfaces double it (A73).
+prodauto (6 files) is evolve's stable edge at sonnet (3/4 vs 0/4, never
+flipped in any sonnet arena); triadic is unsolved in 51 attempts across
+every arm, tier, and family — the dataset's headroom.
+
+## 13. Verdict-reversing evaluation artifacts (the transferable finding)
+
+Same binaries, same tasks, same gate, same prompt-free protocol: evolve
+−4 (40-turn arena) → +4 (wall-only); the sibling −9 → +2. Budget agent
+evaluations in wall-clock and dollars; demote turn caps to measured-
+non-binding safety nets. Censored efficiency metrics fake latency wins
+under differential kill rates. Per-arm prompts are an uncontrolled degree
+of freedom, controlled by design (no prompts / shipped docs only) since
+our own data could not separate prompt effects from arena effects
+(A58b/A62/A70).
+
+## 14. Evolution under the fair arena: a negative-results ledger
+
+Five evidence-motivated interface changes, zero shipped (A64/A65/A69
+measured and reverted; A67b/A68 cancelled on prior art): scaffold
+warnings (delivery failure), open+finisher fusion (1/70 fused calls
+closed a goal — wrong-time automation), compact goal rendering (input
+tokens +33%: density per exchange beats tokens per reply), counterexample
+search (QuickChick prior art), name suggestions (already shipped and
+firing in 7/11 cited failures). The shipped interface is a measured local
+optimum; remaining failure mass is time/difficulty-bound, not
+response-shaping-addressable. Two changes did ship earlier in the arc:
+relative-path resolution (A42/A48/A50, tool-call success 8.5%→47%) and
+the import-echo (A59, grading-path repair).
+
+## 15. Cross-family floors
+
+Under a model-agnostic MCP driver (harness/mistral_driver.py):
+mistral-medium uses the tools heavily (889 writes, 266 builds / 20
+attempts) but writes Rocq below the syntax floor (0/40; Lean idioms incl.
+a literal `sorry`); magistral-medium reasons 2–13 min and never calls a
+tool (0/5). Interface comparisons require models above the acting floor
+(A72/A72b).
+
+## 16. Held-out proving (phase-1 § 7 continues)
+
+The miniF2F test split has been consumed under logged unlock exactly
+twice: the phase-1 frozen-haiku run (§7) and a pre-registered sonnet
+matrix {control, evolve, sibling-fair} + a prompt-free pair
+(A74/A76/A80/A81), with disclosed infrastructure repairs only, all
+quarantine + identical-slot redo under the pre-registered carve-out:
+provider rate-limit windows (A83/A84), a concurrent-writer incident after
+a power loss (A93), and two stale-artifact false positives caught by the
+integrity gates (A95). No reruns, no tuning, no second look. The single
+registered look (2026-07-15, harness/final_tables.py, all gates passed;
+CIs and kill rates archived in final_heldout_table.json alongside this
+file):
+
+| arm | pass@1 e/m/h | pass@2 e/m/h | $/solve | latency-solved s | wall-killed e/m/h |
+|---|---|---|---|---|---|
+| evolve (haiku, phase-1 frozen config; TURN-CAPPED — superseded by the wall-only row below, A100) | .52 / .14 / .03 | .57 / .16 / .06 | .10 / .55 / 2.16 | 18 / 44 / 32 | 7/260 · 5/158 · 0/70 |
+| naive control (sonnet, guided) | .66 / .28 / .23 | .74 / .34 / .26 | .18 / .37 / .53 | 81 / 165 / 211 | 76/260 · 111/158 · 54/70 |
+| evolve (sonnet, guided) | **.90 / .65 / .63** | .95 / .72 / .71 | .09 / .28 / .37 | 40 / 104 / 149 | 23/260 · 51/158 · 26/70 |
+| rocq-mcp fair (sonnet, guided) | .73 / .43 / .20 | .76 / .52 / .43 | .23 / .53 / .53 | 78 / 152 / 176 | 61/260 · 78/158 · 48/70 |
+| naive control (sonnet, prompt-free A80) | .67 / .34 / .20 | .71 / .41 / .20 | .20 / .43 / .39 | 77 / 161 / 153 | 83/260 · 99/158 · 58/70 |
+| evolve (sonnet, prompt-free A80; SUPERSEDED by the A108 corrected row below, A111) | .93 / .61 / .69 | .93 / .75 / .74 | .13 / .34 / .42 | 41 / 113 / 142 | 21/260 · 51/158 · 22/70 |
+| evolve (sonnet, prompt-free A108, corrected task text) | **.92 / .71 / .69** | .94 / .79 / .71 | .13 / .38 / .39 | 41 / 115 / 127 | 20/260 · 41/158 · 22/70 |
+| rocq-mcp fair (sonnet, prompt-free A99, env-bridged) | .88 / .54 / .63 | .90 / .57 / .66 | .19 / .48 / .52 | 47 / 114 / 142 | 22/260 · 56/158 · 28/70 |
+| evolve (haiku, phase-1 config, wall-only A100) | .67 / .25 / .09 | .72 / .33 / .17 | .06 / .26 / .68 | 51 / 107 / 156 | 85/260 · 88/158 · 51/70 |
+
+Reading (Wilson 95% CIs from the artifact; no other statistics were
+pre-registered and none are computed). Guided: evolve leads the naive
+control in every bucket with disjoint CIs (easy .90 [.84,.94] vs .66
+[.58,.74]; medium .65 [.54,.74] vs .28 [.19,.39]; hard .63 [.46,.77] vs
+.23 [.12,.39]). The sibling lands between the two: below evolve with
+disjoint CIs on easy and hard and essentially touching intervals on
+medium (.43 [.33,.54] vs .65 [.54,.74]), and at the control's level on
+hard. Prompt-free replication (A108 corrected row, the reported one): the
+evolve-vs-control gap survives prompt removal in every bucket with
+disjoint CIs (easy .92 [.86,.96] vs .67 [.59,.74]; medium .71 [.60,.80]
+vs .34 [.25,.45]; hard .69 [.52,.81] vs .20 [.10,.36]), and evolve's
+prompt-free cells sit within its guided CIs — the advantage is the
+interface, not the prompt. A111 primary contrast (pre-declared, pooled
+exact McNemar, Holm over the two-test family): vs control 81:2
+(p<1e-5); vs sibling 26:5 (p=2e-4) — the write-up's one REGISTERED paired
+result. Corrected vs superseded arm: 15:8 (p=.21), consistent with the
+disclosed tail sentence having had no measurable effect. Efficiency: evolve
+is the cheapest per solved proof and roughly halves solved-latency vs the
+control in every bucket; the control wall-kills 70% of medium attempts
+vs evolve's 32%. Convention note: pass@1 is rep0-only per A78; the
+phase-1 §7 haiku row used mean-over-reps, hence .52/.13/.04 there vs
+.52/.14/.03 here — same run, both conventions documented, no renumbering
+of §7.
+
+A98–A102 completion (the last two table rows): the guided sibling arm
+was depressed by a harness environment asymmetry (153/211 failed
+attempts with phantom micromega errors; 34 gate-replay rescues
+independently re-verified; sensitivity .82/.46/.31), disclosed and then
+superseded by the env-bridged, prompt-free arm: .88/.54/.63 — above the
+control with disjoint CIs (easy/hard), overlapping CIs with evolve in
+all three buckets while evolve holds every point estimate, every pass@2
+cell, and ~30–45% lower $/solve. Unpaired solved-only latency looks
+near-equal — the censoring artifact (§13) in a subtler form: the wall
+filters each arm's slow solves out of its own column. Paired on the 174
+rep-0 problems both arms solve (A108 corrected arm), evolve is 20%
+faster (58s vs 73s — the sibling takes 25% longer) and 30%
+cheaper ($0.174 vs $0.249 — equivalently, the sibling pays 43% more) on
+identical work (script-derived from the archived rows; superseded-arm
+figures: 21%/31% on 340 paired attempts). The interface
+class is the first-order effect; evolve's edge at this tier is
+efficiency. The phase-1 haiku row was turn-cap-terminated on 289/330
+failures; wall-only (A100) it rises to .67/.25/.09 with better $/solve
+on easy/medium — the turn-cap tax measured at held-out scale. Full
+ledger: trail A98–A102.
+
+## 17. Phase-2 conclusions
+
+The interface class is real: under the strictest protocol we could
+construct, both prover MCPs beat a strong file-editing baseline at the
+frontier tier, and evolve's advantage at the anchor tier replicates
+four-for-four. The held-out split (§16) then confirmed it out of sample:
+evolve leads the control in every bucket with disjoint 95% CIs under
+both the guided and the prompt-free protocol, at roughly half the cost
+and latency per solve. The efficiency story favors minimalism (evolve: −43%
+latency paired, 2× cheaper per solve than the sibling). And the loudest
+lesson is methodological: three plausible evaluation designs each
+reversed the verdict before the artifact hunt converged — any agent-tool
+comparison without arena/censoring/prompt controls is one artifact from
+the opposite conclusion.
+
+## 18. Second-family held-out replication (A113)
+
+Pre-registered before launch (trail A113: arms, surface gates, acting-
+floor screen recorded, pooled McNemar primary, direction-blind), run
+end-to-end by the autonomous chain and analyzed by a deterministic look
+script with no model in the loop (harness/a113_look.py, math validated
+against the A111 arms). mistral-large-latest, all three prompt-free
+arms, 244 test problems x 2 reps: evolve .25 pooled pass@1 (.29 pass@2)
+vs check-loop control .10 (.13) vs sibling-fair .07 (.09). Registered
+contrasts: evolve-vs-control 38:1 discordant (p=1.5e-10), evolve-vs-
+sibling 46:1 (p=6.8e-13), Holm/2. The interface-class advantage
+transfers to a second family with significance at held-out scale;
+absolute capability (.25 vs sonnet .82) and the Claude-tier
+evolve>sibling>control ordering remain family-specific (sibling below
+the minimal control at this family). Full record:
+logs/a113_look_result.json; trail A113 + A113-look.

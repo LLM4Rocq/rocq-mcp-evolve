@@ -1,0 +1,13 @@
+{
+ "task": "gauges",
+ "mutant": "inside_half_open",
+ "solved": false,
+ "layers": {
+  "forbidden": "clean",
+  "build": "failed",
+  "probes": "not_run",
+  "audit": "not_run"
+ },
+ "reason": "build failed: Sound.gneg_sound unprovable (half-open inside breaks at x = lo g)",
+ "n_probes": null
+}

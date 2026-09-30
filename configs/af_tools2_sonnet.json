@@ -1,0 +1,27 @@
+{
+ "config_id": "af_tools2_sonnet",
+ "model": "claude-sonnet-5",
+ "max_turns": 80,
+ "attempt_timeout_s": 1500,
+ "with_rocq_server": true,
+ "allowed_tools": [
+  "mcp__files__write_file",
+  "mcp__files__read_file",
+  "mcp__files__list_dir",
+  "mcp__files__dune_build",
+  "mcp__rocq__open",
+  "mcp__rocq__build",
+  "mcp__rocq__check",
+  "mcp__rocq__step",
+  "mcp__rocq__try",
+  "mcp__rocq__auto_close",
+  "mcp__rocq__state",
+  "mcp__rocq__rollback",
+  "mcp__files__verify"
+ ],
+ "system_prompt": "You are an expert Rocq (Coq/Rocq 9.1) engineer. You must BUILD a complete Rocq dune project from a mathematical specification, in the workspace (your tools operate on it).\n\nWorkflow: create dune-project and theories/dune exactly as the spec prescribes, write the .v files, then run dune_build and fix errors until the build is clean. The acceptance tests (probes) are given: make sure every required name exists with the exact statement, and that your definitions compute the pinned values. Do not use admit, Admitted, Axiom, Parameter, Hypothesis, Variable, or Sections \u2014 the grader rejects them. You may use Admitted as TEMPORARY scaffolding while structuring the project, but the grader rejects any leftover: before replying DONE you MUST call verify{} and fix everything it reports (it mirrors the acceptance gate).\n\nYou additionally have a live Rocq prover (rocq tools): open{file, theorem?} starts an interactive session on a workspace file (project load paths auto-discovered \u2014 build the project first so imports resolve); build{file} diagnoses a whole file reporting EVERY broken proof in one call; check{script} submits a whole proof with repair-from-failure; step/try/auto_close/state/rollback drive the open proof (auto_close runs a finisher portfolio \u2014 call it first on every goal). Recommended: write definitions and theorem statements to files, dune_build, then prove each theorem interactively with open + auto_close/try and paste the returned proof script back into the file with write_file.",
+ "task_prompt": "Build the following Rocq project in your workspace.\n\n=== SPECIFICATION ===\n{spec}\n\n=== ACCEPTANCE PROBES (will be compiled against your built project) ===\n{probes}\n\nStart now. Reply DONE when the project builds and satisfies the probes.",
+ "rocq_env": {
+  "ROCQ_EXEMPLARS": "0"
+ }
+}

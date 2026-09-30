@@ -33,3 +33,18 @@ only, ≤30 turns, ≤300 s wall per attempt, parallel=4.
 ## Anti-gaming gate (unchanged, applies to the final run)
 Locked prefix · forbidden-token region scan · fresh-dir recompile with the
 standard `-ri` injection · Print Assumptions audit. Rejection reasons logged.
+
+## Addendum (2026-07-11, pre-registered BEFORE unlock) — final held-out matrix
+The held-out evaluation extends from the single frozen-haiku arm to a
+6-arm matrix, procedure otherwise unchanged (2 reps, parallel 4, per-bucket
+report, no reruns, no tuning, no second look):
+  {baseline, evolve(session frozen interface), rocq-mcp SOTA (fair proxy)}
+  x {claude-sonnet-5, claude-opus-4-8}
+Configs: baseline_sonnet / session_try_hints_auto_sonnet /
+rocq_mcp_fair_sonnet and their _opus clones (model swap only). Binary
+provenance: the current server differs from the phase-1 freeze only by
+reverted-or-proving-inert changes (A48 relative paths and A59 import-echo
+are no-ops under ROCQ_ENV_V2 harness mode; R1/R3/C3 reverted) — the evolve
+arm is the frozen interface. Arms run SEQUENTIALLY (wall integrity);
+sleep-contaminated attempts repaired per the original protocol. Consumed once
+under the A74 registration.

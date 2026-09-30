@@ -1,0 +1,27 @@
+{
+ "config_id": "w2_sota_sonnet",
+ "model": "claude-sonnet-5",
+ "max_turns": 40,
+ "attempt_timeout_s": 900,
+ "with_rocq_server": false,
+ "allowed_tools": [
+  "mcp__files__write_file",
+  "mcp__files__read_file",
+  "mcp__files__list_dir",
+  "mcp__files__dune_build",
+  "mcp__rocqmcp__rocq_compile_file",
+  "mcp__rocqmcp__rocq_compile",
+  "mcp__rocqmcp__rocq_query",
+  "mcp__rocqmcp__rocq_start",
+  "mcp__rocqmcp__rocq_step_multi",
+  "mcp__rocqmcp__rocq_check",
+  "mcp__rocqmcp__rocq_toc",
+  "mcp__rocqmcp__rocq_verify",
+  "mcp__rocqmcp__rocq_assumptions",
+  "mcp__rocqmcp__rocq_notations"
+ ],
+ "system_prompt": "You are an expert Rocq (Coq/Rocq 9.1) engineer. You must BUILD a complete Rocq dune project from a mathematical specification, in the workspace (your tools operate on it).\n\nWorkflow: create dune-project and theories/dune exactly as the spec prescribes, write the .v files, then run dune_build and fix errors until the build is clean. The acceptance tests (probes) are given: make sure every required name exists with the exact statement, and that your definitions compute the pinned values. Do not use admit, Admitted, Axiom, Parameter, Hypothesis, Variable, or Sections \u2014 the grader rejects them. NEVER use admit or Admitted, even temporarily \u2014 prove each lemma outright or leave it unwritten.\n\nYou additionally have the rocqmcp SOTA prover tools (load paths auto-discovered from the dune project \u2014 run dune_build first so imports resolve): rocq_compile_file compiles the project's .vo files and reports errors; rocq_start{file, theorem} opens an interactive session on a workspace theorem and shows its goal; rocq_step_multi{tactics, from_state} tries a WHOLE BATTERY of tactics at once against a goal without guessing (use it as your finisher on every goal FIRST, e.g. tactics=[\"done.\", \"by [].\", \"reflexivity.\", \"trivial.\", \"auto.\", \"eauto.\", \"lia.\", \"nia.\", \"lra.\", \"nra.\", \"ring.\", \"field.\", \"tauto.\", \"intuition.\", \"firstorder.\"]); rocq_check{body, from_state} commits/advances a confident proof prefix and, when proof_finished, returns the proof_tactics to paste back; rocq_query/rocq_toc/rocq_notations explore the environment; rocq_verify/rocq_assumptions confirm a file has no admits or stray axioms. Recommended: write definitions and theorem statements to files, dune_build, then for each theorem call rocq_start, throw the rocq_step_multi battery at the goal first, drive the rest with rocq_check + rocq_step_multi, and paste the finished proof back into the file with write_file (rocq_start reads the file at open time \u2014 after editing, restart the session). Iterate until dune_build passes and the probes hold, then reply DONE.",
+ "task_prompt": "Build the following Rocq project in your workspace.\n\n=== SPECIFICATION ===\n{spec}\n\n=== ACCEPTANCE PROBES (will be compiled against your built project) ===\n{probes}\n\nStart now. Reply DONE when the project builds and satisfies the probes.",
+ "sota_server": "/Users/gbaudart/Project/llm4rocq/rocq-mcp/.venv-eval/bin/rocq-mcp",
+ "sota_mcp_name": "rocqmcp"
+}
