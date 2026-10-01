@@ -40,21 +40,23 @@ The agent calls `open` on a file (optionally with a theorem name), works the pro
 Every tool response carries information from the prover at no extra turn: error hints rewrite common mistakes into the Rocq form, unknown references come with the nearest existing lemma names, and `auto_close` asserts auxiliary facts before retrying the nonlinear finishers.
 Every sentence runs under a timeout, so a diverging computation returns an error instead of freezing the session, and the standard tactic modules (`Lia`, `Lra`, `Psatz`) are preloaded after the statement.
 All tools and features are on by default: trim the tools with `ROCQ_ENABLE_TOOLS=step,state,...` and disable features with `ROCQ_HINTS=0`, `ROCQ_SUGGEST=0`, `ROCQ_AUTO2=0` or `ROCQ_PRELOAD=0`.
-The rationale of each tool is in [`docs/DESIGN.md`](docs/DESIGN.md).
+The rationale of each tool is in [`RATIONALE.md`](RATIONALE.md).
 
 ## How the server was built
 
 We propose an evolutionary method building an MCP server for the Rocq proof assistant.
 We start with a basic MCP server exposing only the Rocq compiler.
 At each step, a frontier model *mutates* the existing MCP server by adding a new feature, *evaluates* this new server with smaller models, and only keeps mutations that improve overall performance.
-The rationale of each decision is in [`docs/DESIGN.md`](docs/DESIGN.md).
+The rationale of each decision is in [`RATIONALE.md`](RATIONALE.md).
+The GitHub repository of the entire experiment is available at https://github.com/LLM4Rocq/rocq-mcp-evolve-experiment and the corresponding paper can be found at https://arxiv.org/abs/2609.39544.
 
 ## Repository map
 
-- `src/session_server/` — rocq-mcp-evolve. It is entirely written in OCaml on top of the Rocq runtime API. The server maintains a live interactive session with the agent: it enables the agent to apply tactics to advance the proof state, to backtrack, and to access the current proof state, exposes simple automation tools that can be used to close simple proof goals, and exposes verification tools to check the validity of a proof or of an entire project.
-- `src/mcp_core/` — the MCP stdio framework used by the servers. `src/psession/` — the shared-proof daemon and shim for several agents on one proof.
-- `test/` — the integration suites, run with `dune runtest` (see `test/ARCHITECTURE.md`).
-- `docs/DESIGN.md` — the design rationale.
+- `src/session_server/`: rocq-mcp-evolve. It is entirely written in OCaml on top of the Rocq runtime API. The server maintains a live interactive session with the agent: it enables the agent to apply tactics to advance the proof state, to backtrack, and to access the current proof state, exposes simple automation tools that can be used to close simple proof goals, and exposes verification tools to check the validity of a proof or of an entire project.
+- `src/mcp_core/`: the MCP stdio framework used by the servers.
+- `src/psession/`: the shared-proof daemon and shim for several agents on one proof.
+- `test/`: the integration suites, run with `dune runtest` (see `test/ARCHITECTURE.md`).
+- `RATIONALE.md`: the design rationale.
 
 ## How to cite
 
