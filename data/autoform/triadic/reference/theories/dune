@@ -1,3 +1,0 @@
-(coq.theory
- (name TaskLib)
- (theories Stdlib mathcomp HB elpi elpi_elpi))

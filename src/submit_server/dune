@@ -1,3 +1,0 @@
-(executable
- (name rocq_agent_submit)
- (libraries mcp_core yojson unix))

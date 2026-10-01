@@ -1,9 +1,0 @@
-{
- "task": "prodauto",
- "solved": false,
- "layers": {
-  "forbidden": "clean",
-  "build": "ith existing \n[GRing.subring_closedB; GRing.zmod_closedN] : GRing.subring_closed >-> GRing.oppr_closed.\n[ambiguous-paths,coercions,default]\nFile \"./theories/Lang.v\", line 3, characters 0-55:\nWarning:\n"
- },
- "reason": "build_failed"
-}

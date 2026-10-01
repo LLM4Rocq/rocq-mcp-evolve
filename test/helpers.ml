@@ -31,7 +31,7 @@ let repo_root =
   let rec up d n =
     if n = 0 then d
     else if Sys.file_exists (Filename.concat d "dune-project")
-            && Sys.file_exists (Filename.concat d "harness")
+            && Sys.file_exists (Filename.concat d "src")
     then d
     else up (Filename.dirname d) (n - 1)
   in
@@ -51,7 +51,6 @@ let exe name = Filename.concat repo_root ("_build/default/" ^ name)
 
 let session_exe = exe "src/session_server/rocq_agent_session.exe"
 let daemon_exe = exe "src/psession/rocq_agent_daemon.exe"
-let baseline_exe = exe "src/baseline_server/rocq_agent_baseline.exe"
 
 let tmpdir prefix =
   let d =

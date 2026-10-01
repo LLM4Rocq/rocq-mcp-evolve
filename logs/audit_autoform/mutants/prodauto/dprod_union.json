@@ -1,9 +1,0 @@
-{
- "task": "prodauto",
- "solved": false,
- "layers": {
-  "forbidden": "clean",
-  "build": "used in scope ring_scope.\n[notation-overridden,parsing,default]\nFile \"./theories/Lang.v\", line 3, characters 0-55:\nWarning: Notation \"_ - _\" was already used in scope distn_scope.\n[notation-overridden,parsing,default]\nFile \"./theories/Lang.v\", line 22, characters 7-35:\nError: No applicable tactic.\n\n"
- },
- "reason": "build_failed"
-}

@@ -14,7 +14,6 @@ test/
   test_session.ml   suite A: session server core contracts
   test_daemon.ml    suite B: multi-agent daemon (parallelism)
   test_perf.ml      suite C: scalability/latency bounds (generous, CI-stable)
-  test_gate.py      suite D: correctness-gate soundness (run via dune rule)
 ```
 
 ## helpers.ml contract (implement first; keep < 150 lines)
@@ -123,27 +122,10 @@ Fixture FB: `From Stdlib Require Import Reals Psatz.\nOpen Scope R_scope.\n\nThe
   one step call with 50 idtac sentences), then rollback{count:50} completes
   < 2 s.
 
-## Suite D — gate soundness (test_gate.py, run by dune rule)
-Uses harness/gate.py directly (import). Cases (each cites its origin):
-- D1 legit accept: pow2 proof on F1-prefix → solved=True.
-- D2 admit/Admitted/Axiom in region → forbidden_token rejects.
-- D3 prefix tamper (change statement) → prefix_modified.
-- D4 comment/string desync exploit `(* "(*" *) Admitted.` → REJECTED
-  (regression: measurement-review critical finding; must NOT be solved).
-- D5 target-is-axiom belt: candidate that Admitted-then-reproves is
-  academic — instead assert gate rejects when Print Assumptions lists the
-  target name (craft: prefix + `Admitted.` hidden however — if unbuildable,
-  directly test parse path by calling check on plain `Admitted.` → any
-  rejection reason acceptable as long as solved=False).
-- D6 fresh-recompile: candidate referencing an in-SESSION-only fact (e.g.
-  proof text "exact H." with H undefined) → recompile_failed.
-
 ## dune wiring
 - `test/dune`: three `(test (name test_session|test_daemon|test_perf)
   (libraries yojson unix str) (deps <the three exes> fixtures))` stanzas —
-  use `%{exe:...}` or explicit path deps so binaries build first; plus
-  `(rule (alias runtest) (deps test_gate.py ../harness/gate.py)
-  (action (run python3 %{dep:test_gate.py})))`.
+  use `%{exe:...}` or explicit path deps so binaries build first.
 - Env: tests must locate the opam switch bin — resolve as
   `Filename.dirname Sys.executable_name` walk-up OR simply require PATH to
   contain rocq (dune runtest inherits the dev shell; assert early with a
@@ -151,8 +133,7 @@ Uses harness/gate.py directly (import). Cases (each cites its origin):
 - Every test prints TAP-ish lines; exit non-zero on failure.
 
 ## Non-goals
-No mocking, no unit tests, no coverage of the Python harness beyond the
-gate, no network. Time budget hard cap: any single suite > 120 s is a bug.
+No mocking, no unit tests, no network. Time budget hard cap: any single suite > 120 s is a bug.
 
 
 ## Additions after v1 (kept in sync with the suite)
