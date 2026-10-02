@@ -28,7 +28,7 @@ jobs:
           opam install rocq-stdlib --yes
       - name: Check the Rocq version
         run: |
-          v=$(opam show rocq-runtime --field=installed-version)
+          v=$(OPAMCOLOR=never opam show rocq-runtime --field=installed-version)
           echo "rocq-runtime $v"
           test "$v" = "${{ matrix.rocq }}"
       - name: Build
