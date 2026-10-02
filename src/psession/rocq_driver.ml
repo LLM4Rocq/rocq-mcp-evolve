@@ -166,13 +166,21 @@ let is_qed_like text =
       String.length t >= String.length p && String.sub t 0 (String.length p) = p)
     [ "Qed"; "Defined"; "Save" ]
 
+(* [Control.timeout] returns ['b option] in Rocq 9.1 and [('b, Exninfo.info) result]
+   in Rocq 9.2 ([None] / [Error] exactly when the timeout fired; other exceptions
+   propagate in both). Recording the value in a ref and ignoring the returned one
+   compiles against both. *)
+let timeout_opt (timeout_s : float) (f : unit -> 'a) : 'a option =
+  let r = ref None in
+  ignore (Control.timeout timeout_s (fun () -> r := Some (f ())) ());
+  !r
+
 let exec_sentence ~(timeout_s : float) (st : Vernacstate.t)
     (vc : Vernacexpr.vernac_control) : sentence_result =
   messages := [];
   match
-    Control.timeout timeout_s
+    timeout_opt timeout_s
       (fun () -> Vernacinterp.interp ~intern:Vernacinterp.fs_intern ~st vc)
-      ()
   with
   | Some st' -> Ok_st (st', List.rev !messages)
   | None ->

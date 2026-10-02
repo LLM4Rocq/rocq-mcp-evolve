@@ -21,7 +21,7 @@ opam pin add rocq-mcp-evolve https://github.com/LLM4Rocq/rocq-mcp-evolve.git
 { "mcpServers": { "rocq": { "command": "rocq-mcp-evolve" } } }
 ```
 
-No further configuration is needed: the server installs the `rocq-runtime` 9.1+ dependency automatically and discovers the project load paths from your `_CoqProject`, `_RocqProject` or `dune-project`, so build your project first.
+No further configuration is needed: the server installs the `rocq-runtime` 9.1 or 9.2 dependency automatically and discovers the project load paths from your `_CoqProject`, `_RocqProject` or `dune-project`, so build your project first.
 The agent calls `open` on a file (optionally with a theorem name), works the proof with the other tools, and on completion receives the finished script to insert into your file.
 
 ## The tools
