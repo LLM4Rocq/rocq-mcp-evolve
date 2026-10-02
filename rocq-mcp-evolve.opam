@@ -12,7 +12,7 @@ bug-reports: "https://github.com/LLM4Rocq/rocq-tools/issues"
 depends: [
   "ocaml" {>= "4.14"}
   "dune" {>= "3.23"}
-  "rocq-runtime" {>= "9.1" & < "9.2"}
+  "rocq-runtime" {>= "9.1" & < "9.3"}
   "memprof-limits"
   "rocq-stdlib"
   "yojson"

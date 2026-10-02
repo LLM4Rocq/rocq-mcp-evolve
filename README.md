@@ -11,7 +11,7 @@ produced it. Starting from a deliberately-naive control (one tool = a full
 one measured change at a time against per-bucket baselines; every design
 decision is backed by numbers and every proof accepted only by an anti-gaming
 correctness gate. The layer is a standalone OCaml project linking the installed
-Rocq 9.1.1 libraries in-process — **no source changes to Rocq** — and is one
+Rocq 9.1 or 9.2 libraries in-process — **no source changes to Rocq** — and is one
 server both a weak and a strong model can use, chosen by a pre-registered
 best-worst-case-across-policies criterion.
 
@@ -118,8 +118,8 @@ Cross-cutting enrichments (zero extra turns, all default-on; disable with `=0`):
 opam pin add rocq-mcp-evolve https://github.com/LLM4Rocq/rocq-mcp-evolve.git
 ```
 
-installs the `rocq-mcp-evolve` binary into your opam switch (`rocq-runtime` 9.1+
-is pulled automatically). Then add ONE block to any MCP client config
+installs the `rocq-mcp-evolve` binary into your opam switch (`rocq-runtime` 9.1 or
+9.2 is pulled automatically). Then add ONE block to any MCP client config
 (Claude Code, `claude` CLI, or anything MCP-speaking):
 
 ```json

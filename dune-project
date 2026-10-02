@@ -14,7 +14,7 @@
  (depends
   (ocaml (>= 4.14))
   dune
-  (rocq-runtime (and (>= 9.1) (< 9.2)))
+  (rocq-runtime (and (>= 9.1) (< 9.3)))
   memprof-limits
   rocq-stdlib
   yojson)

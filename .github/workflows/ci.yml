@@ -6,8 +6,13 @@ on:
 
 jobs:
   test:
+    name: test (rocq-runtime ${{ matrix.rocq }})
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        rocq: ["9.1.1", "9.2.0"]
     steps:
       - uses: actions/checkout@v4
       - uses: ocaml/setup-ocaml@v3
@@ -16,7 +21,7 @@ jobs:
           dune-cache: true
       - name: Install dependencies (rocq-runtime build is slow on cold cache)
         run: |
-          opam install . --deps-only --with-test --yes
+          opam install . --deps-only --with-test --yes rocq-runtime.${{ matrix.rocq }}
           opam install rocq-stdlib --yes
       - name: Build
         run: opam exec -- dune build
