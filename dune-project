@@ -12,7 +12,7 @@
  (description
   "An empirically-designed, policy-neutral MCP (Model Context Protocol) server that lets LLM agents drive the Rocq prover: persistent in-process sessions, speculative tactic evaluation, a finisher portfolio with hint synthesis, enriched errors, project load-path auto-discovery, and multi-agent shared-proof support.")
  (depends
-  (ocaml (>= 4.14))
+  (ocaml (and (>= 4.14) (or (< 5.0) (>= 5.3))))
   dune
   (rocq-runtime (and (>= 9.1) (< 9.3)))
   memprof-limits
