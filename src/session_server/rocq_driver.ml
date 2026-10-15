@@ -329,6 +329,15 @@ let is_qed_like text =
    by the caller's unfreeze, and the interp cache is invalidated. *)
 let () = Memprof_limits.start_memprof_limits ()
 
+(* [Control.timeout] returns ['b option] in Rocq 9.1 and [('b, Exninfo.info) result]
+   in Rocq 9.2 ([None] / [Error] exactly when the timeout fired; other exceptions
+   propagate in both). Recording the value in a ref and ignoring the returned one
+   compiles against both. *)
+let timeout_opt (timeout_s : float) (f : unit -> 'a) : 'a option =
+  let r = ref None in
+  ignore (Control.timeout timeout_s (fun () -> r := Some (f ())) ());
+  !r
+
 let exec_sentence ~(timeout_s : float) (st : Vernacstate.t)
     (vc : Vernacexpr.vernac_control) : sentence_result =
   messages := [];
@@ -354,9 +363,8 @@ let exec_sentence ~(timeout_s : float) (st : Vernacstate.t)
   in
   match
     Memprof_limits.limit_with_token ~token (fun () ->
-        Control.timeout timeout_s
-          (fun () -> Vernacinterp.interp ~intern:Vernacinterp.fs_intern ~st vc)
-          ())
+        timeout_opt timeout_s
+          (fun () -> Vernacinterp.interp ~intern:Vernacinterp.fs_intern ~st vc))
   with
   | Ok (Some st') -> finish (Ok_st (st', List.rev !messages))
   | Ok None ->
